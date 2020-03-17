@@ -1,18 +1,25 @@
 {
-  "name": "app",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "start": "node ./bin/www",
-    "start:dev": "nodemon ./bin/www"
-  },
-  "dependencies": {
-    "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
-    "express": "~4.16.1",
-    "morgan": "~1.9.1"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.2"
-  }
+    "name": "app",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": 
+    {
+        "start": "node ./bin/www",
+        "start:dev": "nodemon ./bin/www",
+        "test": "mocha",
+        "test:acceptance": "docker-compose up --build -d && wait-on http://localhost:80 && newman run test/acceptance_test.postman_collection.json && docker-compose stop"
+    },
+    "dependencies": 
+    {
+        "cookie-parser": "~1.4.4",
+        "debug": "~2.6.9",
+        "express": "~4.16.1",
+        "morgan": "~1.9.1"
+    },
+    "devDependencies": 
+    {
+        "mocha": "^7.1.0",
+        "newman": "^4.6.0",
+        "nodemon": "^2.0.2"
+    }
 }
