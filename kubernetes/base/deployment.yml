@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-activity-deployment
+  name: experiments-deployment
   labels:
-    app: user-activity
+    app: experiments
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: user-activity
+      app: experiments
   template:
     metadata:
       labels:
-        app: user-activity
+        app: experiments
     spec:
       containers:
-      - name: user-activity
+      - name: experiments
         image: XXXX
         ports:
         - containerPort: 3000
