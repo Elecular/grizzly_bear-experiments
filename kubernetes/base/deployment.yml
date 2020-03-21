@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-activity-deployment
+  labels:
+    app: user-activity
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: user-activity
+  template:
+    metadata:
+      labels:
+        app: user-activity
+    spec:
+      containers:
+      - name: user-activity
+        image: XXXX
+        ports:
+        - containerPort: 3000
