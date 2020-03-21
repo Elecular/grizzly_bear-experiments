@@ -16,9 +16,30 @@
         "morgan": "~1.9.1"
     },
     "devDependencies": {
+        "eslint": "^6.8.0",
+        "eslint-plugin-mocha": "^6.3.0",
+        "husky": "^4.2.3",
+        "lint-staged": "^10.0.8",
         "mocha": "^7.1.0",
         "newman": "^4.6.0",
         "nodemon": "^2.0.2",
+        "prettier": "2.0.1",
         "wait-on": "^4.0.1"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.js": [
+            "./node_modules/.bin/eslint",
+            "prettier --write",
+            "git add"
+        ],
+        "*.json": [
+            "prettier --write",
+            "git add"
+        ]
     }
 }

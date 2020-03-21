@@ -1,38 +1,36 @@
 {
-	"info": {
-		"_postman_id": "88c126c4-9d43-40ab-a728-fbaff8fe5d76",
-		"name": "acceptance_test",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"item": [
-		{
-			"name": "Test Index",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "a7b22320-ab53-4493-b868-a356fc851b36",
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost",
-					"host": [
-						"localhost"
-					]
-				}
-			},
-			"response": []
-		}
-	],
-	"protocolProfileBehavior": {}
+    "info": {
+        "_postman_id": "88c126c4-9d43-40ab-a728-fbaff8fe5d76",
+        "name": "acceptance_test",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Test Index",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "id": "a7b22320-ab53-4493-b868-a356fc851b36",
+                        "exec": [
+                            "pm.test(\"Status code is 200\", function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "localhost",
+                    "host": ["localhost"]
+                }
+            },
+            "response": []
+        }
+    ],
+    "protocolProfileBehavior": {}
 }
