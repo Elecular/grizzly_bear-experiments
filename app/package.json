@@ -8,7 +8,7 @@
         "start:dev": "nodemon ./bin/www",
         "test": "npm run test:mocha && npm run test:acceptance",
         "test:mocha": "mocha",
-        "test:acceptance": "docker-compose up --build -d && wait-on http://localhost:80 && newman run test/acceptance_test.postman_collection.json && docker-compose stop"
+        "test:acceptance": "docker-compose up --build -d && wait-on http://localhost:80 --timeout 60000 && newman run test/acceptance_test.postman_collection.json && docker-compose stop"
     },
     "dependencies": 
     {
