@@ -79,7 +79,7 @@ jobs:
             - name: Cleanup Old Images
               run: |
                   gcloud container images list-tags $REGISTRY_HOSTNAME/$GKE_PROJECT/$GKE_CLUSTER/$IMAGE --limit=999999 --sort-by=~TIMESTAMP \
-                  | awk '{print $1}' | tail -n +3 | \
+                  | awk '{print $1}' | tail -n +52 | \
                   xargs -I XXX gcloud container images delete -q --force-delete-tags $REGISTRY_HOSTNAME/$GKE_PROJECT/$GKE_CLUSTER/$IMAGE@sha256:XXX
 
             # If all steps pass, we will mark the deployment as success
