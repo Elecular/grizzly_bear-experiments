@@ -1,3 +1,4 @@
+//ts-check
 const MongoClient = require("mongodb").MongoClient;
 const assert = require("assert");
 const logger = require("log4js").getLogger();
@@ -33,6 +34,9 @@ module.exports = {
 
     /**
      * Async function that disconnects the mongoDB
+     *
+     * @async
+     * @returns {Promise}
      */
     disconnect: async () => {
         client.close(() => {
