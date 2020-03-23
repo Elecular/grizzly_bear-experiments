@@ -46,7 +46,9 @@ module.exports.disconnect = async () => {
 
 /**
  * Creates all the collections on Mongodb
+ *
  * @param {Db} db
+ * @returns {Promise}
  */
 const setup = async (db) => {
     const files = await readdir(path.join(__dirname, "../mongodb_schemas/"));

@@ -7,7 +7,7 @@
             "description": "Name of the project"
         },
         "ownerId": {
-            "bsonType": "objectId",
+            "bsonType": "string",
             "description": "Id of the project owner"
         }
     }
