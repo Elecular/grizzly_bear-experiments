@@ -12,13 +12,13 @@ let router = express.Router();
  */
 router.post("/", async function (req, res, next) {
     try {
+        res.status(201);
         res.json(
             await projectController.addProject(
                 req.body["projectName"],
                 req.headers["ownerid"],
             ),
         );
-        res.status(201);
     } catch (err) {
         next(err);
     }
