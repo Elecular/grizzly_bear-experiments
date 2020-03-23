@@ -1,7 +1,11 @@
-//ts-check
-const MongoClient = require("mongodb").MongoClient;
-const assert = require("assert");
+const mongodb = require("mongodb");
+const Db = require("mongodb").Db; // eslint-disable-line no-unused-vars
 const logger = require("log4js").getLogger();
+const readdir = require("recursive-readdir");
+const path = require("path");
+const fs = require("fs");
+
+const MongoClient = mongodb.MongoClient;
 
 const url = `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_URL}:${process.env.MONGODB_PORT}`;
 const dbName = process.env.MONGODB_DATABASE;
@@ -12,35 +16,51 @@ const client = new MongoClient(url, {
     useUnifiedTopology: true,
 });
 
-module.exports = {
-    /**
-     * Async function that returns a db object. This db object can be used to query MongoDB
-     */
-    connect: async () => {
-        if (db !== null) return db;
+/**
+ * Async function that returns a db object. This db object can be used to query MongoDB
+ *
+ * @async
+ * @returns {Promise<Db>}
+ */
+module.exports.connect = async () => {
+    if (db !== null) return db;
 
-        client.connect(function (err) {
-            assert.equal(
-                null,
-                err,
-                `An error occured while connected to the database: ${err}`,
-            );
-            logger.info("Connected to Mongo Database");
+    await client.connect();
+    logger.info("Connected to Mongo Database");
 
-            db = client.db(dbName);
-            return db;
+    db = client.db(dbName);
+    await setup(db);
+
+    return db;
+};
+
+/**
+ * Closes the connection to db
+ *
+ * @async
+ * @returns {Promise}
+ */
+module.exports.disconnect = async () => {
+    await client.close();
+};
+
+/**
+ * Creates all the collections on Mongodb
+ * @param {Db} db
+ */
+const setup = async (db) => {
+    const files = await readdir(path.join(__dirname, "../mongodb_schemas/"));
+    for (let count = 0; count < files.length; count++) {
+        const file = files[count];
+        const collectionName = path.basename(file).replace(".json", "");
+        const schema = JSON.parse(fs.readFileSync(file));
+
+        await db.createCollection(collectionName, {
+            validator: {
+                $jsonSchema: schema,
+            },
         });
-    },
 
-    /**
-     * Async function that disconnects the mongoDB
-     *
-     * @async
-     * @returns {Promise}
-     */
-    disconnect: async () => {
-        client.close(() => {
-            return;
-        });
-    },
+        logger.info(`${collectionName} collection is initialised`);
+    }
 };

@@ -1,0 +1,14 @@
+{
+    "bsonType": "object",
+    "required": ["projectName", "ownerId"],
+    "properties": {
+        "projectName": {
+            "bsonType": "string",
+            "description": "Name of the project"
+        },
+        "ownerId": {
+            "bsonType": "objectId",
+            "description": "Id of the project owner"
+        }
+    }
+}

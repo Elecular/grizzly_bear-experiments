@@ -2,7 +2,6 @@ let express = require("express");
 let cookieParser = require("cookie-parser");
 let logger = require("morgan");
 let log4js = require("log4js").getLogger();
-
 let indexRouter = require("./routes/index");
 let projectRouter = require("./routes/project");
 
