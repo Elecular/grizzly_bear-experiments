@@ -3,24 +3,28 @@
     "version": "0.0.0",
     "private": true,
     "scripts": {
-        "start": "node ./bin/www",
-        "start:dev": "nodemon ./bin/www",
-        "test": "npm run test:mocha && npm run test:acceptance",
-        "test:mocha": "mocha",
+        "start": "node --unhandled-rejections=strict ./bin/www",
+        "start:dev": "nodemon --unhandled-rejections=strict ./bin/www",
+        "test": "npm run test:jest && npm run test:acceptance",
+        "test:jest": "jest",
         "test:acceptance": "docker-compose up --build -d && wait-on http://localhost:80 --timeout 60000 && newman run test/acceptance_test.postman_collection.json && docker-compose stop"
     },
     "dependencies": {
         "cookie-parser": "~1.4.4",
         "debug": "~2.6.9",
         "express": "~4.16.1",
-        "morgan": "~1.9.1"
+        "http-errors": "^1.7.3",
+        "mongodb": "^3.5.5",
+        "morgan": "~1.9.1",
+        "recursive-readdir": "^2.2.2"
     },
     "devDependencies": {
         "eslint": "^6.8.0",
-        "eslint-plugin-mocha": "^6.3.0",
+        "eslint-plugin-jest": "^23.8.2",
         "husky": "^4.2.3",
+        "jest": "^25.1.0",
         "lint-staged": "^10.0.8",
-        "mocha": "^7.1.0",
+        "log4js": "^6.1.2",
         "newman": "^4.6.0",
         "nodemon": "^2.0.2",
         "prettier": "2.0.1",
@@ -34,12 +38,10 @@
     "lint-staged": {
         "*.js": [
             "./node_modules/.bin/eslint",
-            "prettier --write",
-            "git add"
+            "prettier --write"
         ],
         "*.json": [
-            "prettier --write",
-            "git add"
+            "prettier --write"
         ]
     }
 }

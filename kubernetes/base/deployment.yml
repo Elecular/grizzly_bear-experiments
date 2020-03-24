@@ -19,3 +19,18 @@ spec:
         image: XXXX
         ports:
         - containerPort: 3000
+        env:
+          - name: MONGODB_URL
+            valueFrom:
+              secretKeyRef:
+                name: db-secret
+                key: MONGODB_URL
+          - name: MONGODB_DATABASE
+            valueFrom:
+              secretKeyRef:
+                name: db-secret
+                key: MONGODB_DATABASE
+        resources:
+          limits:
+            memory: "1024Mi"
+            cpu: "600m"
