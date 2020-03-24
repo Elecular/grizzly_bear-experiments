@@ -55,3 +55,11 @@ chmod u+x ./kustomize
 ./kustomize edit set image XXXX=<image>
 ./kustomize build . | kubectl apply -f -
 ```
+
+###### Secrets To Configure
+
+```
+db-secret:
+  MONGODB_URL: <mongodb_url>
+  MONGODB_DATABASE: <database name>
+```

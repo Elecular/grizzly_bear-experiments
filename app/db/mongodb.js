@@ -7,7 +7,7 @@ const fs = require("fs");
 
 const MongoClient = mongodb.MongoClient;
 
-const url = `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_URL}:${process.env.MONGODB_PORT}`;
+const url = process.env.MONGODB_URL;
 const dbName = process.env.MONGODB_DATABASE;
 let db = null;
 
