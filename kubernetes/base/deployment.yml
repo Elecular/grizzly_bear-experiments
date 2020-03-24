@@ -5,7 +5,7 @@ metadata:
   labels:
     app: experiments
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: experiments
@@ -30,7 +30,3 @@ spec:
               secretKeyRef:
                 name: db-secret
                 key: MONGODB_DATABASE
-        resources:
-          limits:
-            memory: "1024Mi"
-            cpu: "600m"
