@@ -14,6 +14,7 @@ let db = null;
 const client = new MongoClient(url, {
     poolSize: 10,
     useUnifiedTopology: true,
+    useNewUrlParser: true,
 });
 
 /**
@@ -29,8 +30,8 @@ module.exports.connect = async () => {
     logger.info("Connected to Mongo Database");
 
     db = client.db(dbName);
-    await setup(db);
-
+    await setupCollections(db);
+    await setupCollectionIndexes(db);
     return db;
 };
 
@@ -50,7 +51,7 @@ module.exports.disconnect = async () => {
  * @param {Db} db
  * @returns {Promise}
  */
-const setup = async (db) => {
+const setupCollections = async (db) => {
     const files = await readdir(path.join(__dirname, "../mongodb_schemas/"));
     for (let count = 0; count < files.length; count++) {
         const file = files[count];
@@ -62,7 +63,27 @@ const setup = async (db) => {
                 $jsonSchema: schema,
             },
         });
-
         logger.info(`${collectionName} collection is initialised`);
+    }
+};
+
+/**
+ * Setup indexes for all collections
+ *
+ * @param {Db} db
+ * @returns {Promise}
+ */
+const setupCollectionIndexes = async (db) => {
+    const files = await readdir(path.join(__dirname, "../mongodb_indexes/"));
+    for (let count = 0; count < files.length; count++) {
+        const file = files[count];
+        const collectionName = path.basename(file).replace(".json", "");
+        const indexes = JSON.parse(fs.readFileSync(file));
+
+        for (let count = 0; count < indexes.length; count++) {
+            await db.collection(collectionName).createIndex(indexes[count]);
+        }
+
+        logger.info(`indexes for ${collectionName} is initialised`);
     }
 };

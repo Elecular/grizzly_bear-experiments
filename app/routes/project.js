@@ -15,8 +15,8 @@ router.post("/", async function (req, res, next) {
         res.status(201);
         res.json(
             await projectController.addProject(
-                req.body["projectName"],
                 req.headers["ownerid"],
+                req.body["projectName"],
             ),
         );
     } catch (err) {

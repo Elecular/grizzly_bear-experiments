@@ -1,0 +1,82 @@
+{
+    "bsonType": "object",
+    "required": ["startTime", "startDate", "endTime", "endDate", "variations"],
+    "properties": {
+        "_id": {
+            "bsonType": "object",
+            "required": ["projectId", "experimentName"],
+            "properties": {
+                "projectId": {
+                    "bsonType": "objectId",
+                    "description": "This experiment is part of a project"
+                },
+                "experimentName": {
+                    "bsonType": "string",
+                    "description": "Name of the experiment. This must be unique per project."
+                }
+            }
+        },
+        "startTime": {
+            "bsonType": "timestamp",
+            "description": "Unix timestamp of when the experiment should start"
+        },
+        "startDate": {
+            "bsonType": "timestamp",
+            "description": "Same as startDate but it does not have the exact hour and minutes. This is used for efficient querying"
+        },
+        "endTime": {
+            "bsonType": "timestamp",
+            "description": "Unix timestamp of when the experiment should end"
+        },
+        "endDate": {
+            "bsonType": "timestamp",
+            "description": "Same as endTime but it does not have the exact hour and minutes. This is used for efficient querying"
+        },
+        "variations": {
+            "bsonType": "array",
+            "minItems": 2,
+            "items": {
+                "bsonType": "object",
+                "required": ["variationName", "normalizedTrafficAmount"],
+                "description": "Experiments have variations. Variations are different versions of a product.",
+                "properties": {
+                    "variationName": {
+                        "bsonType": "string",
+                        "description": "Name of the variation. this must be unique"
+                    },
+                    "normalizedTrafficAmount": {
+                        "bsonType": "number",
+                        "description": "Amount of traffic that will be redirected to this variation (between 0-1)"
+                    },
+                    "variables": {
+                        "bsonType": "array",
+                        "minItems": 1,
+                        "items": {
+                            "bsonType": "object",
+                            "required": [
+                                "variableName",
+                                "variableType",
+                                "variableValue"
+                            ],
+                            "description": "Each variation has variables that can be used by the product to show different features",
+                            "properties": {
+                                "variableName": {
+                                    "bsonType": "string",
+                                    "description": "Name of the variable"
+                                },
+                                "variableType": {
+                                    "enum": ["String", "Boolean", "Number"],
+                                    "description": "Amount of traffic that will be redirected to this variation (between 0-1)"
+                                },
+                                "variableValue": {
+                                    "bsonType": "string",
+                                    "description": "Value of the variable"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

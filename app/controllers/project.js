@@ -9,7 +9,7 @@ var createError = require("http-errors");
  * @param {string} ownerId
  * @returns {Promise<Object>}
  */
-module.exports.addProject = async (projectName, ownerId) => {
+module.exports.addProject = async (ownerId, projectName) => {
     let db = await mongo.connect();
     try {
         const response = await db.collection("projects").insertOne({
