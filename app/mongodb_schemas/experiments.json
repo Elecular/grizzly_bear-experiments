@@ -25,11 +25,11 @@
             "description": "Same as startDate but it does not have the exact hour and minutes. This is used for efficient querying"
         },
         "endTime": {
-            "bsonType": "timestamp",
+            "bsonType": ["timestamp", "null"],
             "description": "Unix timestamp of when the experiment should end"
         },
         "endDate": {
-            "bsonType": "timestamp",
+            "bsonType": ["timestamp", "null"],
             "description": "Same as endTime but it does not have the exact hour and minutes. This is used for efficient querying"
         },
         "variations": {

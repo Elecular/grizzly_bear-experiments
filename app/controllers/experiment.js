@@ -33,6 +33,7 @@ module.exports.addExperiment = async (ownerId, experiment) => {
     }
 
     try {
+        console.log(experiment);
         const response = await db
             .collection("experiments")
             .insertOne(experiment);
@@ -69,24 +70,37 @@ const validateOwner = async (ownerId, projectId) => {
 };
 
 /**
- * Checks if the end time is bigger than the start time
+ * Does validation on start and end times
  *
  * @param {Object} experiment
  * @returns {boolean}
  */
 const validateStartAndEndTime = (experiment) => {
-    if (experiment.endTime <= experiment.startTime) return false;
-    // if start time is before 2020/01/01
-    if (experiment.startTime < 1577836800000) return false;
+    //Checks if start time is valid
+    if (!experiment.startTime) {
+        experiment.startTime = new Date().getTime();
+    } else if (experiment.startTime < new Date().getTime()) {
+        return false;
+    }
 
     experiment.startDate = Timestamp.fromNumber(
         new Date(experiment.startTime).setUTCHours(0, 0, 0, 0),
     );
-    experiment.endDate = Timestamp.fromNumber(
-        new Date(experiment.endTime).setUTCHours(0, 0, 0, 0),
-    );
     experiment.startTime = Timestamp.fromNumber(experiment.startTime);
-    experiment.endTime = Timestamp.fromNumber(experiment.endTime);
+
+    //Checks if endtime is valid
+    if (experiment.endTime) {
+        if (experiment.endTime <= experiment.startTime) return false;
+
+        experiment.endDate = Timestamp.fromNumber(
+            new Date(experiment.endTime).setUTCHours(0, 0, 0, 0),
+        );
+        experiment.endTime = Timestamp.fromNumber(experiment.endTime);
+    } else {
+        experiment.endDate = null;
+        experiment.endTime = null;
+    }
+
     return true;
 };
 
@@ -98,6 +112,7 @@ const validateStartAndEndTime = (experiment) => {
  */
 const validateVariations = (variations) => {
     return (
+        Array.isArray(variations) &&
         validateVariationsTrafficAddsUpTo1(variations) &&
         validateVariationsHaveSameVariables(variations) &&
         validateVariationsHaveUniqueNames(variations)
@@ -113,7 +128,8 @@ const validateVariations = (variations) => {
 const validateVariationsHaveUniqueNames = (variations) => {
     let names = {};
     for (let variation of variations) {
-        if (names[variation.variationName]) return false;
+        let variationName = variation.variationName;
+        if (!variationName || names[variationName]) return false;
         names[variation.variationName] = true;
     }
     return true;
@@ -127,7 +143,9 @@ const validateVariationsHaveUniqueNames = (variations) => {
  */
 const validateVariationsTrafficAddsUpTo1 = (variations) =>
     variations.reduce(
-        (v1, v2) => v1.normalizedTrafficAmount + v2.normalizedTrafficAmount,
+        (v1, v2) =>
+            (v1.normalizedTrafficAmount || 0) +
+            (v2.normalizedTrafficAmount || 0),
     ) == 1;
 
 /**
@@ -143,6 +161,7 @@ const validateVariationsHaveSameVariables = (variations) => {
     //Checking if every variation has same variables as testVariables
     return variations.every(
         (variation) =>
+            Array.isArray(variation.variables) &&
             //Checking length of testVariables to variation's variable
             variation.variables.length === testVariables.length &&
             //Checking if every variable in this variation is present in testVariables
@@ -164,9 +183,11 @@ const validateVariationsHaveSameVariables = (variations) => {
  */
 const validateVariablesHaveUniqueNames = (variables) => {
     let names = {};
+    if (!Array.isArray(variables)) return false;
     for (let variable of variables) {
-        if (names[variable.variableName]) return false;
-        names[variable.variableName] = true;
+        let variableName = variable.variableName;
+        if (!variableName || names[variableName]) return false;
+        names[variableName] = true;
     }
     return true;
 };
