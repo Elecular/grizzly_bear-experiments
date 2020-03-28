@@ -33,7 +33,6 @@ module.exports.addExperiment = async (ownerId, experiment) => {
     }
 
     try {
-        console.log(experiment);
         const response = await db
             .collection("experiments")
             .insertOne(experiment);
@@ -42,6 +41,64 @@ module.exports.addExperiment = async (ownerId, experiment) => {
     } catch (err) {
         logger.error(err);
         throw new createError(err.code == 121 ? 400 : 500);
+    }
+};
+
+/**
+ * Gets all experiments under given project id. Can optionally provide experimentName
+ *
+ * @async
+ * @param {string} projectId
+ * @param {?string} experimentName
+ * @returns {Array<Object>} list of experiments
+ */
+module.exports.getExperiments = async (projectId, experimentName) => {
+    let db = await mongo.connect();
+    try {
+        return await db
+            .collection("experiments")
+            .find({
+                _id: {
+                    projectId,
+                    ...(experimentName && { experimentName }),
+                },
+            })
+            .toArray();
+    } catch (err) {
+        logger.error(err);
+        throw new createError(500);
+    }
+};
+
+/**
+ * Gets all experiments that were running during the given time range
+ *
+ * @async
+ * @param {Timestamp} startTime Unix timestamp in miliseconds
+ * @param {Timestamp} endTime Unix timestamp in milliseconds
+ * @returns {Array<Object>} list of experiments
+ */
+module.exports.getRunningExperimentsInTimeRange = async (
+    startTime,
+    endTime,
+) => {
+    let db = await mongo.connect();
+    try {
+        return await db
+            .collection("experiments")
+            .find({
+                startTime: {
+                    $lte: Timestamp.fromNumber(endTime),
+                },
+                $or: [
+                    { endTime: null },
+                    { endTime: { $gte: Timestamp.fromNumber(startTime) } },
+                ],
+            })
+            .toArray();
+    } catch (err) {
+        logger.error(err);
+        throw new createError(500);
     }
 };
 
@@ -82,22 +139,13 @@ const validateStartAndEndTime = (experiment) => {
     } else if (experiment.startTime < new Date().getTime()) {
         return false;
     }
-
-    experiment.startDate = Timestamp.fromNumber(
-        new Date(experiment.startTime).setUTCHours(0, 0, 0, 0),
-    );
     experiment.startTime = Timestamp.fromNumber(experiment.startTime);
 
     //Checks if endtime is valid
     if (experiment.endTime) {
         if (experiment.endTime <= experiment.startTime) return false;
-
-        experiment.endDate = Timestamp.fromNumber(
-            new Date(experiment.endTime).setUTCHours(0, 0, 0, 0),
-        );
         experiment.endTime = Timestamp.fromNumber(experiment.endTime);
     } else {
-        experiment.endDate = null;
         experiment.endTime = null;
     }
 
