@@ -1,6 +1,6 @@
 {
     "bsonType": "object",
-    "required": ["startTime", "startDate", "endTime", "endDate", "variations"],
+    "required": ["startTime", "endTime", "variations"],
     "properties": {
         "_id": {
             "bsonType": "object",

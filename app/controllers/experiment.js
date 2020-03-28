@@ -33,6 +33,7 @@ module.exports.addExperiment = async (ownerId, experiment) => {
     }
 
     try {
+        console.log(experiment);
         const response = await db
             .collection("experiments")
             .insertOne(experiment);
