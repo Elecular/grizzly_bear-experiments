@@ -15,7 +15,7 @@ This section will describe how to develop, test and push the application to stag
 
 You can run the following command to start the service and start making changes. The service will automatically pickup any changes!
 ```
-docker-compose up --build
+npm run start:dev
 ```
 
 ##### Testing

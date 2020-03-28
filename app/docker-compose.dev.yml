@@ -1,26 +1,4 @@
-  
 version: '3'
 services:
   web:
-    depends_on:
-      - db
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
     command: npx nodemon --unhandled-rejections=strict ./bin/www
-    ports:
-    - '80:3000'
-    volumes:
-    - ./:/code/
-    - /code/node_modules
-    links:
-    - "db:database"
-    environment:
-      MONGODB_URL: mongodb://username:password@database:27017
-      MONGODB_DATABASE: experiments
-  db:
-    image: mongo
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: username
-      MONGO_INITDB_ROOT_PASSWORD: password
-

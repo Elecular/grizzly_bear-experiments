@@ -28,12 +28,11 @@ module.exports.addExperiment = async (ownerId, experiment) => {
     if (!(await validateStartAndEndTime(experiment))) {
         throw new createError(
             400,
-            "start/endTime are in Unixtimestamps (milliseconds) and endTime has to be bigger than startTime",
+            "Invalid start/endtime. Please send start/endTime in Unixtimestamps (milliseconds).",
         );
     }
 
     try {
-        console.log(experiment);
         const response = await db
             .collection("experiments")
             .insertOne(experiment);

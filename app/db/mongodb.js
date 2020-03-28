@@ -43,6 +43,7 @@ module.exports.connect = async () => {
  */
 module.exports.disconnect = async () => {
     await client.close();
+    db = null;
 };
 
 /**
