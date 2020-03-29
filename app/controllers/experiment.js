@@ -74,13 +74,13 @@ module.exports.getRunningExperimentsInTimeRange = async (
         return await db
             .collection("experiments")
             .find({
-                startTime: {
-                    $lte: Timestamp.fromNumber(endTime),
-                },
                 $or: [
                     { endTime: null },
                     { endTime: { $gte: Timestamp.fromNumber(startTime) } },
                 ],
+                startTime: {
+                    $lte: Timestamp.fromNumber(endTime),
+                },
             })
             .toArray();
     } catch (err) {

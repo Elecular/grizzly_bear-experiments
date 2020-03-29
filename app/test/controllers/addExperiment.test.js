@@ -9,10 +9,9 @@ let projectName = "testProject";
 beforeEach(async () => {
     let db = await mongo.connect();
     let collections = await db.listCollections().toArray();
-    collections.forEach(
-        async (collection) =>
-            await db.collection(collection.name).deleteMany({}),
-    );
+    for (let collection of collections) {
+        await db.collection(collection.name).deleteMany({});
+    }
     await projectController.addProject(ownerId, projectName);
 });
 
@@ -92,7 +91,10 @@ describe("Experiment Controller", () => {
             );
             assert.fail();
         } catch (err) {
-            assert.ok(err.message.includes("startTime cannot be in the past"));
+            assert.equal(
+                err.message,
+                "Invalid start/endtime. startTime cannot be in the past",
+            );
         }
     });
 
@@ -108,8 +110,9 @@ describe("Experiment Controller", () => {
             );
             assert.fail();
         } catch (err) {
-            assert.ok(
-                err.message.includes("endtime has to be after start time"),
+            assert.equal(
+                err.message,
+                "Invalid start/endtime. endtime has to be after start time",
             );
         }
     });
@@ -125,8 +128,9 @@ describe("Experiment Controller", () => {
             );
             assert.fail();
         } catch (err) {
-            assert.ok(
-                err.message.includes("endtime has to be after start time"),
+            assert.equal(
+                err.message,
+                "Invalid start/endtime. endtime has to be after start time",
             );
         }
     });
@@ -145,9 +149,7 @@ describe("Experiment Controller", () => {
             );
             assert.fail();
         } catch (err) {
-            assert.ok(
-                err.message.includes("There must be atleast 2 variations"),
-            );
+            assert.equal(err.message, "There must be atleast 2 variations");
         }
     });
 
@@ -168,9 +170,7 @@ describe("Experiment Controller", () => {
             );
             assert.fail();
         } catch (err) {
-            assert.ok(
-                err.message.includes("Variations must have unique names"),
-            );
+            assert.equal(err.message, "Variations must have unique names");
         }
     });
 
@@ -214,10 +214,9 @@ describe("Experiment Controller", () => {
             );
             assert.fail();
         } catch (err) {
-            assert.ok(
-                err.message.includes(
-                    "Traffic of all variations must add up to 100%",
-                ),
+            assert.equal(
+                err.message,
+                "Traffic of all variations must add up to 100%",
             );
         }
     });
@@ -265,10 +264,9 @@ describe("Experiment Controller", () => {
             );
             assert.fail();
         } catch (err) {
-            assert.ok(
-                err.message.includes(
-                    "Variables names and types must be the same accross all variations",
-                ),
+            assert.equal(
+                err.message,
+                "Variables names and types must be the same accross all variations",
             );
         }
     });
@@ -311,10 +309,9 @@ describe("Experiment Controller", () => {
             );
             assert.fail();
         } catch (err) {
-            assert.ok(
-                err.message.includes(
-                    "Variables names and types must be the same accross all variations",
-                ),
+            assert.equal(
+                err.message,
+                "Variables names and types must be the same accross all variations",
             );
         }
     });
@@ -338,7 +335,7 @@ describe("Experiment Controller", () => {
                 ]),
             );
         } catch (err) {
-            assert.ok(err.message.includes("There must be atleast 1 variable"));
+            assert.equal(err.message, "There must be atleast 1 variable");
         }
     });
 });
