@@ -1,0 +1,4 @@
+version: '3'
+services:
+  web:
+    command: npx jest --testTimeout=120000 --runInBand

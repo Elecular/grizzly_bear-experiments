@@ -1,0 +1,4 @@
+version: '3'
+services:
+  web:
+    command: npx nodemon --unhandled-rejections=strict ./bin/www
