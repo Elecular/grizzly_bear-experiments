@@ -59,7 +59,7 @@ chmod u+x ./kustomize
 ###### Secrets To Configure
 
 ```
-db-secret:
+experiments-db-secret:
   MONGODB_URL: <mongodb_url>
   MONGODB_DATABASE: <database name>
 ```
