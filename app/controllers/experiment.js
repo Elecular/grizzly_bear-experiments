@@ -14,6 +14,7 @@ module.exports.addExperiment = async (ownerId, experiment) => {
     let db = await mongo.connect();
 
     experiment["_id"]["projectId"] = ObjectID(experiment["_id"]["projectId"]);
+    experiment["projectId"] = experiment["_id"]["projectId"];
 
     await validateOwner(ownerId, experiment["_id"]["projectId"]);
     await validateStartAndEndTime(experiment);
@@ -26,6 +27,9 @@ module.exports.addExperiment = async (ownerId, experiment) => {
 
         return response.ops[0];
     } catch (err) {
+        if (err.code == 11000) {
+            throw new createError(409, "Experiment already exists");
+        }
         logger.error(err);
         throw new createError(err.code == 121 ? 400 : 500);
     }
@@ -36,18 +40,52 @@ module.exports.addExperiment = async (ownerId, experiment) => {
  *
  * @async
  * @param {string} projectId
- * @param {?string} experimentName
  * @returns {Array<Object>} list of experiments
  */
-module.exports.getExperiments = async (projectId, experimentName) => {
+module.exports.getExperimentsByProjectId = async (ownerId, projectId) => {
     let db = await mongo.connect();
+
+    projectId = ObjectID(projectId);
+    await validateOwner(ownerId, projectId);
+
+    try {
+        return await db
+            .collection("experiments")
+            .find({
+                projectId,
+            })
+            .toArray();
+    } catch (err) {
+        logger.error(err);
+        throw new createError(500);
+    }
+};
+
+/**
+ * Gets experiment by project and name
+ *
+ * @async
+ * @param {string} projectId
+ * @param {string} experimentName
+ * @returns {Array<Object>} list of experiments
+ */
+module.exports.getExperimentByName = async (
+    ownerId,
+    projectId,
+    experimentName,
+) => {
+    let db = await mongo.connect();
+
+    projectId = ObjectID(projectId);
+    await validateOwner(ownerId, projectId);
+
     try {
         return await db
             .collection("experiments")
             .find({
                 _id: {
                     projectId,
-                    ...(experimentName && { experimentName }),
+                    experimentName,
                 },
             })
             .toArray();

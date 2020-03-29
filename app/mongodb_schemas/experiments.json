@@ -1,6 +1,6 @@
 {
     "bsonType": "object",
-    "required": ["startTime", "endTime", "variations"],
+    "required": ["projectId", "startTime", "endTime", "variations"],
     "properties": {
         "_id": {
             "bsonType": "object",
@@ -15,6 +15,10 @@
                     "description": "Name of the experiment. This must be unique per project."
                 }
             }
+        },
+        "projectId": {
+            "bsonType": "objectId",
+            "description": "This experiment is part of a project"
         },
         "startTime": {
             "bsonType": "timestamp",
