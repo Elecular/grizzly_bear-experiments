@@ -23,10 +23,10 @@ spec:
           - name: MONGODB_URL
             valueFrom:
               secretKeyRef:
-                name: db-secret
+                name: experiments-db-secret
                 key: MONGODB_URL
           - name: MONGODB_DATABASE
             valueFrom:
               secretKeyRef:
-                name: db-secret
+                name: experiments-db-secret
                 key: MONGODB_DATABASE
