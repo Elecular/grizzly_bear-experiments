@@ -26,7 +26,7 @@ describe("Experiment Controller", () => {
             await experimentController.addExperiment(
                 ownerId,
                 mockExperiment(
-                    projects[0]["_id"],
+                    projects[0]._id,
                     "exp1",
                     1685473303000,
                     1685473307000,
@@ -45,7 +45,7 @@ describe("Experiment Controller", () => {
             await experimentController.addExperiment(
                 ownerId,
                 mockExperiment(
-                    projects[0]["_id"],
+                    projects[0]._id,
                     "exp1",
                     1685473303000,
                     1685473307000,
@@ -64,7 +64,7 @@ describe("Experiment Controller", () => {
             await experimentController.addExperiment(
                 ownerId,
                 mockExperiment(
-                    projects[0]["_id"],
+                    projects[0]._id,
                     "exp1",
                     1685473303000,
                     1685473307000,
@@ -82,7 +82,7 @@ describe("Experiment Controller", () => {
             let projects = await projectController.getProjectsByOwner(ownerId);
             await experimentController.addExperiment(
                 ownerId,
-                mockExperiment(projects[0]["_id"], "exp1", 1685473303000),
+                mockExperiment(projects[0]._id, "exp1", 1685473303000),
             );
 
             let runningExperiments = await experimentController.getRunningExperimentsInTimeRange(
@@ -97,7 +97,7 @@ describe("Experiment Controller", () => {
             await experimentController.addExperiment(
                 ownerId,
                 mockExperiment(
-                    projects[0]["_id"],
+                    projects[0]._id,
                     "exp1",
                     1685473303000,
                     1685473307000,
@@ -116,7 +116,7 @@ describe("Experiment Controller", () => {
             await experimentController.addExperiment(
                 ownerId,
                 mockExperiment(
-                    projects[0]["_id"],
+                    projects[0]._id,
                     "exp1",
                     1685473307000,
                     1685473309000,
@@ -135,7 +135,7 @@ describe("Experiment Controller", () => {
             await experimentController.addExperiment(
                 ownerId,
                 mockExperiment(
-                    projects[0]["_id"],
+                    projects[0]._id,
                     "exp1",
                     1685473302000,
                     1685473305000,
@@ -156,7 +156,7 @@ describe("Experiment Controller", () => {
             await experimentController.addExperiment(
                 ownerId,
                 mockExperiment(
-                    projects[0]["_id"],
+                    projects[0]._id,
                     "exp1",
                     1685473304000,
                     1685473306000,
@@ -165,7 +165,7 @@ describe("Experiment Controller", () => {
             await experimentController.addExperiment(
                 ownerId,
                 mockExperiment(
-                    projects[0]["_id"],
+                    projects[0]._id,
                     "exp2",
                     1685473301000,
                     1685473309000,
@@ -174,7 +174,7 @@ describe("Experiment Controller", () => {
             await experimentController.addExperiment(
                 ownerId,
                 mockExperiment(
-                    projects[0]["_id"],
+                    projects[0]._id,
                     "exp3",
                     1685473305000,
                     1685473309000,
@@ -185,7 +185,7 @@ describe("Experiment Controller", () => {
             await experimentController.addExperiment(
                 ownerId,
                 mockExperiment(
-                    projects[0]["_id"],
+                    projects[0]._id,
                     "exp7",
                     1685473308000,
                     1685473309000,
@@ -194,7 +194,7 @@ describe("Experiment Controller", () => {
             await experimentController.addExperiment(
                 ownerId,
                 mockExperiment(
-                    projects[0]["_id"],
+                    projects[0]._id,
                     "exp8",
                     1685473301000,
                     1685473302000,
@@ -215,7 +215,7 @@ describe("Experiment Controller", () => {
             await experimentController.addExperiment(
                 ownerId,
                 mockExperiment(
-                    projects[0]["_id"],
+                    projects[0]._id,
                     "exp1",
                     1685473307000,
                     1685473309000,
@@ -233,7 +233,7 @@ describe("Experiment Controller", () => {
             let projects = await projectController.getProjectsByOwner(ownerId);
             await experimentController.addExperiment(
                 ownerId,
-                mockExperiment(projects[0]["_id"], "exp1", 1685473307000),
+                mockExperiment(projects[0]._id, "exp1", 1685473307000),
             );
 
             let runningExperiments = await experimentController.getRunningExperimentsInTimeRange(
@@ -248,7 +248,7 @@ describe("Experiment Controller", () => {
             await experimentController.addExperiment(
                 ownerId,
                 mockExperiment(
-                    projects[0]["_id"],
+                    projects[0]._id,
                     "exp1",
                     1685473303000,
                     1685473305000,

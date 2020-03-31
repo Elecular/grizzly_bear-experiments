@@ -11,19 +11,28 @@ var createError = require("http-errors");
  * @returns {Promise<Object>}
  */
 module.exports.addExperiment = async (ownerId, experiment) => {
-    let db = await mongo.connect();
+    const db = await mongo.connect();
+    const { projectId } = experiment._id;
 
-    experiment["_id"]["projectId"] = ObjectID(experiment["_id"]["projectId"]);
-    experiment["projectId"] = experiment["_id"]["projectId"];
-
-    await validateOwner(ownerId, experiment["_id"]["projectId"]);
-    await validateStartAndEndTime(experiment);
-    validateVariations(experiment["variations"]);
+    await validateOwner(ownerId, projectId);
+    validateStartAndEndTime(experiment);
+    validateVariations(experiment.variations);
 
     try {
-        const response = await db
-            .collection("experiments")
-            .insertOne(experiment);
+        const response = await db.collection("experiments").insertOne({
+            ...experiment,
+            _id: {
+                ...experiment._id,
+                projectId: ObjectID(projectId),
+            },
+            projectId: ObjectID(projectId),
+            startTime: Timestamp.fromNumber(
+                experiment.startTime ? experiment.startTime : Date.now(),
+            ),
+            endTime: experiment.endTime
+                ? Timestamp.fromNumber(experiment.endTime)
+                : null,
+        });
 
         return response.ops[0];
     } catch (err) {
@@ -43,16 +52,15 @@ module.exports.addExperiment = async (ownerId, experiment) => {
  * @returns {Array<Object>} list of experiments
  */
 module.exports.getExperimentsByProjectId = async (ownerId, projectId) => {
-    let db = await mongo.connect();
+    const db = await mongo.connect();
 
-    projectId = ObjectID(projectId);
     await validateOwner(ownerId, projectId);
 
     try {
         return await db
             .collection("experiments")
             .find({
-                projectId,
+                projectId: ObjectID(projectId),
             })
             .toArray();
     } catch (err) {
@@ -74,9 +82,8 @@ module.exports.getExperimentByName = async (
     projectId,
     experimentName,
 ) => {
-    let db = await mongo.connect();
+    const db = await mongo.connect();
 
-    projectId = ObjectID(projectId);
     await validateOwner(ownerId, projectId);
 
     try {
@@ -84,7 +91,7 @@ module.exports.getExperimentByName = async (
             .collection("experiments")
             .find({
                 _id: {
-                    projectId,
+                    projectId: ObjectID(projectId),
                     experimentName,
                 },
             })
@@ -135,12 +142,17 @@ module.exports.getRunningExperimentsInTimeRange = async (
  * @param {ObjectID} projectId
  */
 const validateOwner = async (ownerId, projectId) => {
-    let db = await mongo.connect();
+    if (!projectId || !ObjectID.isValid(projectId)) {
+        throw new createError(400, "Invalid projectId");
+    }
+
+    const db = await mongo.connect();
     let project = null;
+
     try {
         project = await db.collection("projects").findOne({
             ownerId,
-            _id: projectId,
+            _id: ObjectID(projectId),
         });
     } catch (err) {
         logger.error(err);
@@ -161,27 +173,22 @@ const validateOwner = async (ownerId, projectId) => {
  */
 const validateStartAndEndTime = (experiment) => {
     //Checks if start time is valid
-    if (!experiment.startTime) {
-        experiment.startTime = new Date().getTime();
-    } else if (experiment.startTime < new Date().getTime()) {
+    if (experiment.startTime && experiment.startTime < new Date().getTime()) {
         throw new createError(
             400,
             "Invalid start/endtime. startTime cannot be in the past",
         );
     }
-    experiment.startTime = Timestamp.fromNumber(experiment.startTime);
 
     //Checks if endtime is valid
-    if (experiment.endTime) {
-        if (experiment.endTime <= experiment.startTime) {
-            throw new createError(
-                400,
-                "Invalid start/endtime. endtime has to be after start time",
-            );
-        }
-        experiment.endTime = Timestamp.fromNumber(experiment.endTime);
-    } else {
-        experiment.endTime = null;
+    if (
+        experiment.endTime &&
+        experiment.endTime <= (experiment.startTime || new Date().getTime())
+    ) {
+        throw new createError(
+            400,
+            "Invalid start/endtime. endtime has to be after start time",
+        );
     }
 };
 
@@ -244,7 +251,7 @@ const validateVariationsTrafficAddsUpTo1 = (variations) => {
  */
 const validateVariationsHaveSameVariables = (variations) => {
     //This is the variable set we are going to test against. If variables from other variations do not match, we return false.
-    let testVariables = variations[0].variables;
+    const testVariables = variations[0].variables;
 
     if (!Array.isArray(testVariables) || testVariables.length < 1) {
         throw new createError(400, "There must be atleast 1 variable");
@@ -254,7 +261,7 @@ const validateVariationsHaveSameVariables = (variations) => {
     }
 
     //Checking if every variation has same variables as testVariables
-    let variablesAreConsistent = variations.every(
+    const variablesAreConsistent = variations.every(
         (variation) =>
             Array.isArray(variation.variables) &&
             //Checking length of testVariables to variation's variable

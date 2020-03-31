@@ -25,10 +25,10 @@ describe("Experiment Controller", () => {
 
         let addedExperiment = await experimentController.addExperiment(
             ownerId,
-            mockExperiment(projects[0]["_id"]),
+            mockExperiment(projects[0]._id.toString()),
         );
 
-        assert.equal(addedExperiment._id.projectId, projects[0]["_id"]);
+        assert.equal(addedExperiment._id.projectId, projects[0]._id.toString());
         assert.ok(
             Math.abs(addedExperiment.startTime - new Date().getTime()) < 10000,
         );
@@ -41,10 +41,10 @@ describe("Experiment Controller", () => {
         let startTime = new Date().getTime() + 10000;
         let addedExperiment = await experimentController.addExperiment(
             ownerId,
-            mockExperiment(projects[0]["_id"], startTime),
+            mockExperiment(projects[0]._id.toString(), startTime),
         );
 
-        assert.equal(addedExperiment._id.projectId, projects[0]["_id"]);
+        assert.equal(addedExperiment._id.projectId, projects[0]._id.toString());
         assert.equal(addedExperiment.startTime, startTime);
         assert.equal(addedExperiment.endTime, null);
     });
@@ -55,10 +55,10 @@ describe("Experiment Controller", () => {
         let endTime = new Date().getTime() + 30000;
         let addedExperiment = await experimentController.addExperiment(
             ownerId,
-            mockExperiment(projects[0]["_id"], undefined, endTime),
+            mockExperiment(projects[0]._id.toString(), undefined, endTime),
         );
 
-        assert.equal(addedExperiment._id.projectId, projects[0]["_id"]);
+        assert.equal(addedExperiment._id.projectId, projects[0]._id.toString());
         assert.ok(
             Math.abs(addedExperiment.startTime - new Date().getTime()) < 10000,
         );
@@ -72,10 +72,10 @@ describe("Experiment Controller", () => {
         let endTime = new Date().getTime() + 30000;
         let addedExperiment = await experimentController.addExperiment(
             ownerId,
-            mockExperiment(projects[0]["_id"], startTime, endTime),
+            mockExperiment(projects[0]._id.toString(), startTime, endTime),
         );
 
-        assert.equal(addedExperiment._id.projectId, projects[0]["_id"]);
+        assert.equal(addedExperiment._id.projectId, projects[0]._id.toString());
         assert.equal(addedExperiment.startTime, startTime);
         assert.equal(addedExperiment.endTime, endTime);
     });
@@ -86,7 +86,7 @@ describe("Experiment Controller", () => {
         try {
             await experimentController.addExperiment(
                 "invalid user id",
-                mockExperiment(projects[0]["_id"]),
+                mockExperiment(projects[0]._id.toString()),
             );
             assert.fail();
         } catch (err) {
@@ -104,7 +104,7 @@ describe("Experiment Controller", () => {
             let startTime = new Date().getTime() - 10000;
             await experimentController.addExperiment(
                 ownerId,
-                mockExperiment(projects[0]["_id"], startTime),
+                mockExperiment(projects[0]._id.toString(), startTime),
             );
             assert.fail();
         } catch (err) {
@@ -123,7 +123,7 @@ describe("Experiment Controller", () => {
             let endTime = new Date().getTime() + 10000;
             await experimentController.addExperiment(
                 ownerId,
-                mockExperiment(projects[0]["_id"], startTime, endTime),
+                mockExperiment(projects[0]._id.toString(), startTime, endTime),
             );
             assert.fail();
         } catch (err) {
@@ -141,7 +141,7 @@ describe("Experiment Controller", () => {
             let endTime = new Date().getTime() - 10000;
             await experimentController.addExperiment(
                 ownerId,
-                mockExperiment(projects[0]["_id"], undefined, endTime),
+                mockExperiment(projects[0]._id.toString(), undefined, endTime),
             );
             assert.fail();
         } catch (err) {
@@ -158,11 +158,16 @@ describe("Experiment Controller", () => {
         try {
             await experimentController.addExperiment(
                 ownerId,
-                mockExperiment(projects[0]["_id"], undefined, undefined, [
-                    {
-                        variationName: "variation1",
-                    },
-                ]),
+                mockExperiment(
+                    projects[0]._id.toString(),
+                    undefined,
+                    undefined,
+                    [
+                        {
+                            variationName: "variation1",
+                        },
+                    ],
+                ),
             );
             assert.fail();
         } catch (err) {
@@ -176,14 +181,19 @@ describe("Experiment Controller", () => {
         try {
             await experimentController.addExperiment(
                 ownerId,
-                mockExperiment(projects[0]["_id"], undefined, undefined, [
-                    {
-                        variationName: "variation1",
-                    },
-                    {
-                        variationName: "variation1",
-                    },
-                ]),
+                mockExperiment(
+                    projects[0]._id.toString(),
+                    undefined,
+                    undefined,
+                    [
+                        {
+                            variationName: "variation1",
+                        },
+                        {
+                            variationName: "variation1",
+                        },
+                    ],
+                ),
             );
             assert.fail();
         } catch (err) {
@@ -197,12 +207,17 @@ describe("Experiment Controller", () => {
         try {
             await experimentController.addExperiment(
                 ownerId,
-                mockExperiment(projects[0]["_id"], undefined, undefined, [
-                    {},
-                    {
-                        variationName: "variation1",
-                    },
-                ]),
+                mockExperiment(
+                    projects[0]._id.toString(),
+                    undefined,
+                    undefined,
+                    [
+                        {},
+                        {
+                            variationName: "variation1",
+                        },
+                    ],
+                ),
             );
             assert.fail();
         } catch (err) {
@@ -218,16 +233,21 @@ describe("Experiment Controller", () => {
         try {
             await experimentController.addExperiment(
                 ownerId,
-                mockExperiment(projects[0]["_id"], undefined, undefined, [
-                    {
-                        variationName: "variation2",
-                        normalizedTrafficAmount: 0.4,
-                    },
-                    {
-                        variationName: "variation1",
-                        normalizedTrafficAmount: 0.5,
-                    },
-                ]),
+                mockExperiment(
+                    projects[0]._id.toString(),
+                    undefined,
+                    undefined,
+                    [
+                        {
+                            variationName: "variation2",
+                            normalizedTrafficAmount: 0.4,
+                        },
+                        {
+                            variationName: "variation1",
+                            normalizedTrafficAmount: 0.5,
+                        },
+                    ],
+                ),
             );
             assert.fail();
         } catch (err) {
@@ -244,40 +264,45 @@ describe("Experiment Controller", () => {
         try {
             await experimentController.addExperiment(
                 ownerId,
-                mockExperiment(projects[0]["_id"], undefined, undefined, [
-                    {
-                        variationName: "variation2",
-                        normalizedTrafficAmount: 0.4,
-                        variables: [
-                            {
-                                variableName: "var2",
-                                variableType: "String",
-                                variableValue: "test",
-                            },
-                            {
-                                variableName: "var1",
-                                variableType: "String",
-                                variableValue: "test",
-                            },
-                        ],
-                    },
-                    {
-                        variationName: "variation1",
-                        normalizedTrafficAmount: 0.6,
-                        variables: [
-                            {
-                                variableName: "var2",
-                                variableType: "String",
-                                variableValue: "test",
-                            },
-                            {
-                                variableName: "var3",
-                                variableType: "String",
-                                variableValue: "test",
-                            },
-                        ],
-                    },
-                ]),
+                mockExperiment(
+                    projects[0]._id.toString(),
+                    undefined,
+                    undefined,
+                    [
+                        {
+                            variationName: "variation2",
+                            normalizedTrafficAmount: 0.4,
+                            variables: [
+                                {
+                                    variableName: "var2",
+                                    variableType: "String",
+                                    variableValue: "test",
+                                },
+                                {
+                                    variableName: "var1",
+                                    variableType: "String",
+                                    variableValue: "test",
+                                },
+                            ],
+                        },
+                        {
+                            variationName: "variation1",
+                            normalizedTrafficAmount: 0.6,
+                            variables: [
+                                {
+                                    variableName: "var2",
+                                    variableType: "String",
+                                    variableValue: "test",
+                                },
+                                {
+                                    variableName: "var3",
+                                    variableType: "String",
+                                    variableValue: "test",
+                                },
+                            ],
+                        },
+                    ],
+                ),
             );
             assert.fail();
         } catch (err) {
@@ -294,35 +319,40 @@ describe("Experiment Controller", () => {
         try {
             await experimentController.addExperiment(
                 ownerId,
-                mockExperiment(projects[0]["_id"], undefined, undefined, [
-                    {
-                        variationName: "variation2",
-                        normalizedTrafficAmount: 0.4,
-                        variables: [
-                            {
-                                variableName: "var2",
-                                variableType: "String",
-                                variableValue: "test",
-                            },
-                        ],
-                    },
-                    {
-                        variationName: "variation1",
-                        normalizedTrafficAmount: 0.6,
-                        variables: [
-                            {
-                                variableName: "var2",
-                                variableType: "String",
-                                variableValue: "test",
-                            },
-                            {
-                                variableName: "var3",
-                                variableType: "String",
-                                variableValue: "test",
-                            },
-                        ],
-                    },
-                ]),
+                mockExperiment(
+                    projects[0]._id.toString(),
+                    undefined,
+                    undefined,
+                    [
+                        {
+                            variationName: "variation2",
+                            normalizedTrafficAmount: 0.4,
+                            variables: [
+                                {
+                                    variableName: "var2",
+                                    variableType: "String",
+                                    variableValue: "test",
+                                },
+                            ],
+                        },
+                        {
+                            variationName: "variation1",
+                            normalizedTrafficAmount: 0.6,
+                            variables: [
+                                {
+                                    variableName: "var2",
+                                    variableType: "String",
+                                    variableValue: "test",
+                                },
+                                {
+                                    variableName: "var3",
+                                    variableType: "String",
+                                    variableValue: "test",
+                                },
+                            ],
+                        },
+                    ],
+                ),
             );
             assert.fail();
         } catch (err) {
@@ -338,18 +368,23 @@ describe("Experiment Controller", () => {
         try {
             await experimentController.addExperiment(
                 ownerId,
-                mockExperiment(projects[0]["_id"], undefined, undefined, [
-                    {
-                        variationName: "variation2",
-                        normalizedTrafficAmount: 0.4,
-                        variables: [],
-                    },
-                    {
-                        variationName: "variation1",
-                        normalizedTrafficAmount: 0.6,
-                        variables: [],
-                    },
-                ]),
+                mockExperiment(
+                    projects[0]._id.toString(),
+                    undefined,
+                    undefined,
+                    [
+                        {
+                            variationName: "variation2",
+                            normalizedTrafficAmount: 0.4,
+                            variables: [],
+                        },
+                        {
+                            variationName: "variation1",
+                            normalizedTrafficAmount: 0.6,
+                            variables: [],
+                        },
+                    ],
+                ),
             );
         } catch (err) {
             assert.equal(err.message, "There must be atleast 1 variable");

@@ -15,7 +15,7 @@ router.post("/", async function (req, res, next) {
         res.status(201);
         res.json(
             await experimentController.addExperiment(
-                req.headers["ownerid"],
+                req.headers.ownerid,
                 req.body,
             ),
         );
@@ -32,8 +32,8 @@ router.get("/timerange/:startTime/:endTime", async function (req, res, next) {
         res.status(200);
         res.json(
             await experimentController.getRunningExperimentsInTimeRange(
-                req.params["startTime"],
-                req.params["endTime"],
+                req.params.startTime,
+                req.params.endTime,
             ),
         );
     } catch (err) {
@@ -49,8 +49,8 @@ router.get("/projectId/:projectId", async function (req, res, next) {
         res.status(200);
         res.json(
             await experimentController.getExperimentsByProjectId(
-                req.headers["ownerid"],
-                req.params["projectId"],
+                req.headers.ownerid,
+                req.params.projectId,
             ),
         );
     } catch (err) {
@@ -66,9 +66,9 @@ router.get("/projectId/:projectId/name/:name", async function (req, res, next) {
         res.status(200);
         res.json(
             await experimentController.getExperimentByName(
-                req.headers["ownerid"],
-                req.params["projectId"],
-                req.params["name"],
+                req.headers.ownerid,
+                req.params.projectId,
+                req.params.name,
             ),
         );
     } catch (err) {
