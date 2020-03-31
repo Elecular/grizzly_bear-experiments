@@ -20,6 +20,22 @@ afterAll(async () => {
 });
 
 describe("Experiment Controller", () => {
+    it("cannot add an experiment when unauthorized", async () => {
+        let projects = await projectController.getProjectsByOwner(ownerId);
+
+        try {
+            await experimentController.addExperiment(
+                "invalid owner",
+                mockExperiment(projects[0]._id.toString()),
+            );
+        } catch (err) {
+            assert.equal(
+                err.message,
+                "Not Authorized to create experiment under given project",
+            );
+        }
+    });
+
     it("can add an experiment without start/end time", async () => {
         let projects = await projectController.getProjectsByOwner(ownerId);
 

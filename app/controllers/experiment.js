@@ -151,8 +151,8 @@ const validateOwner = async (ownerId, projectId) => {
 
     try {
         project = await db.collection("projects").findOne({
-            ownerId,
             _id: ObjectID(projectId),
+            ownerId,
         });
     } catch (err) {
         logger.error(err);
