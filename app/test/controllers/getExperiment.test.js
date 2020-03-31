@@ -20,6 +20,60 @@ afterAll(async () => {
 });
 
 describe("Experiment Controller", () => {
+    describe("Cannot get experiment by project id", () => {
+        it("When not authorized", async () => {
+            let projects = await projectController.getProjectsByOwner(ownerId);
+            try {
+                await experimentController.getExperimentsByProjectId(
+                    "invalid owner",
+                    projects[0]._id,
+                );
+            } catch (err) {
+                assert.equal(
+                    err.message,
+                    "Not Authorized to create experiment under given project",
+                );
+            }
+        });
+    });
+
+    describe("Can get experiment by project id", () => {
+        it("When given project id", async () => {
+            await projectController.addProject(ownerId, "testProject2");
+            let projects = await projectController.getProjectsByOwner(ownerId);
+            await experimentController.addExperiment(
+                ownerId,
+                mockExperiment(projects[0]._id, "exp1"),
+            );
+            await experimentController.addExperiment(
+                ownerId,
+                mockExperiment(projects[0]._id, "exp2"),
+            );
+            await experimentController.addExperiment(
+                ownerId,
+                mockExperiment(projects[1]._id, "exp3"),
+            );
+
+            const experiments = await experimentController.getExperimentsByProjectId(
+                ownerId,
+                projects[0]._id,
+            );
+            assert.equal(experiments[0]._id.experimentName, "exp1");
+            assert.equal(experiments[1]._id.experimentName, "exp2");
+        });
+
+        it("When no experiments are created", async () => {
+            await projectController.addProject(ownerId, "testProject2");
+            let projects = await projectController.getProjectsByOwner(ownerId);
+
+            const experiments = await experimentController.getExperimentsByProjectId(
+                ownerId,
+                projects[1]._id,
+            );
+            assert.equal(experiments.length, 0);
+        });
+    });
+
     describe("Can get experiments within timerange", () => {
         it("if the experiment's start time is within timerange", async () => {
             let projects = await projectController.getProjectsByOwner(ownerId);
