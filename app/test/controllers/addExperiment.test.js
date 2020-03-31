@@ -402,6 +402,7 @@ describe("Experiment Controller", () => {
                     ],
                 ),
             );
+            assert.fail();
         } catch (err) {
             assert.equal(err.message, "There must be atleast 1 variable");
         }

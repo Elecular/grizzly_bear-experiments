@@ -28,6 +28,7 @@ describe("Experiment Controller", () => {
                     "invalid owner",
                     projects[0]._id,
                 );
+                assert.fail();
             } catch (err) {
                 assert.equal(
                     err.message,
