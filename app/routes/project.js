@@ -2,10 +2,9 @@
  * This API is used for creating and accessing proojectcs
  */
 
-let express = require("express");
-let projectController = require("../controllers/project");
-
-let router = express.Router();
+const express = require("express");
+const projectController = require("../controllers/project");
+const router = express.Router();
 
 /**
  * Creates a new project under the user

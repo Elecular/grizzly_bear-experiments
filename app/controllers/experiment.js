@@ -2,7 +2,7 @@ const mongo = require("../db/mongodb");
 const ObjectID = require("mongodb").ObjectID;
 const Timestamp = require("mongodb").Timestamp;
 const logger = require("log4js").getLogger();
-var createError = require("http-errors");
+const createError = require("http-errors");
 
 /**
  * Adds a new experiment to the database
@@ -114,7 +114,7 @@ module.exports.getRunningExperimentsInTimeRange = async (
     startTime,
     endTime,
 ) => {
-    let db = await mongo.connect();
+    const db = await mongo.connect();
     try {
         return await db
             .collection("experiments")

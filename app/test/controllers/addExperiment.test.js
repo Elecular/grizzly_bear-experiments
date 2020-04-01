@@ -1,14 +1,14 @@
-let assert = require("assert");
-let mongo = require("../../db/mongodb");
-let projectController = require("../../controllers/project");
-let experimentController = require("../../controllers/experiment");
+const assert = require("assert");
+const mongo = require("../../db/mongodb");
+const projectController = require("../../controllers/project");
+const experimentController = require("../../controllers/experiment");
 
-let ownerId = "testOwner";
-let projectName = "testProject";
+const ownerId = "testOwner";
+const projectName = "testProject";
 
 beforeEach(async () => {
-    let db = await mongo.connect();
-    let collections = await db.listCollections().toArray();
+    const db = await mongo.connect();
+    const collections = await db.listCollections().toArray();
     for (let collection of collections) {
         await db.collection(collection.name).deleteMany({});
     }
@@ -21,7 +21,7 @@ afterAll(async () => {
 
 describe("Experiment Controller", () => {
     it("cannot add an experiment when unauthorized", async () => {
-        let projects = await projectController.getProjectsByOwner(ownerId);
+        const projects = await projectController.getProjectsByOwner(ownerId);
 
         try {
             await experimentController.addExperiment(
@@ -37,9 +37,9 @@ describe("Experiment Controller", () => {
     });
 
     it("can add an experiment without start/end time", async () => {
-        let projects = await projectController.getProjectsByOwner(ownerId);
+        const projects = await projectController.getProjectsByOwner(ownerId);
 
-        let addedExperiment = await experimentController.addExperiment(
+        const addedExperiment = await experimentController.addExperiment(
             ownerId,
             mockExperiment(projects[0]._id.toString()),
         );
@@ -52,10 +52,10 @@ describe("Experiment Controller", () => {
     });
 
     it("can add an experiment with only start time", async () => {
-        let projects = await projectController.getProjectsByOwner(ownerId);
+        const projects = await projectController.getProjectsByOwner(ownerId);
 
-        let startTime = new Date().getTime() + 10000;
-        let addedExperiment = await experimentController.addExperiment(
+        const startTime = new Date().getTime() + 10000;
+        const addedExperiment = await experimentController.addExperiment(
             ownerId,
             mockExperiment(projects[0]._id.toString(), startTime),
         );
@@ -66,10 +66,10 @@ describe("Experiment Controller", () => {
     });
 
     it("can add an experiment with only end time", async () => {
-        let projects = await projectController.getProjectsByOwner(ownerId);
+        const projects = await projectController.getProjectsByOwner(ownerId);
 
-        let endTime = new Date().getTime() + 30000;
-        let addedExperiment = await experimentController.addExperiment(
+        const endTime = new Date().getTime() + 30000;
+        const addedExperiment = await experimentController.addExperiment(
             ownerId,
             mockExperiment(projects[0]._id.toString(), undefined, endTime),
         );
@@ -82,11 +82,11 @@ describe("Experiment Controller", () => {
     });
 
     it("can add an experiment with both start and end time", async () => {
-        let projects = await projectController.getProjectsByOwner(ownerId);
+        const projects = await projectController.getProjectsByOwner(ownerId);
 
-        let startTime = new Date().getTime() + 10000;
-        let endTime = new Date().getTime() + 30000;
-        let addedExperiment = await experimentController.addExperiment(
+        const startTime = new Date().getTime() + 10000;
+        const endTime = new Date().getTime() + 30000;
+        const addedExperiment = await experimentController.addExperiment(
             ownerId,
             mockExperiment(projects[0]._id.toString(), startTime, endTime),
         );
@@ -97,7 +97,7 @@ describe("Experiment Controller", () => {
     });
 
     it("cannot add an experiment if unauthorized", async () => {
-        let projects = await projectController.getProjectsByOwner(ownerId);
+        const projects = await projectController.getProjectsByOwner(ownerId);
 
         try {
             await experimentController.addExperiment(
@@ -114,10 +114,10 @@ describe("Experiment Controller", () => {
     });
 
     it("cannot add an experiment with start time before current time", async () => {
-        let projects = await projectController.getProjectsByOwner(ownerId);
+        const projects = await projectController.getProjectsByOwner(ownerId);
 
         try {
-            let startTime = new Date().getTime() - 10000;
+            const startTime = new Date().getTime() - 10000;
             await experimentController.addExperiment(
                 ownerId,
                 mockExperiment(projects[0]._id.toString(), startTime),
@@ -132,11 +132,11 @@ describe("Experiment Controller", () => {
     });
 
     it("cannot add an experiment with end time before start time", async () => {
-        let projects = await projectController.getProjectsByOwner(ownerId);
+        const projects = await projectController.getProjectsByOwner(ownerId);
 
         try {
-            let startTime = new Date().getTime() + 20000;
-            let endTime = new Date().getTime() + 10000;
+            const startTime = new Date().getTime() + 20000;
+            const endTime = new Date().getTime() + 10000;
             await experimentController.addExperiment(
                 ownerId,
                 mockExperiment(projects[0]._id.toString(), startTime, endTime),
@@ -151,10 +151,10 @@ describe("Experiment Controller", () => {
     });
 
     it("cannot add an experiment with end time before current time", async () => {
-        let projects = await projectController.getProjectsByOwner(ownerId);
+        const projects = await projectController.getProjectsByOwner(ownerId);
 
         try {
-            let endTime = new Date().getTime() - 10000;
+            const endTime = new Date().getTime() - 10000;
             await experimentController.addExperiment(
                 ownerId,
                 mockExperiment(projects[0]._id.toString(), undefined, endTime),
@@ -169,7 +169,7 @@ describe("Experiment Controller", () => {
     });
 
     it("cannot add an experiment with less than 2 variations", async () => {
-        let projects = await projectController.getProjectsByOwner(ownerId);
+        const projects = await projectController.getProjectsByOwner(ownerId);
 
         try {
             await experimentController.addExperiment(
@@ -192,7 +192,7 @@ describe("Experiment Controller", () => {
     });
 
     it("cannot add an experiment with duplicate variation names", async () => {
-        let projects = await projectController.getProjectsByOwner(ownerId);
+        const projects = await projectController.getProjectsByOwner(ownerId);
 
         try {
             await experimentController.addExperiment(
@@ -218,7 +218,7 @@ describe("Experiment Controller", () => {
     });
 
     it("cannot add an experiment with undefined variation name", async () => {
-        let projects = await projectController.getProjectsByOwner(ownerId);
+        const projects = await projectController.getProjectsByOwner(ownerId);
 
         try {
             await experimentController.addExperiment(
@@ -244,7 +244,7 @@ describe("Experiment Controller", () => {
     });
 
     it("cannot add an experiment with traffic less than 100%", async () => {
-        let projects = await projectController.getProjectsByOwner(ownerId);
+        const projects = await projectController.getProjectsByOwner(ownerId);
 
         try {
             await experimentController.addExperiment(
@@ -275,7 +275,7 @@ describe("Experiment Controller", () => {
     });
 
     it("cannot add an experiment with inconsistent variables", async () => {
-        let projects = await projectController.getProjectsByOwner(ownerId);
+        const projects = await projectController.getProjectsByOwner(ownerId);
 
         try {
             await experimentController.addExperiment(
@@ -330,7 +330,7 @@ describe("Experiment Controller", () => {
     });
 
     it("cannot add an experiment with different amount of variables", async () => {
-        let projects = await projectController.getProjectsByOwner(ownerId);
+        const projects = await projectController.getProjectsByOwner(ownerId);
 
         try {
             await experimentController.addExperiment(
@@ -380,7 +380,7 @@ describe("Experiment Controller", () => {
     });
 
     it("0 variables are not allowed", async () => {
-        let projects = await projectController.getProjectsByOwner(ownerId);
+        const projects = await projectController.getProjectsByOwner(ownerId);
         try {
             await experimentController.addExperiment(
                 ownerId,

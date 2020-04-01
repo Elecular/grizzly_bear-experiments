@@ -2,10 +2,9 @@
  * This API is used for creating and accessing experiments
  */
 
-let express = require("express");
-let experimentController = require("../controllers/experiment");
-
-let router = express.Router();
+const express = require("express");
+const experimentController = require("../controllers/experiment");
+const router = express.Router();
 
 /**
  * Creates a new experiment under the given projectid

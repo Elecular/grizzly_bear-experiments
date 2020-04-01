@@ -1,6 +1,6 @@
 const mongo = require("../db/mongodb");
 const logger = require("log4js").getLogger();
-var createError = require("http-errors");
+const createError = require("http-errors");
 
 /**
  * Adds a new project to the database
@@ -10,7 +10,7 @@ var createError = require("http-errors");
  * @returns {Promise<Object>}
  */
 module.exports.addProject = async (ownerId, projectName) => {
-    let db = await mongo.connect();
+    const db = await mongo.connect();
     try {
         const response = await db.collection("projects").insertOne({
             projectName,
@@ -30,7 +30,7 @@ module.exports.addProject = async (ownerId, projectName) => {
  * @returns {Promise<Array<Object>>}
  */
 module.exports.getProjectsByOwner = async (ownerId) => {
-    let db = await mongo.connect();
+    const db = await mongo.connect();
     try {
         return await db.collection("projects").find({ ownerId }).toArray();
     } catch (err) {
