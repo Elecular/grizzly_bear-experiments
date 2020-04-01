@@ -1,14 +1,14 @@
-let assert = require("assert");
-let mongo = require("../../db/mongodb");
-let projectController = require("../../controllers/project");
-let experimentController = require("../../controllers/experiment");
+const assert = require("assert");
+const mongo = require("../../db/mongodb");
+const projectController = require("../../controllers/project");
+const experimentController = require("../../controllers/experiment");
 
-let ownerId = "testOwner";
-let projectName = "testProject";
+const ownerId = "testOwner";
+const projectName = "testProject";
 
 beforeEach(async () => {
-    let db = await mongo.connect();
-    let collections = await db.listCollections().toArray();
+    const db = await mongo.connect();
+    const collections = await db.listCollections().toArray();
     for (let collection of collections) {
         await db.collection(collection.name).deleteMany({});
     }
@@ -22,7 +22,9 @@ afterAll(async () => {
 describe("Experiment Controller", () => {
     describe("Cannot get experiment by project id", () => {
         it("When not authorized", async () => {
-            let projects = await projectController.getProjectsByOwner(ownerId);
+            const projects = await projectController.getProjectsByOwner(
+                ownerId,
+            );
             try {
                 await experimentController.getExperimentsByProjectId(
                     "invalid owner",
@@ -41,7 +43,9 @@ describe("Experiment Controller", () => {
     describe("Can get experiment by project id", () => {
         it("When given project id", async () => {
             await projectController.addProject(ownerId, "testProject2");
-            let projects = await projectController.getProjectsByOwner(ownerId);
+            const projects = await projectController.getProjectsByOwner(
+                ownerId,
+            );
             await experimentController.addExperiment(
                 ownerId,
                 mockExperiment(projects[0]._id, "exp1"),
@@ -65,7 +69,9 @@ describe("Experiment Controller", () => {
 
         it("When no experiments are created", async () => {
             await projectController.addProject(ownerId, "testProject2");
-            let projects = await projectController.getProjectsByOwner(ownerId);
+            const projects = await projectController.getProjectsByOwner(
+                ownerId,
+            );
 
             const experiments = await experimentController.getExperimentsByProjectId(
                 ownerId,
@@ -77,7 +83,9 @@ describe("Experiment Controller", () => {
 
     describe("Can get experiments within timerange", () => {
         it("if the experiment's start time is within timerange", async () => {
-            let projects = await projectController.getProjectsByOwner(ownerId);
+            const projects = await projectController.getProjectsByOwner(
+                ownerId,
+            );
             await experimentController.addExperiment(
                 ownerId,
                 mockExperiment(
@@ -88,7 +96,7 @@ describe("Experiment Controller", () => {
                 ),
             );
 
-            let runningExperiments = await experimentController.getRunningExperimentsInTimeRange(
+            const runningExperiments = await experimentController.getRunningExperimentsInTimeRange(
                 1685473301000,
                 1685473305000,
             );
@@ -96,7 +104,9 @@ describe("Experiment Controller", () => {
         });
 
         it("if the experiment's start time and endtime encapsultes given date range", async () => {
-            let projects = await projectController.getProjectsByOwner(ownerId);
+            const projects = await projectController.getProjectsByOwner(
+                ownerId,
+            );
             await experimentController.addExperiment(
                 ownerId,
                 mockExperiment(
@@ -107,7 +117,7 @@ describe("Experiment Controller", () => {
                 ),
             );
 
-            let runningExperiments = await experimentController.getRunningExperimentsInTimeRange(
+            const runningExperiments = await experimentController.getRunningExperimentsInTimeRange(
                 1685473304000,
                 1685473306000,
             );
@@ -115,7 +125,9 @@ describe("Experiment Controller", () => {
         });
 
         it("if the experiment's end is within timerange", async () => {
-            let projects = await projectController.getProjectsByOwner(ownerId);
+            const projects = await projectController.getProjectsByOwner(
+                ownerId,
+            );
             await experimentController.addExperiment(
                 ownerId,
                 mockExperiment(
@@ -126,7 +138,7 @@ describe("Experiment Controller", () => {
                 ),
             );
 
-            let runningExperiments = await experimentController.getRunningExperimentsInTimeRange(
+            const runningExperiments = await experimentController.getRunningExperimentsInTimeRange(
                 1685473305000,
                 1685473309000,
             );
@@ -134,13 +146,15 @@ describe("Experiment Controller", () => {
         });
 
         it("if the experiment's endtime is null", async () => {
-            let projects = await projectController.getProjectsByOwner(ownerId);
+            const projects = await projectController.getProjectsByOwner(
+                ownerId,
+            );
             await experimentController.addExperiment(
                 ownerId,
                 mockExperiment(projects[0]._id, "exp1", 1685473303000),
             );
 
-            let runningExperiments = await experimentController.getRunningExperimentsInTimeRange(
+            const runningExperiments = await experimentController.getRunningExperimentsInTimeRange(
                 1685473305000,
                 1685473309000,
             );
@@ -148,7 +162,9 @@ describe("Experiment Controller", () => {
         });
 
         it("if the experiments start and end within timerange", async () => {
-            let projects = await projectController.getProjectsByOwner(ownerId);
+            const projects = await projectController.getProjectsByOwner(
+                ownerId,
+            );
             await experimentController.addExperiment(
                 ownerId,
                 mockExperiment(
@@ -159,7 +175,7 @@ describe("Experiment Controller", () => {
                 ),
             );
 
-            let runningExperiments = await experimentController.getRunningExperimentsInTimeRange(
+            const runningExperiments = await experimentController.getRunningExperimentsInTimeRange(
                 1685473301000,
                 1685473309000,
             );
@@ -167,7 +183,9 @@ describe("Experiment Controller", () => {
         });
 
         it("if the experiments start date is equal to given end date", async () => {
-            let projects = await projectController.getProjectsByOwner(ownerId);
+            const projects = await projectController.getProjectsByOwner(
+                ownerId,
+            );
             await experimentController.addExperiment(
                 ownerId,
                 mockExperiment(
@@ -178,7 +196,7 @@ describe("Experiment Controller", () => {
                 ),
             );
 
-            let runningExperiments = await experimentController.getRunningExperimentsInTimeRange(
+            const runningExperiments = await experimentController.getRunningExperimentsInTimeRange(
                 1685473301000,
                 1685473307000,
             );
@@ -186,7 +204,9 @@ describe("Experiment Controller", () => {
         });
 
         it("if the experiments end date is equal to given start date", async () => {
-            let projects = await projectController.getProjectsByOwner(ownerId);
+            const projects = await projectController.getProjectsByOwner(
+                ownerId,
+            );
             await experimentController.addExperiment(
                 ownerId,
                 mockExperiment(
@@ -197,7 +217,7 @@ describe("Experiment Controller", () => {
                 ),
             );
 
-            let runningExperiments = await experimentController.getRunningExperimentsInTimeRange(
+            const runningExperiments = await experimentController.getRunningExperimentsInTimeRange(
                 1685473305000,
                 1685473307000,
             );
@@ -205,7 +225,9 @@ describe("Experiment Controller", () => {
         });
 
         it("if experiments falls within given timerange", async () => {
-            let projects = await projectController.getProjectsByOwner(ownerId);
+            const projects = await projectController.getProjectsByOwner(
+                ownerId,
+            );
 
             //All experiments within time range
             await experimentController.addExperiment(
@@ -256,7 +278,7 @@ describe("Experiment Controller", () => {
                 ),
             );
 
-            let runningExperiments = await experimentController.getRunningExperimentsInTimeRange(
+            const runningExperiments = await experimentController.getRunningExperimentsInTimeRange(
                 1685473303000,
                 1685473307000,
             );
@@ -266,7 +288,9 @@ describe("Experiment Controller", () => {
 
     describe("Cannot get experiments within timerange", () => {
         it("if the experiment's start time is after given end time", async () => {
-            let projects = await projectController.getProjectsByOwner(ownerId);
+            const projects = await projectController.getProjectsByOwner(
+                ownerId,
+            );
             await experimentController.addExperiment(
                 ownerId,
                 mockExperiment(
@@ -277,7 +301,7 @@ describe("Experiment Controller", () => {
                 ),
             );
 
-            let runningExperiments = await experimentController.getRunningExperimentsInTimeRange(
+            const runningExperiments = await experimentController.getRunningExperimentsInTimeRange(
                 1685473301000,
                 1685473305000,
             );
@@ -285,13 +309,15 @@ describe("Experiment Controller", () => {
         });
 
         it("if the experiment's start time is after given end time and experiments end time is null", async () => {
-            let projects = await projectController.getProjectsByOwner(ownerId);
+            const projects = await projectController.getProjectsByOwner(
+                ownerId,
+            );
             await experimentController.addExperiment(
                 ownerId,
                 mockExperiment(projects[0]._id, "exp1", 1685473307000),
             );
 
-            let runningExperiments = await experimentController.getRunningExperimentsInTimeRange(
+            const runningExperiments = await experimentController.getRunningExperimentsInTimeRange(
                 1685473301000,
                 1685473305000,
             );
@@ -299,7 +325,9 @@ describe("Experiment Controller", () => {
         });
 
         it("if the experiment's end time is before given start time", async () => {
-            let projects = await projectController.getProjectsByOwner(ownerId);
+            const projects = await projectController.getProjectsByOwner(
+                ownerId,
+            );
             await experimentController.addExperiment(
                 ownerId,
                 mockExperiment(
@@ -310,7 +338,7 @@ describe("Experiment Controller", () => {
                 ),
             );
 
-            let runningExperiments = await experimentController.getRunningExperimentsInTimeRange(
+            const runningExperiments = await experimentController.getRunningExperimentsInTimeRange(
                 1685473307000,
                 1685473309000,
             );
