@@ -17,7 +17,9 @@
         "log4js": "^6.1.2",
         "mongodb": "^3.5.5",
         "morgan": "~1.9.1",
-        "recursive-readdir": "^2.2.2"
+        "object-hash": "^2.0.3",
+        "recursive-readdir": "^2.2.2",
+        "seedrandom": "3.0.5"
     },
     "devDependencies": {
         "eslint": "^6.8.0",

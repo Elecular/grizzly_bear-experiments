@@ -60,7 +60,23 @@ router.get("/projectId/:projectId", async function (req, res, next) {
 /**
  * Gets experiment by given project id and name
  */
-router.get("/projectId/:projectId/name/:name", async function (req, res, next) {
+router.get("/variations", async function (req, res, next) {
+    try {
+        res.status(200);
+        res.json(await experimentController.getVarationForUsers(req.body));
+    } catch (err) {
+        next(err);
+    }
+});
+
+/**
+ * Gets experiment by given project id and name
+ */
+router.get("/projectId/:projectId/name/:name/variation/:", async function (
+    req,
+    res,
+    next,
+) {
     try {
         res.status(200);
         res.json(
