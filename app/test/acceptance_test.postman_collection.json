@@ -1,624 +1,873 @@
 {
-    "info": {
-        "_postman_id": "e4d9886f-8f8c-45d8-8cba-2a8eb37d8ac5",
-        "name": "acceptance_test",
-        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-    },
-    "item": [
-        {
-            "name": "Projects API",
-            "item": [
-                {
-                    "name": "Create Project",
-                    "event": [
-                        {
-                            "listen": "test",
-                            "script": {
-                                "id": "a7b22320-ab53-4493-b868-a356fc851b36",
-                                "exec": [
-                                    "pm.test(\"Status code is 201\", function () {",
-                                    "    pm.response.to.have.status(201);",
-                                    "});",
-                                    "",
-                                    "pm.test(\"Body has id\", function() {",
-                                    "    pm.expect(pm.response.json()).to.have.property('_id');",
-                                    "});"
-                                ],
-                                "type": "text/javascript"
-                            }
-                        }
-                    ],
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "ownerid",
-                                "value": "testOwner",
-                                "type": "text"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n\t\"projectName\": \"testProject\"\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "localhost/project",
-                            "host": ["localhost"],
-                            "path": ["project"]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Create Another Project",
-                    "event": [
-                        {
-                            "listen": "test",
-                            "script": {
-                                "id": "a7b22320-ab53-4493-b868-a356fc851b36",
-                                "exec": [
-                                    "pm.test(\"Status code is 201\", function () {",
-                                    "    pm.response.to.have.status(201);",
-                                    "});",
-                                    "",
-                                    "pm.test(\"Body has id\", function() {",
-                                    "    pm.expect(pm.response.json()).to.have.property('_id');",
-                                    "});"
-                                ],
-                                "type": "text/javascript"
-                            }
-                        }
-                    ],
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "ownerid",
-                                "value": "testOwner",
-                                "type": "text"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n\t\"projectName\": \"testProject\"\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "localhost/project",
-                            "host": ["localhost"],
-                            "path": ["project"]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Create Project Under Another User",
-                    "event": [
-                        {
-                            "listen": "test",
-                            "script": {
-                                "id": "a7b22320-ab53-4493-b868-a356fc851b36",
-                                "exec": [
-                                    "pm.test(\"Status code is 201\", function () {",
-                                    "    pm.response.to.have.status(201);",
-                                    "});",
-                                    "",
-                                    "pm.test(\"Body has id\", function() {",
-                                    "    pm.expect(pm.response.json()).to.have.property('_id');",
-                                    "});"
-                                ],
-                                "type": "text/javascript"
-                            }
-                        }
-                    ],
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "ownerid",
-                                "type": "text",
-                                "value": "testOwner2"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n\t\"projectName\": \"testProject3\"\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "localhost/project",
-                            "host": ["localhost"],
-                            "path": ["project"]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Get All Projects",
-                    "event": [
-                        {
-                            "listen": "test",
-                            "script": {
-                                "id": "a7b22320-ab53-4493-b868-a356fc851b36",
-                                "exec": [
-                                    "pm.test(\"Status code is 200\", function () {",
-                                    "    pm.response.to.have.status(200);",
-                                    "});",
-                                    "",
-                                    "pm.test(\"Has two projects\", function () {",
-                                    "    pm.expect(pm.response.json().length).to.equal(2)",
-                                    "    pm.expect(pm.response.json()[0].ownerId).to.equal('testOwner')",
-                                    "    pm.expect(pm.response.json()[1].ownerId).to.equal('testOwner')",
-                                    "});",
-                                    ""
-                                ],
-                                "type": "text/javascript"
-                            }
-                        }
-                    ],
-                    "protocolProfileBehavior": {
-                        "disableBodyPruning": true
-                    },
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "ownerid",
-                                "type": "text",
-                                "value": "testOwner"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "localhost/project",
-                            "host": ["localhost"],
-                            "path": ["project"]
-                        }
-                    },
-                    "response": []
-                }
-            ],
-            "protocolProfileBehavior": {}
-        },
-        {
-            "name": "Experiments API",
-            "item": [
-                {
-                    "name": "Create Project",
-                    "event": [
-                        {
-                            "listen": "test",
-                            "script": {
-                                "id": "a7b22320-ab53-4493-b868-a356fc851b36",
-                                "exec": [
-                                    "pm.test(\"Status code is 201\", function () {",
-                                    "    pm.response.to.have.status(201);",
-                                    "});",
-                                    "",
-                                    "pm.test(\"Body has id\", function() {",
-                                    "    pm.expect(pm.response.json()).to.have.property('_id');",
-                                    "});",
-                                    "",
-                                    "pm.environment.set(\"sampleProjectId\", pm.response.json()[\"_id\"]);"
-                                ],
-                                "type": "text/javascript"
-                            }
-                        }
-                    ],
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "ownerid",
-                                "value": "testOwner",
-                                "type": "text"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n\t\"projectName\": \"testProject\"\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "localhost/project",
-                            "host": ["localhost"],
-                            "path": ["project"]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Create Experiment",
-                    "event": [
-                        {
-                            "listen": "test",
-                            "script": {
-                                "id": "a7b22320-ab53-4493-b868-a356fc851b36",
-                                "exec": [
-                                    "pm.test(\"Status code is 201\", function () {",
-                                    "    pm.response.to.have.status(201);",
-                                    "});",
-                                    "",
-                                    "pm.test(\"Body has id\", function() {",
-                                    "    pm.expect(pm.response.json()).to.have.property('_id');",
-                                    "});"
-                                ],
-                                "type": "text/javascript"
-                            }
-                        }
-                    ],
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "ownerid",
-                                "value": "testOwner",
-                                "type": "text"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n\t\"_id\": {\n\t\t\"projectId\": \"{{sampleProjectId}}\",\n\t\t\"experimentName\": \"exp1\"\n\t},\n\t\"startTime\": 1685473303000,\n\t\"variations\": [{\n\t\t\t\"variationName\": \"variation1\",\n\t\t\t\"normalizedTrafficAmount\": 0.1,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}]\n\t\t}, {\n\t\t\t\"variationName\": \"variation2\",\n\t\t\t\"normalizedTrafficAmount\": 0.9,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}]\n\t}]\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "localhost/experiment",
-                            "host": ["localhost"],
-                            "path": ["experiment"]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Create Another Experiment",
-                    "event": [
-                        {
-                            "listen": "test",
-                            "script": {
-                                "id": "a7b22320-ab53-4493-b868-a356fc851b36",
-                                "exec": [
-                                    "pm.test(\"Status code is 201\", function () {",
-                                    "    pm.response.to.have.status(201);",
-                                    "});",
-                                    "",
-                                    "pm.test(\"Body has id\", function() {",
-                                    "    pm.expect(pm.response.json()).to.have.property('_id');",
-                                    "});"
-                                ],
-                                "type": "text/javascript"
-                            }
-                        }
-                    ],
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "ownerid",
-                                "type": "text",
-                                "value": "testOwner"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n\t\"_id\": {\n\t\t\"projectId\": \"{{sampleProjectId}}\",\n\t\t\"experimentName\": \"exp2\"\n\t},\n\t\"startTime\": 1685474304000,\n\t\"endTime\": 1685474305000,\n\t\"variations\": [{\n\t\t\t\"variationName\": \"variation1\",\n\t\t\t\"normalizedTrafficAmount\": 0.1,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}]\n\t\t}, {\n\t\t\t\"variationName\": \"variation2\",\n\t\t\t\"normalizedTrafficAmount\": 0.9,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}]\n\t}]\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "localhost/experiment",
-                            "host": ["localhost"],
-                            "path": ["experiment"]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Create Duplicate Experiment",
-                    "event": [
-                        {
-                            "listen": "test",
-                            "script": {
-                                "id": "a7b22320-ab53-4493-b868-a356fc851b36",
-                                "exec": [
-                                    "pm.test(\"Status code is 409\", function () {",
-                                    "    pm.response.to.have.status(409);",
-                                    "});"
-                                ],
-                                "type": "text/javascript"
-                            }
-                        }
-                    ],
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "ownerid",
-                                "type": "text",
-                                "value": "testOwner"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n\t\"_id\": {\n\t\t\"projectId\": \"{{sampleProjectId}}\",\n\t\t\"experimentName\": \"exp1\"\n\t},\n\t\"startTime\": 1685473303000,\n\t\"variations\": [{\n\t\t\t\"variationName\": \"variation1\",\n\t\t\t\"normalizedTrafficAmount\": 0.1,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}]\n\t\t}, {\n\t\t\t\"variationName\": \"variation2\",\n\t\t\t\"normalizedTrafficAmount\": 0.9,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}]\n\t}]\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "localhost/experiment",
-                            "host": ["localhost"],
-                            "path": ["experiment"]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Create Invalid experiment",
-                    "event": [
-                        {
-                            "listen": "test",
-                            "script": {
-                                "id": "a7b22320-ab53-4493-b868-a356fc851b36",
-                                "exec": [
-                                    "pm.test(\"Status code is 400\", function () {",
-                                    "    pm.response.to.have.status(400);",
-                                    "});"
-                                ],
-                                "type": "text/javascript"
-                            }
-                        }
-                    ],
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "ownerid",
-                                "type": "text",
-                                "value": "testOwner"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n\t\"_id\": {\n\t\t\"projectId\": \"{{sampleProjectId}}\",\n\t\t\"experimentName\": \"invalid-exp\"\n\t},\n\t\"variations\": [{\n\t\t\t\"variationName\": \"variation1\",\n\t\t\t\"normalizedTrafficAmount\": 0.1,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}]\n\t\t}, {\n\t\t\t\"variationName\": \"variation2\",\n\t\t\t\"normalizedTrafficAmount\": 0.4,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}]\n\t}]\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "localhost/experiment",
-                            "host": ["localhost"],
-                            "path": ["experiment"]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Get  experiment with given timerange",
-                    "event": [
-                        {
-                            "listen": "test",
-                            "script": {
-                                "id": "a7b22320-ab53-4493-b868-a356fc851b36",
-                                "exec": [
-                                    "pm.test(\"Status code is 200\", function () {",
-                                    "    pm.response.to.have.status(200);",
-                                    "});",
-                                    "",
-                                    "pm.test(\"Response has experiment\", function() {",
-                                    "    pm.expect(pm.response.json().length).to.equal(1);",
-                                    "});"
-                                ],
-                                "type": "text/javascript"
-                            }
-                        }
-                    ],
-                    "protocolProfileBehavior": {
-                        "disableBodyPruning": true
-                    },
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "ownerid",
-                                "type": "text",
-                                "value": "testOwner"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "localhost/experiment/timerange/1685473303000/1685473306000",
-                            "host": ["localhost"],
-                            "path": [
-                                "experiment",
-                                "timerange",
-                                "1685473303000",
-                                "1685473306000"
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Get  experiment with given projectId",
-                    "event": [
-                        {
-                            "listen": "test",
-                            "script": {
-                                "id": "a7b22320-ab53-4493-b868-a356fc851b36",
-                                "exec": [
-                                    "pm.test(\"Status code is 200\", function () {",
-                                    "    pm.response.to.have.status(200);",
-                                    "});",
-                                    "",
-                                    "pm.test(\"Response has experiment\", function() {",
-                                    "    pm.expect(pm.response.json().length).to.equal(2);",
-                                    "});"
-                                ],
-                                "type": "text/javascript"
-                            }
-                        }
-                    ],
-                    "protocolProfileBehavior": {
-                        "disableBodyPruning": true
-                    },
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "ownerid",
-                                "type": "text",
-                                "value": "testOwner"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "localhost/experiment/projectId/{{sampleProjectId}}",
-                            "host": ["localhost"],
-                            "path": [
-                                "experiment",
-                                "projectId",
-                                "{{sampleProjectId}}"
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Get  experiment with given projectId and Name",
-                    "event": [
-                        {
-                            "listen": "test",
-                            "script": {
-                                "id": "a7b22320-ab53-4493-b868-a356fc851b36",
-                                "exec": [
-                                    "pm.test(\"Status code is 200\", function () {",
-                                    "    pm.response.to.have.status(200);",
-                                    "});",
-                                    "",
-                                    "pm.test(\"Response has experiment\", function() {",
-                                    "    pm.expect(pm.response.json().length).to.equal(1);",
-                                    "});"
-                                ],
-                                "type": "text/javascript"
-                            }
-                        }
-                    ],
-                    "protocolProfileBehavior": {
-                        "disableBodyPruning": true
-                    },
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "ownerid",
-                                "type": "text",
-                                "value": "testOwner"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "localhost/experiment/projectId/{{sampleProjectId}}/name/exp1",
-                            "host": ["localhost"],
-                            "path": [
-                                "experiment",
-                                "projectId",
-                                "{{sampleProjectId}}",
-                                "name",
-                                "exp1"
-                            ]
-                        }
-                    },
-                    "response": []
-                }
-            ],
-            "protocolProfileBehavior": {}
-        },
-        {
-            "name": "Test Status",
-            "event": [
-                {
-                    "listen": "test",
-                    "script": {
-                        "id": "a7b22320-ab53-4493-b868-a356fc851b36",
-                        "exec": [
-                            "pm.test(\"Status code is 200\", function () {",
-                            "    pm.response.to.have.status(200);",
-                            "});"
-                        ],
-                        "type": "text/javascript"
-                    }
-                }
-            ],
-            "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                    "raw": "localhost",
-                    "host": ["localhost"]
-                }
-            },
-            "response": []
-        }
-    ],
-    "protocolProfileBehavior": {}
+	"info": {
+		"_postman_id": "d40a8961-d01b-41ad-8748-5fffd23993e8",
+		"name": "acceptance_test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Projects API",
+			"item": [
+				{
+					"name": "Create Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a7b22320-ab53-4493-b868-a356fc851b36",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Body has id\", function() {",
+									"    pm.expect(pm.response.json()).to.have.property('_id');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "ownerid",
+								"value": "testOwner",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"projectName\": \"testProject\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/project",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"project"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Another Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a7b22320-ab53-4493-b868-a356fc851b36",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Body has id\", function() {",
+									"    pm.expect(pm.response.json()).to.have.property('_id');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "ownerid",
+								"value": "testOwner",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"projectName\": \"testProject\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/project",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"project"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Project Under Another User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a7b22320-ab53-4493-b868-a356fc851b36",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Body has id\", function() {",
+									"    pm.expect(pm.response.json()).to.have.property('_id');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "ownerid",
+								"type": "text",
+								"value": "testOwner2"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"projectName\": \"testProject3\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/project",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"project"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Projects",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a7b22320-ab53-4493-b868-a356fc851b36",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Has two projects\", function () {",
+									"    pm.expect(pm.response.json().length).to.equal(2)",
+									"    pm.expect(pm.response.json()[0].ownerId).to.equal('testOwner')",
+									"    pm.expect(pm.response.json()[1].ownerId).to.equal('testOwner')",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "ownerid",
+								"type": "text",
+								"value": "testOwner"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/project",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"project"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Experiments API",
+			"item": [
+				{
+					"name": "Create Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a7b22320-ab53-4493-b868-a356fc851b36",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Body has id\", function() {",
+									"    pm.expect(pm.response.json()).to.have.property('_id');",
+									"});",
+									"",
+									"pm.environment.set(\"sampleProjectId\", pm.response.json()[\"_id\"]);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "ownerid",
+								"value": "testOwner",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"projectName\": \"testProject\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/project",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"project"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Experiment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a7b22320-ab53-4493-b868-a356fc851b36",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Body has id\", function() {",
+									"    pm.expect(pm.response.json()).to.have.property('_id');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "ownerid",
+								"value": "testOwner",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"_id\": {\n\t\t\"projectId\": \"{{sampleProjectId}}\",\n\t\t\"experimentName\": \"exp1\"\n\t},\n\t\"startTime\": 1685473303000,\n\t\"variations\": [{\n\t\t\t\"variationName\": \"variation1\",\n\t\t\t\"normalizedTrafficAmount\": 0.1,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}]\n\t\t}, {\n\t\t\t\"variationName\": \"variation2\",\n\t\t\t\"normalizedTrafficAmount\": 0.9,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}]\n\t}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/experiment",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"experiment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Another Experiment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a7b22320-ab53-4493-b868-a356fc851b36",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Body has id\", function() {",
+									"    pm.expect(pm.response.json()).to.have.property('_id');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "ownerid",
+								"type": "text",
+								"value": "testOwner"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"_id\": {\n\t\t\"projectId\": \"{{sampleProjectId}}\",\n\t\t\"experimentName\": \"exp2\"\n\t},\n\t\"startTime\": 1685474304000,\n\t\"endTime\": 1685474305000,\n\t\"variations\": [{\n\t\t\t\"variationName\": \"variation1\",\n\t\t\t\"normalizedTrafficAmount\": 0.1,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}]\n\t\t}, {\n\t\t\t\"variationName\": \"variation2\",\n\t\t\t\"normalizedTrafficAmount\": 0.9,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}]\n\t}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/experiment",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"experiment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Duplicate Experiment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a7b22320-ab53-4493-b868-a356fc851b36",
+								"exec": [
+									"pm.test(\"Status code is 409\", function () {",
+									"    pm.response.to.have.status(409);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "ownerid",
+								"type": "text",
+								"value": "testOwner"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"_id\": {\n\t\t\"projectId\": \"{{sampleProjectId}}\",\n\t\t\"experimentName\": \"exp1\"\n\t},\n\t\"startTime\": 1685473303000,\n\t\"variations\": [{\n\t\t\t\"variationName\": \"variation1\",\n\t\t\t\"normalizedTrafficAmount\": 0.1,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}]\n\t\t}, {\n\t\t\t\"variationName\": \"variation2\",\n\t\t\t\"normalizedTrafficAmount\": 0.9,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}]\n\t}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/experiment",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"experiment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Experiment Without Permissions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a7b22320-ab53-4493-b868-a356fc851b36",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "ownerid",
+								"type": "text",
+								"value": "invalidOwner"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"_id\": {\n\t\t\"projectId\": \"{{sampleProjectId}}\",\n\t\t\"experimentName\": \"exp1\"\n\t},\n\t\"startTime\": 1685473303000,\n\t\"variations\": [{\n\t\t\t\"variationName\": \"variation1\",\n\t\t\t\"normalizedTrafficAmount\": 0.1,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}]\n\t\t}, {\n\t\t\t\"variationName\": \"variation2\",\n\t\t\t\"normalizedTrafficAmount\": 0.9,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}]\n\t}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/experiment",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"experiment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Invalid experiment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a7b22320-ab53-4493-b868-a356fc851b36",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "ownerid",
+								"type": "text",
+								"value": "testOwner"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"_id\": {\n\t\t\"projectId\": \"{{sampleProjectId}}\",\n\t\t\"experimentName\": \"invalid-exp\"\n\t},\n\t\"variations\": [{\n\t\t\t\"variationName\": \"variation1\",\n\t\t\t\"normalizedTrafficAmount\": 0.1,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}]\n\t\t}, {\n\t\t\t\"variationName\": \"variation2\",\n\t\t\t\"normalizedTrafficAmount\": 0.4,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}]\n\t}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/experiment",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"experiment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get  experiment with given timerange",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a7b22320-ab53-4493-b868-a356fc851b36",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has experiment\", function() {",
+									"    pm.expect(pm.response.json().length).to.equal(1);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "ownerid",
+								"type": "text",
+								"value": "testOwner"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/experiment/timerange/1685473303000/1685473306000",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"experiment",
+								"timerange",
+								"1685473303000",
+								"1685473306000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Variation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a7b22320-ab53-4493-b868-a356fc851b36",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has 3 elements\", function() {",
+									"    pm.expect(pm.response.json().length).to.equal(3);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "ownerid",
+								"type": "text",
+								"value": "testOwner"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[{\n\t\"projectId\": \"{{sampleProjectId}}\",\n\t\"experimentName\": \"exp1\",\n\t\"userId\": \"user1\"\n}, {\n\t\"projectId\": \"{{sampleProjectId}}\",\n\t\"experimentName\": \"exp2\",\n\t\"userId\": \"user1\"\n}, {\n\t\"projectId\": \"{{sampleProjectId}}\",\n\t\"experimentName\": \"exp2\",\n\t\"userId\": \"user5\"\n}]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/experiment/variations",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"experiment",
+								"variations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get  experiment with given projectId",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a7b22320-ab53-4493-b868-a356fc851b36",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has experiment\", function() {",
+									"    pm.expect(pm.response.json().length).to.equal(2);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "ownerid",
+								"type": "text",
+								"value": "testOwner"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/experiment/projectId/{{sampleProjectId}}",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"experiment",
+								"projectId",
+								"{{sampleProjectId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get  experiment invalid permissions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a7b22320-ab53-4493-b868-a356fc851b36",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "ownerid",
+								"type": "text",
+								"value": "test"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/experiment/projectId/{{sampleProjectId}}",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"experiment",
+								"projectId",
+								"{{sampleProjectId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get  experiment with given projectId and Name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a7b22320-ab53-4493-b868-a356fc851b36",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has experiment\", function() {",
+									"    pm.expect(pm.response.json().length).to.equal(1);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "ownerid",
+								"type": "text",
+								"value": "testOwner"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/experiment/projectId/{{sampleProjectId}}/name/exp1",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"experiment",
+								"projectId",
+								"{{sampleProjectId}}",
+								"name",
+								"exp1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get  experiment with invalid permissions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a7b22320-ab53-4493-b868-a356fc851b36",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "ownerid",
+								"type": "text",
+								"value": "testOwn",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/experiment/projectId/{{sampleProjectId}}/name/exp1",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"experiment",
+								"projectId",
+								"{{sampleProjectId}}",
+								"name",
+								"exp1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Test Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a7b22320-ab53-4493-b868-a356fc851b36",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost",
+					"host": [
+						"localhost"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
 }

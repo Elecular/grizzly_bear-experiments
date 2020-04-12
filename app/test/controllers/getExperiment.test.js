@@ -20,25 +20,6 @@ afterAll(async () => {
 });
 
 describe("Experiment Controller", () => {
-    describe("Cannot get experiment by project id", () => {
-        it("When not authorized", async () => {
-            const projects = await projectController.getProjectsByOwner(
-                ownerId,
-            );
-            try {
-                await experimentController.getExperimentsByProjectId(
-                    "invalid owner",
-                    projects[0]._id,
-                );
-                assert.fail();
-            } catch (err) {
-                assert.equal(
-                    err.message,
-                    "Not Authorized to create experiment under given project",
-                );
-            }
-        });
-    });
 
     describe("Can get experiment by project id", () => {
         it("When given project id", async () => {
@@ -60,7 +41,6 @@ describe("Experiment Controller", () => {
             );
 
             const experiments = await experimentController.getExperimentsByProjectId(
-                ownerId,
                 projects[0]._id,
             );
             assert.equal(experiments[0]._id.experimentName, "exp1");
@@ -74,7 +54,6 @@ describe("Experiment Controller", () => {
             );
 
             const experiments = await experimentController.getExperimentsByProjectId(
-                ownerId,
                 projects[1]._id,
             );
             assert.equal(experiments.length, 0);

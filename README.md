@@ -63,3 +63,10 @@ experiments-db-secret:
   MONGODB_URL: <mongodb_url>
   MONGODB_DATABASE: <database name>
 ```
+
+
+Secrets in a kubernetes cluster can be configured using thsi command
+
+```
+kubectl create secret generic experiments-db-secret --from-literal=MONGODB_URL=<mongodb_url>--from-literal=MONGODB_DATABASE=<mongodb_database>
+```

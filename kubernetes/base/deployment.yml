@@ -17,6 +17,7 @@ spec:
       containers:
       - name: experiments
         image: XXXX
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3000
         env:

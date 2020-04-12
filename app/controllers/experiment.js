@@ -15,7 +15,7 @@ module.exports.addExperiment = async (ownerId, experiment) => {
     const db = await mongo.connect();
     const { projectId } = experiment._id;
 
-    await validateOwner(ownerId, projectId);
+    await this.validateOwner(ownerId, projectId);
     validateStartAndEndTime(experiment);
     validateVariations(experiment.variations);
 
@@ -52,10 +52,8 @@ module.exports.addExperiment = async (ownerId, experiment) => {
  * @param {string} projectId
  * @returns {Array<Object>} list of experiments
  */
-module.exports.getExperimentsByProjectId = async (ownerId, projectId) => {
+module.exports.getExperimentsByProjectId = async (projectId) => {
     const db = await mongo.connect();
-
-    await validateOwner(ownerId, projectId);
 
     try {
         return await db
@@ -79,13 +77,10 @@ module.exports.getExperimentsByProjectId = async (ownerId, projectId) => {
  * @returns {Array<Object>} list of experiments
  */
 module.exports.getExperimentByName = async (
-    ownerId,
     projectId,
     experimentName,
 ) => {
     const db = await mongo.connect();
-
-    await validateOwner(ownerId, projectId);
 
     try {
         return await db
@@ -139,83 +134,44 @@ module.exports.getRunningExperimentsInTimeRange = async (
  * Gets variation for given experiments and user ids
  *
  * @async
- * @param {Array<{projectId: String, experimentName: String, userId: String}>} experimentsToUserIdMapping
+ * @param {Array<{projectId: String, experimentName: String, userId: String}>} experimentToUserMapping
  */
-module.exports.getVarationForUsers = async (experimentsToUserIdMapping) => {
+module.exports.getVarationForUsers = async (experimentToUserMapping) => {
     const db = await mongo.connect();
 
-    //Stores mapping between experiment id to userId
-    let userMapping = {};
-
     //Calculating all ids needed for searching experiments
-    let experimentIds = experimentsToUserIdMapping.map((experimentToUser) => {
-        let experimentId = {
-            projectId: ObjectID(experimentToUser.projectId),
-            experimentName: experimentToUser.experimentName,
-        };
-        //Creating a hash map between experiment id and user.
-        //This will be used later for quick access
-        userMapping[
-            experimentId.projectId.toString() + experimentId.experimentName
-        ] = experimentToUser.userId;
-        return experimentId;
-    });
+    let experimentIds = experimentToUserMapping.map(experimentToUser => ({
+        projectId: ObjectID(experimentToUser.projectId),
+        experimentName: experimentToUser.experimentName,
+    }));
 
     //Getting all the experiments
-    let experiments = [];
+    let experiments = {};
     try {
-        experiments = await db
+        await db
             .collection("experiments")
             .find({
                 _id: {
                     $in: experimentIds,
                 },
-            })
-            .toArray();
+            }).forEach(experiment => 
+                experiments[experiment.projectId.toString() + experiment._id.experimentName] = experiment
+            );
     } catch (err) {
         logger.error(err);
         throw new createError(500);
     }
 
-    return experiments.map((experiment) => {
-        let userId =
-            userMapping[
-                experiment._id.projectId + experiment._id.experimentName
-            ];
-        return {
-            projectId: experiment._id.projectId,
-            experimentName: experiment._id.experimentName,
-            userId,
-            variation: getVariationForUser(experiment, userId),
-        };
-    });
-};
-
-/**
- * Gets the variation this user is allocated to
- *
- * @param {Object} experiment
- * @param {String} userId
- */
-const getVariationForUser = (experiment, userId) => {
-    const value = seedrandom(experiment._id.experimentName + userId).quick();
-    const variations = experiment.variations.sort((x, y) =>
-        x.variationName >= y.variationName ? 1 : -1,
-    );
-    let currentValue = 0;
-    for (const variation of variations) {
-        currentValue += variation.normalizedTrafficAmount;
-        if (value <= currentValue) {
-            return variation.variationName;
-        }
-    }
-
-    logger.error(
-        `Could not find variation for user ${userId} in experiment ${experiment._id.experimentName}. Total traffic for this experiment amounts to ${currentValue}. This should ideally be equal to 1`,
-    );
-    throw new createError(
-        `Could not find variation for user ${userId} in experiment ${experiment._id.experimentName}`,
-    );
+    //Getting variation for each project Id, Experiment Id, User Id combination
+    return experimentToUserMapping.map(experimentToUser => ({
+        projectId: experimentToUser.projectId,
+        experimentName: experimentToUser.experimentName,
+        userId: experimentToUser.userId,
+        variation: getVariationForUser(
+            experiments[experimentToUser.projectId + experimentToUser.experimentName],
+            experimentToUser.userId
+        )
+    }));
 };
 
 /**
@@ -225,7 +181,7 @@ const getVariationForUser = (experiment, userId) => {
  * @param {string} ownerId
  * @param {ObjectID} projectId
  */
-const validateOwner = async (ownerId, projectId) => {
+module.exports.validateOwner = async (ownerId, projectId) => {
     if (!projectId || !ObjectID.isValid(projectId)) {
         throw new createError(400, "Invalid projectId");
     }
@@ -248,6 +204,38 @@ const validateOwner = async (ownerId, projectId) => {
             "Not Authorized to create experiment under given project",
         );
     }
+};
+
+/*
+ * * * * * * * * * * * * * * * * * * START UTILITY METHODS * * * * * * * * * * * * * * * * *
+ */
+
+/**
+ * Gets the variation this user is allocated to
+ *
+ * @param {Object} experiment
+ * @param {String} userId
+ */
+const getVariationForUser = (experiment, userId) => {
+    if(!experiment) throw createError(400, "Invalid Experiment");
+    const value = seedrandom(experiment._id.experimentName + userId).quick();
+    const variations = experiment.variations.sort((x, y) =>
+        x.variationName >= y.variationName ? 1 : -1,
+    );
+    let currentValue = 0;
+    for (const variation of variations) {
+        currentValue += variation.normalizedTrafficAmount;
+        if (value <= currentValue) {
+            return variation.variationName;
+        }
+    }
+
+    logger.error(
+        `Could not find variation for user ${userId} in experiment ${experiment._id.experimentName}. Total traffic for this experiment amounts to ${currentValue}. This should ideally be equal to 1`,
+    );
+    throw new createError(
+        `Could not find variation for user ${userId} in experiment ${experiment._id.experimentName}`,
+    );
 };
 
 /**
@@ -383,3 +371,7 @@ const variablesHaveUniqueNames = (variables) => {
     }
     return true;
 };
+
+/*
+ * * * * * * * * * * * * * * * * * * END UTILITY METHODS * * * * * * * * * * * * * * * * *
+ */
