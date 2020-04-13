@@ -15,19 +15,19 @@ spec:
         app: experiments
     spec:
       containers:
-      - name: experiments
-        image: XXXX
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 3000
-        env:
-          - name: MONGODB_URL
-            valueFrom:
-              secretKeyRef:
-                name: experiments-db-secret
-                key: MONGODB_URL
-          - name: MONGODB_DATABASE
-            valueFrom:
-              secretKeyRef:
-                name: experiments-db-secret
-                key: MONGODB_DATABASE
+        - name: experiments
+          image: XXXX
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          env:
+            - name: MONGODB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: experiments-db-secret
+                  key: MONGODB_URL
+            - name: MONGODB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: experiments-db-secret
+                  key: MONGODB_DATABASE

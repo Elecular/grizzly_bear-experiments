@@ -17,16 +17,19 @@ npm run start:dev
 ### Testing
 
 For **all** tests
+
 ```
 npm test
 ```
 
 For **unit** and **integration** tests
+
 ```
 npm test:jest
 ```
 
 For **acceptance** tests
+
 ```
 npm test:acceptance
 ```
@@ -38,7 +41,7 @@ npm test:acceptance
 The Dockerfile is located at the root folder. This can be used to deploy a container for this service. In order for the container to work properly, you must pass in the following environment variables:
 
 1. MONGODB_URL : URL of the mongodb database
-2. MONGODB_DATABASE : A Database name. 
+2. MONGODB_DATABASE : A Database name.
 
 Here is an example docker-compose file that is deploying this docker image on port 80:
 
@@ -78,6 +81,7 @@ npm start -- \
         "endTime": "79839129600005"
     }]'
 ```
+
 ---
 
 ### Deploying Locally On K8s
@@ -85,6 +89,7 @@ npm start -- \
 We can deploy this service locally on k8s. You must have first installed the following software
 
 1: [kustomize](https://kustomize.io/): Used for making k8s template files
+
 ```
 kustomize version
 ```
@@ -94,14 +99,18 @@ kustomize version
 3: [Docker](https://www.docker.com/)
 
 Once you have installed these software you must
+
 1. Create a MongoDB service (Either in the your local k8s cluster or anywhere else you like)
-2. Configure the following secret in your local k8s cluster 
+2. Configure the following secret in your local k8s cluster
+
 ```
 experiments-db-secret:
   MONGODB_URL: <mongodb_url>
   MONGODB_DATABASE: <database name>
 ```
+
 3. Run the following command
+
 ```
 ./app/bin/deploy-local.sh
 ```
@@ -110,16 +119,18 @@ experiments-db-secret:
 
 ### Deploying On Stage/Prod
 
-You can run the following commands to deploy the applocation on stage and then on prod. The project is deployed Google Kubernetes Engine using github workflows. All of the scripts can be found in .github folder. 
+You can run the following commands to deploy the applocation on stage and then on prod. The project is deployed Google Kubernetes Engine using github workflows. All of the scripts can be found in .github folder.
 
 ```
 ./app/bin/deploy-stage.sh <github-auth-token>
 ```
+
 ```
 ./app/bin/deploy-prod.sh <github-auth-token>
 ```
 
 If the github-auth-token is invalid, the command will return the following response:
+
 ```
 {
   "message": "Bad credentials",
@@ -132,6 +143,7 @@ If the github-auth-token is invalid, the command will return the following respo
 ### Deploying On Any K8s Cluster
 
 This is how you deploy this service using [kustomize](https://kustomize.io/) and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+
 ```
 cd kubernetes/overlays/stage
 ./kustomize edit set image XXXX=<image>
@@ -145,7 +157,6 @@ experiments-db-secret:
   MONGODB_URL: <mongodb_url>
   MONGODB_DATABASE: <database name>
 ```
-
 
 Example of setting up a k8s secret
 
