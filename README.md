@@ -2,27 +2,18 @@
 
 ![Test](https://github.com/nj20/grizzly_bear-experiments/workflows/test/badge.svg?branch=master) ![Deploy To GKE](https://github.com/nj20/grizzly_bear-experiments/workflows/Deploy%20To%20GKE/badge.svg?branch=master)
 
-### Introduction
-
-This service is used for creating experiments.
-
-
-### Workflows
-
-This section will describe how to develop, test and push the application to staging and production
-
 ---
 
-#### Development
+## Development
 
-You can run the following command to start the service and start making changes. The service will automatically pickup any changes!
+You can run the following command to start the service in development mode. The service will automatically pickup any changes!
 ```
 npm run start:dev
 ```
 
 ---
 
-#### Testing
+## Testing
 
 This command runs unit, integration and acceptance tests
 ```
@@ -41,9 +32,9 @@ npm test:acceptance
 
 ---
 
-#### Deploying On Stage/Prod
+## Deploying On Stage/Prod
 
-Once the branch is merged, you can run the following commands to deploy the applocation on stage and then on prod.
+Once the branch is merged, you can run the following commands to deploy the applocation on stage and then on prod. All the deployment is configured under .github folder
 
 ```
 ./app/bin/deploy-stage.sh <github-auth-token>
@@ -61,7 +52,7 @@ If the github-auth-token is invalid, the command will return the following respo
 
 ---
 
-#### Deploying On Any K8s Cluster
+## Deploying On Any K8s Cluster
 
 This is how you deploy this service using [kustomize](https://kustomize.io/) and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 ```
@@ -89,9 +80,9 @@ kubectl create secret generic experiments-db-secret --from-literal=MONGODB_URL=<
 
 ---
 
-#### Starting Service With Mock Data
+## Starting Service With Mock Data
 
-You can start the service and with some mock data using the following command. Note, you will need to setup MongoDB either in your local machine or a docker-compose file. 
+You can start the service and with some mock data by adding some command line arguments to npm start
 
 ```
 npm start -- \
