@@ -84,7 +84,7 @@ npm start -- \
 
 We can deploy this service locally on k8s. You must have first installed the following software
 
-1: [kustomize](https://kustomize.io/): Used for making k8s configuration files
+1: [kustomize](https://kustomize.io/): Used for making k8s template files
 ```
 kustomize version
 ```
@@ -93,9 +93,9 @@ kustomize version
 
 3: [Docker](https://www.docker.com/)
 
-Once you have installed these software you can must
+Once you have installed these software you must
 1. Create a MongoDB service (Either in the your local k8s cluster or anywhere else you like)
-2. Configure the following secret in your local k8s cluster
+2. Configure the following secret in your local k8s cluster 
 ```
 experiments-db-secret:
   MONGODB_URL: <mongodb_url>
