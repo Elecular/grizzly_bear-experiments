@@ -59,6 +59,148 @@
 					"response": []
 				},
 				{
+					"name": "Create Project with projectId",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a7b22320-ab53-4493-b868-a356fc851b36",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Body has id\", function() {",
+									"    pm.expect(pm.response.json()).to.have.property('_id');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "ownerid",
+								"type": "text",
+								"value": "testOwner"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"projectName\": \"testProject\",\n\t\"projectId\": \"5e865ed82a2aeb6436f498dc\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/project",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"project"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Project with duplicate project id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a7b22320-ab53-4493-b868-a356fc851b36",
+								"exec": [
+									"pm.test(\"Status code is 409\", function () {",
+									"    pm.response.to.have.status(409);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "ownerid",
+								"type": "text",
+								"value": "testOwner"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"projectName\": \"testProject\",\n\t\"projectId\": \"5e865ed82a2aeb6436f498dc\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/project",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"project"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Project with invalid project id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a7b22320-ab53-4493-b868-a356fc851b36",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "ownerid",
+								"type": "text",
+								"value": "testOwner"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"projectName\": \"testProject\",\n\t\"projectId\": \"5e865ed82a2aeb6436f49\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/project",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"project"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Create Another Project",
 					"event": [
 						{
@@ -171,9 +313,10 @@
 									"});",
 									"",
 									"pm.test(\"Has two projects\", function () {",
-									"    pm.expect(pm.response.json().length).to.equal(2)",
+									"    pm.expect(pm.response.json().length).to.equal(3)",
 									"    pm.expect(pm.response.json()[0].ownerId).to.equal('testOwner')",
 									"    pm.expect(pm.response.json()[1].ownerId).to.equal('testOwner')",
+									"    pm.expect(pm.response.json()[2].ownerId).to.equal('testOwner')",
 									"});",
 									""
 								],

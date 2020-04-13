@@ -198,6 +198,7 @@ module.exports.validateOwner = async (ownerId, projectId) => {
         logger.error(err);
         throw new createError(500);
     }
+
     if (project === null) {
         throw new createError(
             401,

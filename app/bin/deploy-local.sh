@@ -5,6 +5,12 @@
 # 1. Have kubernetes running locally (Minikube for example). This can be tested with kubectl --help.
 # 2. Install kustomize (Can use brew install kustomize). This can be tested with kustomize --help
 
+cd "$(dirname "$0")"
+cd ../..
+ 
 # Buidling images
 docker build -f Dockerfile --tag experiments:dev .
 
+cd kubernetes/overlays/local
+
+kustomize build . | kubectl apply -f -
