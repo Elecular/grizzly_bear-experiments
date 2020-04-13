@@ -20,7 +20,6 @@ afterAll(async () => {
 });
 
 describe("Experiment Controller", () => {
-
     describe("Can get experiment by project id", () => {
         it("When given project id", async () => {
             await projectController.addProject(ownerId, "testProject2");

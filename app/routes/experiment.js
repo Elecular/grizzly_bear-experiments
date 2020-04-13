@@ -29,7 +29,10 @@ router.post("/", async function (req, res, next) {
 router.get("/projectId/:projectId", async function (req, res, next) {
     try {
         res.status(200);
-        await experimentController.validateOwner(req.headers.ownerid, req.params.projectId);
+        await experimentController.validateOwner(
+            req.headers.ownerid,
+            req.params.projectId,
+        );
         res.json(
             await experimentController.getExperimentsByProjectId(
                 req.params.projectId,
@@ -43,14 +46,13 @@ router.get("/projectId/:projectId", async function (req, res, next) {
 /**
  * Gets experiment by given project id and name
  */
-router.get("/projectId/:projectId/name/:name", async function (
-    req,
-    res,
-    next,
-) {
+router.get("/projectId/:projectId/name/:name", async function (req, res, next) {
     try {
         res.status(200);
-        await experimentController.validateOwner(req.headers.ownerid, req.params.projectId);
+        await experimentController.validateOwner(
+            req.headers.ownerid,
+            req.params.projectId,
+        );
         res.json(
             await experimentController.getExperimentByName(
                 req.params.projectId,

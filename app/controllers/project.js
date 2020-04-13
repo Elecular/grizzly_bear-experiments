@@ -11,10 +11,14 @@ const createError = require("http-errors");
  * @param {string} projectId This is optional
  * @returns {Promise<Object>}
  */
-module.exports.addProject = async (ownerId, projectName, projectId=undefined) => {
+module.exports.addProject = async (
+    ownerId,
+    projectName,
+    projectId = undefined,
+) => {
     const db = await mongo.connect();
 
-    if(projectId && !ObjectID.isValid(projectId)) {
+    if (projectId && !ObjectID.isValid(projectId)) {
         throw createError(400, "Invalid project id provided");
     }
 

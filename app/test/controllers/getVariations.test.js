@@ -1,5 +1,3 @@
-
-
 jest.mock("seedrandom");
 
 const seedrandom = require("seedrandom");
@@ -10,15 +8,16 @@ const experimentController = require("../../controllers/experiment");
 
 const ownerId = "testOwner";
 
-
 beforeEach(async () => {
     const db = await mongo.connect();
     const collections = await db.listCollections().toArray();
     for (let collection of collections) {
         await db.collection(collection.name).deleteMany({});
     }
-    let projectId = (await projectController.addProject(ownerId, "project1"))._id;
-    let projectId2 = (await projectController.addProject(ownerId, "project2"))._id;
+    let projectId = (await projectController.addProject(ownerId, "project1"))
+        ._id;
+    let projectId2 = (await projectController.addProject(ownerId, "project2"))
+        ._id;
     await experimentController.addExperiment(
         ownerId,
         mockExperiment(projectId, "exp1"),
@@ -45,35 +44,37 @@ describe("Experiment Controller", () => {
         });
 
         it("When two different users are within same experiment", async () => {
-            
             const projects = await projectController.getProjectsByOwner(
                 ownerId,
             );
 
             seedrandom().mockRandomValues([0.05, 0.11]);
 
-            let variations = await experimentController.getVarationForUsers([{
-                projectId: projects[0]._id,
-                experimentName: "exp1",
-                userId: "user1"
-            }, {
-                projectId: projects[0]._id,
-                experimentName: "exp1",
-                userId: "user2"
-            }]);
+            let variations = await experimentController.getVarationForUsers([
+                {
+                    projectId: projects[0]._id,
+                    experimentName: "exp1",
+                    userId: "user1",
+                },
+                {
+                    projectId: projects[0]._id,
+                    experimentName: "exp1",
+                    userId: "user2",
+                },
+            ]);
 
             assert.deepStrictEqual(variations[0], {
                 projectId: projects[0]._id,
                 experimentName: "exp1",
                 userId: "user1",
-                variation: "variation1"
+                variation: "variation1",
             });
 
             assert.deepStrictEqual(variations[1], {
                 projectId: projects[0]._id,
                 experimentName: "exp1",
                 userId: "user2",
-                variation: "variation2"
+                variation: "variation2",
             });
         });
 
@@ -84,31 +85,33 @@ describe("Experiment Controller", () => {
 
             seedrandom().mockRandomValues([0.05, 0.11]);
 
-            let variations = await experimentController.getVarationForUsers([{
-                projectId: projects[0]._id,
-                experimentName: "exp1",
-                userId: "user1"
-            }, {
-                projectId: projects[0]._id,
-                experimentName: "exp2",
-                userId: "user1"
-            }]);
+            let variations = await experimentController.getVarationForUsers([
+                {
+                    projectId: projects[0]._id,
+                    experimentName: "exp1",
+                    userId: "user1",
+                },
+                {
+                    projectId: projects[0]._id,
+                    experimentName: "exp2",
+                    userId: "user1",
+                },
+            ]);
 
             assert.deepStrictEqual(variations[0], {
                 projectId: projects[0]._id,
                 experimentName: "exp1",
                 userId: "user1",
-                variation: "variation1"
+                variation: "variation1",
             });
 
             assert.deepStrictEqual(variations[1], {
                 projectId: projects[0]._id,
                 experimentName: "exp2",
                 userId: "user1",
-                variation: "variation2"
+                variation: "variation2",
             });
         });
-
 
         it("When users are in different projects", async () => {
             const projects = await projectController.getProjectsByOwner(
@@ -117,50 +120,55 @@ describe("Experiment Controller", () => {
 
             seedrandom().mockRandomValues([0.05, 0.1, 1, 0]);
 
-            let variations = await experimentController.getVarationForUsers([{
-                projectId: projects[0]._id,
-                experimentName: "exp1",
-                userId: "user1"
-            }, {
-                projectId: projects[0]._id,
-                experimentName: "exp2",
-                userId: "user43"
-            }, {
-                projectId: projects[1]._id,
-                experimentName: "exp1",
-                userId: "user1"
-            }, {
-                projectId: projects[1]._id,
-                experimentName: "exp1",
-                userId: "user4"
-            }]);
+            let variations = await experimentController.getVarationForUsers([
+                {
+                    projectId: projects[0]._id,
+                    experimentName: "exp1",
+                    userId: "user1",
+                },
+                {
+                    projectId: projects[0]._id,
+                    experimentName: "exp2",
+                    userId: "user43",
+                },
+                {
+                    projectId: projects[1]._id,
+                    experimentName: "exp1",
+                    userId: "user1",
+                },
+                {
+                    projectId: projects[1]._id,
+                    experimentName: "exp1",
+                    userId: "user4",
+                },
+            ]);
 
             assert.deepStrictEqual(variations[0], {
                 projectId: projects[0]._id,
                 experimentName: "exp1",
                 userId: "user1",
-                variation: "variation1"
+                variation: "variation1",
             });
 
             assert.deepStrictEqual(variations[1], {
                 projectId: projects[0]._id,
                 experimentName: "exp2",
                 userId: "user43",
-                variation: "variation1"
+                variation: "variation1",
             });
 
             assert.deepStrictEqual(variations[2], {
                 projectId: projects[1]._id,
                 experimentName: "exp1",
                 userId: "user1",
-                variation: "variation2"
+                variation: "variation2",
             });
 
             assert.deepStrictEqual(variations[3], {
                 projectId: projects[1]._id,
                 experimentName: "exp1",
                 userId: "user4",
-                variation: "variation1"
+                variation: "variation1",
             });
         });
     });
@@ -171,17 +179,20 @@ describe("Experiment Controller", () => {
                 ownerId,
             );
             try {
-                await experimentController.getVarationForUsers([{
-                    projectId: projects[0]._id,
-                    experimentName: "exp1",
-                    userId: "user1"
-                }, {
-                    projectId: projects[0]._id,
-                    experimentName: "invalidexp",
-                    userId: "user1"
-                }]);
+                await experimentController.getVarationForUsers([
+                    {
+                        projectId: projects[0]._id,
+                        experimentName: "exp1",
+                        userId: "user1",
+                    },
+                    {
+                        projectId: projects[0]._id,
+                        experimentName: "invalidexp",
+                        userId: "user1",
+                    },
+                ]);
                 assert.fail();
-            } catch(e) {
+            } catch (e) {
                 assert.equal(e.message, "Invalid Experiment");
             }
         });

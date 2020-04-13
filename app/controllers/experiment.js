@@ -76,10 +76,7 @@ module.exports.getExperimentsByProjectId = async (projectId) => {
  * @param {string} experimentName
  * @returns {Array<Object>} list of experiments
  */
-module.exports.getExperimentByName = async (
-    projectId,
-    experimentName,
-) => {
+module.exports.getExperimentByName = async (projectId, experimentName) => {
     const db = await mongo.connect();
 
     try {
@@ -140,7 +137,7 @@ module.exports.getVarationForUsers = async (experimentToUserMapping) => {
     const db = await mongo.connect();
 
     //Calculating all ids needed for searching experiments
-    let experimentIds = experimentToUserMapping.map(experimentToUser => ({
+    let experimentIds = experimentToUserMapping.map((experimentToUser) => ({
         projectId: ObjectID(experimentToUser.projectId),
         experimentName: experimentToUser.experimentName,
     }));
@@ -154,8 +151,13 @@ module.exports.getVarationForUsers = async (experimentToUserMapping) => {
                 _id: {
                     $in: experimentIds,
                 },
-            }).forEach(experiment => 
-                experiments[experiment.projectId.toString() + experiment._id.experimentName] = experiment
+            })
+            .forEach(
+                (experiment) =>
+                    (experiments[
+                        experiment.projectId.toString() +
+                            experiment._id.experimentName
+                    ] = experiment),
             );
     } catch (err) {
         logger.error(err);
@@ -163,14 +165,16 @@ module.exports.getVarationForUsers = async (experimentToUserMapping) => {
     }
 
     //Getting variation for each project Id, Experiment Id, User Id combination
-    return experimentToUserMapping.map(experimentToUser => ({
+    return experimentToUserMapping.map((experimentToUser) => ({
         projectId: experimentToUser.projectId,
         experimentName: experimentToUser.experimentName,
         userId: experimentToUser.userId,
         variation: getVariationForUser(
-            experiments[experimentToUser.projectId + experimentToUser.experimentName],
-            experimentToUser.userId
-        )
+            experiments[
+                experimentToUser.projectId + experimentToUser.experimentName
+            ],
+            experimentToUser.userId,
+        ),
     }));
 };
 
@@ -218,7 +222,7 @@ module.exports.validateOwner = async (ownerId, projectId) => {
  * @param {String} userId
  */
 const getVariationForUser = (experiment, userId) => {
-    if(!experiment) throw createError(400, "Invalid Experiment");
+    if (!experiment) throw createError(400, "Invalid Experiment");
     const value = seedrandom(experiment._id.experimentName + userId).quick();
     const variations = experiment.variations.sort((x, y) =>
         x.variationName >= y.variationName ? 1 : -1,

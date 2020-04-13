@@ -1,5 +1,5 @@
 let index = 0;
-let mockValues = [0]
+let mockValues = [0];
 
 /**
  * Used for mocking seedrandom
@@ -12,11 +12,11 @@ module.exports = () => ({
     },
     /**
      * Sets the next random values returned
-     * 
-     * @param {Array<number>} values 
+     *
+     * @param {Array<number>} values
      */
     mockRandomValues: (values) => {
         mockValues = values;
         index = 0;
-    }
-})
+    },
+});
