@@ -11,24 +11,37 @@ This service is used for creating experiments.
 
 This section will describe how to develop, test and push the application to staging and production
 
-##### Development
+---
+
+#### Development
 
 You can run the following command to start the service and start making changes. The service will automatically pickup any changes!
 ```
 npm run start:dev
 ```
 
-##### Testing
+---
 
+#### Testing
+
+This command runs unit, integration and acceptance tests
 ```
 npm test
 ```
 
-##### Pull Request
+This command runs unit and integration tests
+```
+npm test:jest
+```
 
-Once you make your changes, make a pull request and github action will automatically run tests on your branch. Once the pull request gets approval, you can merge the branch with master
+This command runs acceptance tests
+```
+npm test:acceptance
+```
 
-##### Deploying On Stage/Prod
+---
+
+#### Deploying On Stage/Prod
 
 Once the branch is merged, you can run the following commands to deploy the applocation on stage and then on prod.
 
@@ -46,8 +59,11 @@ If the github-auth-token is invalid, the command will return the following respo
 }
 ```
 
-##### Deploy On Any K8s Cluster
+---
 
+#### Deploying On Any K8s Cluster
+
+This is how you deploy this service using [kustomize](https://kustomize.io/) and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 ```
 cd kubernetes/overlays/stage
 curl -o kustomize --location https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
@@ -56,7 +72,7 @@ chmod u+x ./kustomize
 ./kustomize build . | kubectl apply -f -
 ```
 
-###### Secrets To Configure
+These are the secrets that need to be setup
 
 ```
 experiments-db-secret:
@@ -65,8 +81,25 @@ experiments-db-secret:
 ```
 
 
-Secrets in a kubernetes cluster can be configured using thsi command
+Example of setting up a k8s secret
 
 ```
 kubectl create secret generic experiments-db-secret --from-literal=MONGODB_URL=<mongodb_url>--from-literal=MONGODB_DATABASE=<mongodb_database>
+```
+
+---
+
+#### Starting Service With Mock Data
+
+You can start the service and with some mock data using the following command. Note, you will need to setup MongoDB either in your local machine or a docker-compose file. 
+
+```
+npm start -- \
+--randomData \
+--data '[{
+        "projectId": "5e865ed82a2aeb6436f498dc",
+        "experimentName": "exp1",
+        "startTime": "79839129600000",
+        "endTime": "79839129600005"
+    }]'
 ```
