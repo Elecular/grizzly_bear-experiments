@@ -8,8 +8,8 @@ const createError = require("http-errors");
  *
  * @param {string} projectName
  * @param {string} ownerId
- * @param {string} projectId This is optional
- * @returns {Promise<Object>}
+ * @param {string} [projectId] Optional
+ * @returns {Promise<Project>}
  */
 module.exports.addProject = async (
     ownerId,
@@ -42,7 +42,7 @@ module.exports.addProject = async (
  * Gets all projects that are owned by given ownerId
  *
  * @param {string} ownerId
- * @returns {Promise<Array<Object>>}
+ * @returns {Promise<Array<Project>>}
  */
 module.exports.getProjectsByOwner = async (ownerId) => {
     const db = await mongo.connect();

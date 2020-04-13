@@ -8,8 +8,10 @@ const seedrandom = require("seedrandom");
 /**
  * Adds a new experiment to the database
  *
- * @param {Object} experiment
- * @returns {Promise<Object>}
+ * @async
+ * @param {String} ownerId
+ * @param {Experiment} experiment
+ * @returns {Promise<Experiment>}
  */
 module.exports.addExperiment = async (ownerId, experiment) => {
     const db = await mongo.connect();
@@ -50,7 +52,7 @@ module.exports.addExperiment = async (ownerId, experiment) => {
  *
  * @async
  * @param {string} projectId
- * @returns {Array<Object>} list of experiments
+ * @returns {Promise<Array<Experiment>>} list of experiments
  */
 module.exports.getExperimentsByProjectId = async (projectId) => {
     const db = await mongo.connect();
@@ -74,7 +76,7 @@ module.exports.getExperimentsByProjectId = async (projectId) => {
  * @async
  * @param {string} projectId
  * @param {string} experimentName
- * @returns {Array<Object>} list of experiments
+ * @returns {Promise<Array<Experiment>>} list of experiments
  */
 module.exports.getExperimentByName = async (projectId, experimentName) => {
     const db = await mongo.connect();
@@ -101,7 +103,7 @@ module.exports.getExperimentByName = async (projectId, experimentName) => {
  * @async
  * @param {Timestamp} startTime Unix timestamp in miliseconds
  * @param {Timestamp} endTime Unix timestamp in milliseconds
- * @returns {Array<Object>} list of experiments
+ * @returns {Promise<Array<Experiment>>} list of experiments
  */
 module.exports.getRunningExperimentsInTimeRange = async (
     startTime,
@@ -131,7 +133,17 @@ module.exports.getRunningExperimentsInTimeRange = async (
  * Gets variation for given experiments and user ids
  *
  * @async
- * @param {Array<{projectId: String, experimentName: String, userId: String}>} experimentToUserMapping
+ * @param {Array<{
+    projectId: String, 
+    experimentName: String, 
+    userId: String
+}>} experimentToUserMapping
+* @returns {Promise<Array<{
+    projectId: String, 
+    experimentName: String, 
+    userId: String,
+    variation: String
+}>>}
  */
 module.exports.getVarationForUsers = async (experimentToUserMapping) => {
     const db = await mongo.connect();
@@ -183,7 +195,7 @@ module.exports.getVarationForUsers = async (experimentToUserMapping) => {
  *
  * @async
  * @param {string} ownerId
- * @param {ObjectID} projectId
+ * @param {string} projectId
  */
 module.exports.validateOwner = async (ownerId, projectId) => {
     if (!projectId || !ObjectID.isValid(projectId)) {
@@ -218,8 +230,9 @@ module.exports.validateOwner = async (ownerId, projectId) => {
 /**
  * Gets the variation this user is allocated to
  *
- * @param {Object} experiment
+ * @param {Experiment} experiment
  * @param {String} userId
+ * @returns {String}
  */
 const getVariationForUser = (experiment, userId) => {
     if (!experiment) throw createError(400, "Invalid Experiment");
@@ -246,7 +259,7 @@ const getVariationForUser = (experiment, userId) => {
 /**
  * Does validation on start and end times. Throws error if times are not avlid
  *
- * @param {Object} experiment
+ * @param {Experiment} experiment
  */
 const validateStartAndEndTime = (experiment) => {
     //Checks if start time is valid
@@ -272,7 +285,7 @@ const validateStartAndEndTime = (experiment) => {
 /**
  * Checks if the given variations of an experiment are valid. Throws errors if the variations are not valid
  *
- * @param {Array<Object>} variations
+ * @param {Array<Variation>} variations
  */
 const validateVariations = (variations) => {
     if (!Array.isArray(variations) || variations.length < 2) {
@@ -284,10 +297,9 @@ const validateVariations = (variations) => {
 };
 
 /**
- * All variations must have unique names
+ * All variations must have unique names. Throws an error if the variations do not have unique names
  *
- * @param {Array} variations
- * @returns {boolean}
+ * @param {Array<Variation>} variations
  */
 const validateVariationsHaveUniqueNames = (variations) => {
     let names = {};
@@ -303,8 +315,7 @@ const validateVariationsHaveUniqueNames = (variations) => {
 /**
  * Total traffic on all variations must always add up to 1 in an experiment
  *
- * @param {Array<Object>}
- * @returns {boolean}
+ * @param {Array<Variation>} variations
  */
 const validateVariationsTrafficAddsUpTo1 = (variations) => {
     if (
@@ -324,7 +335,7 @@ const validateVariationsTrafficAddsUpTo1 = (variations) => {
 /**
  * All variations must have the same variables. Throws error if this is not the case
  *
- * @param {Array} variations
+ * @param {Array<Variation>} variations
  */
 const validateVariationsHaveSameVariables = (variations) => {
     //This is the variable set we are going to test against. If variables from other variations do not match, we return false.
@@ -364,7 +375,7 @@ const validateVariationsHaveSameVariables = (variations) => {
 /**
  * All variables in a variation must have unique names
  *
- * @param {Array} variables
+ * @param {Array<Variable>} variables
  * @returns {boolean}
  */
 const variablesHaveUniqueNames = (variables) => {

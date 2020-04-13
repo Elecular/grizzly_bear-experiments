@@ -25,6 +25,7 @@ const owner = "owner";
 const port = process.env.PORT || 3000;
 const mockExperimentsData = JSON.parse(argv.data);
 
+//Returns an experiment object based on given params
 const mockExperiment = (projectId, experimentName, startTime, endTime) => ({
     _id: {
         projectId: projectId,

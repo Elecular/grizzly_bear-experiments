@@ -5,6 +5,10 @@ let mockValues = [0];
  * Used for mocking seedrandom
  */
 module.exports = () => ({
+    /**
+     *
+     * @returns {number}
+     */
     quick: () => {
         const value = mockValues[index % mockValues.length];
         index++;
