@@ -1,6 +1,6 @@
 {
     "info": {
-        "_postman_id": "d40a8961-d01b-41ad-8748-5fffd23993e8",
+        "_postman_id": "ed1c0f9e-c956-4af5-987f-df64150beb86",
         "name": "acceptance_test",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
@@ -643,8 +643,9 @@
                             }
                         },
                         "url": {
-                            "raw": "localhost/experiment/timerange/1685473303000/1685473306000",
+                            "raw": "localhost:8080/experiment/timerange/1685473303000/1685473306000",
                             "host": ["localhost"],
+                            "port": "8080",
                             "path": [
                                 "experiment",
                                 "timerange",
@@ -697,8 +698,9 @@
                             }
                         },
                         "url": {
-                            "raw": "localhost/experiment/variations",
+                            "raw": "localhost:8080/experiment/variations",
                             "host": ["localhost"],
+                            "port": "8080",
                             "path": ["experiment", "variations"]
                         }
                     },

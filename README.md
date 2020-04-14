@@ -12,6 +12,8 @@ You can run the following command to start the service in development mode. The 
 npm run start:dev
 ```
 
+The service is serving the public API on port **80** and the private API on port **8080**. When the service is deployed, the public API should be available to the world while the **private API should only be avaialable to other services and NOT to the public**. The private API does not have any authentication mechanism since it assumes the origin of all its requests are from trusted parties. 
+
 ---
 
 ### Testing

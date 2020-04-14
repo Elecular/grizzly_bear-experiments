@@ -1,9 +1,9 @@
 /**
- * This API is used for creating and accessing experiments
+ * This API is used for creating and accessing experiments. This is a Public API
  */
 
 const express = require("express");
-const experimentController = require("../controllers/experiment");
+const experimentController = require("../../controllers/experiment");
 const router = express.Router();
 
 /**
@@ -59,35 +59,6 @@ router.get("/projectId/:projectId/name/:name", async function (req, res, next) {
                 req.params.name,
             ),
         );
-    } catch (err) {
-        next(err);
-    }
-});
-
-/**
- * Gets all running experiments with given date
- */
-router.get("/timerange/:startTime/:endTime", async function (req, res, next) {
-    try {
-        res.status(200);
-        res.json(
-            await experimentController.getRunningExperimentsInTimeRange(
-                req.params.startTime,
-                req.params.endTime,
-            ),
-        );
-    } catch (err) {
-        next(err);
-    }
-});
-
-/**
- * Gets experiment by given project id and name
- */
-router.get("/variations", async function (req, res, next) {
-    try {
-        res.status(200);
-        res.json(await experimentController.getVarationForUsers(req.body));
     } catch (err) {
         next(err);
     }

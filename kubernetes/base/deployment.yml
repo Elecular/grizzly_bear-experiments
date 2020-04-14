@@ -19,7 +19,8 @@ spec:
           image: XXXX
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 3000
+            - containerPort: 80
+            - containerPort: 8080
           env:
             - name: MONGODB_URL
               valueFrom:
