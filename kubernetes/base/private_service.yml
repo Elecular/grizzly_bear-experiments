@@ -1,16 +1,15 @@
 apiVersion: "v1"
 kind: "Service"
 metadata:
-  name: "experiments"
+  name: "private-experiments"
   namespace: "default"
   labels:
     app: "experiments"
 spec:
   ports:
     - protocol: "TCP"
-      port: 80
-      targetPort: 3000
+      port: 8080
+      targetPort: 8080
   selector:
     app: "experiments"
-  type: "LoadBalancer"
-  loadBalancerIP: ""
+  type: "ClusterIP"
