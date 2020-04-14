@@ -1,6 +1,6 @@
 {
     "info": {
-        "_postman_id": "28e3dbbc-2272-425e-9b65-294b128b7835",
+        "_postman_id": "1057c3b1-77b5-4708-ae51-72eea0ad9f1d",
         "name": "acceptance_test",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
@@ -690,7 +690,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "[{\n\t\"projectId\": \"{{sampleProjectId}}\",\n\t\"experimentName\": \"exp1\",\n\t\"userId\": \"user1\"\n}, {\n\t\"projectId\": \"{{sampleProjectId}}\",\n\t\"experimentName\": \"exp2\",\n\t\"userId\": \"user1\"\n}, {\n\t\"projectId\": \"{{sampleProjectId}}\",\n\t\"experimentName\": \"exp2\",\n\t\"userId\": \"user5\"\n}]",
+                            "raw": "[{\n\t\"projectId\": \"{{sampleProjectId}}\",\n\t\"experimentName\": \"exp1\",\n\t\"userId\": \"24c9e15e52afc47c225b757e7bee1f9d\"\n}, {\n\t\"projectId\": \"{{sampleProjectId}}\",\n\t\"experimentName\": \"exp2\",\n\t\"userId\": \"24c9e15e52afc47c225b757e7bee1f9d\"\n}, {\n\t\"projectId\": \"{{sampleProjectId}}\",\n\t\"experimentName\": \"exp2\",\n\t\"userId\": \"f0b3b7623d3bedf898459673d778319e\"\n}]",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -876,7 +876,7 @@
                                     "    pm.response.to.have.status(200);",
                                     "});",
                                     "",
-                                    "pm.test(\"Body has _id\", function() {",
+                                    "pm.test(\"Body has variation name\", function() {",
                                     "    pm.expect(pm.response.json()).to.have.property('variationName');",
                                     "});",
                                     ""

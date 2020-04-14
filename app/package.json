@@ -16,6 +16,7 @@
         "express": "~4.16.1",
         "http-errors": "^1.7.3",
         "log4js": "^6.1.2",
+        "md5": "^2.2.1",
         "mongodb": "^3.5.5",
         "morgan": "~1.9.1",
         "object-hash": "^2.0.3",

@@ -5,6 +5,7 @@ const assert = require("assert");
 const mongo = require("../../db/mongodb");
 const projectController = require("../../controllers/project");
 const experimentController = require("../../controllers/experiment");
+const md5 = require("md5");
 require("../../controllers/typedef"); //Used for type definitions
 
 const ownerId = "testOwner";
@@ -75,12 +76,12 @@ describe("Experiment Controller", () => {
                     {
                         projectId: projects[0]._id,
                         experimentName: "exp1",
-                        userId: "user1",
+                        userId: md5("user1"),
                     },
                     {
                         projectId: projects[0]._id,
                         experimentName: "exp1",
-                        userId: "user2",
+                        userId: md5("user2"),
                     },
                 ],
             );
@@ -88,14 +89,14 @@ describe("Experiment Controller", () => {
             assert.deepStrictEqual(variations[0], {
                 projectId: projects[0]._id,
                 experimentName: "exp1",
-                userId: "user1",
+                userId: md5("user1"),
                 variation: "variation1",
             });
 
             assert.deepStrictEqual(variations[1], {
                 projectId: projects[0]._id,
                 experimentName: "exp1",
-                userId: "user2",
+                userId: md5("user2"),
                 variation: "variation2",
             });
         });
@@ -112,12 +113,12 @@ describe("Experiment Controller", () => {
                     {
                         projectId: projects[0]._id,
                         experimentName: "exp1",
-                        userId: "user1",
+                        userId: md5("user1"),
                     },
                     {
                         projectId: projects[0]._id,
                         experimentName: "exp2",
-                        userId: "user1",
+                        userId: md5("user1"),
                     },
                 ],
             );
@@ -125,14 +126,14 @@ describe("Experiment Controller", () => {
             assert.deepStrictEqual(variations[0], {
                 projectId: projects[0]._id,
                 experimentName: "exp1",
-                userId: "user1",
+                userId: md5("user1"),
                 variation: "variation1",
             });
 
             assert.deepStrictEqual(variations[1], {
                 projectId: projects[0]._id,
                 experimentName: "exp2",
-                userId: "user1",
+                userId: md5("user1"),
                 variation: "variation2",
             });
         });
@@ -149,22 +150,22 @@ describe("Experiment Controller", () => {
                     {
                         projectId: projects[0]._id,
                         experimentName: "exp1",
-                        userId: "user1",
+                        userId: md5("user1"),
                     },
                     {
                         projectId: projects[0]._id,
                         experimentName: "exp2",
-                        userId: "user43",
+                        userId: md5("user43"),
                     },
                     {
                         projectId: projects[1]._id,
                         experimentName: "exp1",
-                        userId: "user1",
+                        userId: md5("user1"),
                     },
                     {
                         projectId: projects[1]._id,
                         experimentName: "exp1",
-                        userId: "user4",
+                        userId: md5("user4"),
                     },
                 ],
             );
@@ -172,28 +173,28 @@ describe("Experiment Controller", () => {
             assert.deepStrictEqual(variations[0], {
                 projectId: projects[0]._id,
                 experimentName: "exp1",
-                userId: "user1",
+                userId: md5("user1"),
                 variation: "variation1",
             });
 
             assert.deepStrictEqual(variations[1], {
                 projectId: projects[0]._id,
                 experimentName: "exp2",
-                userId: "user43",
+                userId: md5("user43"),
                 variation: "variation1",
             });
 
             assert.deepStrictEqual(variations[2], {
                 projectId: projects[1]._id,
                 experimentName: "exp1",
-                userId: "user1",
+                userId: md5("user1"),
                 variation: "variation2",
             });
 
             assert.deepStrictEqual(variations[3], {
                 projectId: projects[1]._id,
                 experimentName: "exp1",
-                userId: "user4",
+                userId: md5("user4"),
                 variation: "variation1",
             });
         });
@@ -209,17 +210,40 @@ describe("Experiment Controller", () => {
                     {
                         projectId: projects[0]._id,
                         experimentName: "exp1",
-                        userId: "user1",
+                        userId: md5("user1"),
                     },
                     {
                         projectId: projects[0]._id,
                         experimentName: "invalidexp",
-                        userId: "user1",
+                        userId: md5("user1"),
                     },
                 ]);
                 assert.fail();
             } catch (e) {
                 assert.equal(e.message, "Invalid Experiment");
+            }
+        });
+
+        it("When invalid hash sent", async () => {
+            const projects = await projectController.getProjectsByOwner(
+                ownerId,
+            );
+            try {
+                await experimentController.getVariationForMultipleUsers([
+                    {
+                        projectId: projects[0]._id,
+                        experimentName: "exp1",
+                        userId: md5("user1"),
+                    },
+                    {
+                        projectId: projects[0]._id,
+                        experimentName: "exp2",
+                        userId: "user43",
+                    },
+                ]);
+                assert.fail();
+            } catch (e) {
+                assert.equal(e.message, "userId must be md5 hahsed");
             }
         });
 

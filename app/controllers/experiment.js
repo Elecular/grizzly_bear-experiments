@@ -4,7 +4,7 @@ const Timestamp = require("mongodb").Timestamp;
 const logger = require("log4js").getLogger();
 const createError = require("http-errors");
 const seedrandom = require("seedrandom");
-
+const md5 = require("md5");
 /**
  * Adds a new experiment to the database
  *
@@ -111,7 +111,7 @@ module.exports.getVariationForSingleUser = async (
         projectId,
         experimentName,
     );
-    return getVariation(experiment, userId, true);
+    return getVariation(experiment, md5(userId), true);
 };
 
 /**
@@ -147,7 +147,7 @@ module.exports.getRunningExperimentsInTimeRange = async (
 };
 
 /**
- * Gets variation for given experiments and user ids
+ * Gets variation for given experiments and user ids. THE PROVIDED USER ID MUST BE MD5 HASHED
  *
  * @async
  * @param {Array<{
@@ -256,6 +256,8 @@ module.exports.validateOwner = async (ownerId, projectId) => {
  */
 const getVariation = (experiment, userId, fullScope = false) => {
     if (!experiment) throw createError(400, "Invalid Experiment");
+    if (!userId.match(/^[a-f0-9]{32}$/))
+        throw createError(500, "userId must be md5 hahsed");
     const value = seedrandom(experiment._id.experimentName + userId).quick();
     const variations = experiment.variations.sort((x, y) =>
         x.variationName >= y.variationName ? 1 : -1,
