@@ -5,6 +5,7 @@ const assert = require("assert");
 const mongo = require("../../db/mongodb");
 const projectController = require("../../controllers/project");
 const experimentController = require("../../controllers/experiment");
+require("../../controllers/typedef"); //Used for type definitions
 
 const ownerId = "testOwner";
 
@@ -39,8 +40,27 @@ afterAll(async () => {
 describe("Experiment Controller", () => {
     describe("Can get variations", () => {
         it("When zero elements are passed", async () => {
-            let variations = await experimentController.getVarationForUsers([]);
+            let variations = await experimentController.getVariationForMultipleUsers(
+                [],
+            );
             assert.equal(variations.length, 0);
+        });
+
+        it("for a single user", async () => {
+            const projects = await projectController.getProjectsByOwner(
+                ownerId,
+            );
+
+            seedrandom().mockRandomValues([0.05, 0.11]);
+
+            let variation = await experimentController.getVariationForSingleUser(
+                projects[0]._id,
+                "exp1",
+                "user1",
+            );
+            assert.equal(variation.variationName, "variation1");
+            assert.equal(variation.normalizedTrafficAmount, 0.1);
+            assert.equal(variation.variables.length, 2);
         });
 
         it("When two different users are within same experiment", async () => {
@@ -50,18 +70,20 @@ describe("Experiment Controller", () => {
 
             seedrandom().mockRandomValues([0.05, 0.11]);
 
-            let variations = await experimentController.getVarationForUsers([
-                {
-                    projectId: projects[0]._id,
-                    experimentName: "exp1",
-                    userId: "user1",
-                },
-                {
-                    projectId: projects[0]._id,
-                    experimentName: "exp1",
-                    userId: "user2",
-                },
-            ]);
+            let variations = await experimentController.getVariationForMultipleUsers(
+                [
+                    {
+                        projectId: projects[0]._id,
+                        experimentName: "exp1",
+                        userId: "user1",
+                    },
+                    {
+                        projectId: projects[0]._id,
+                        experimentName: "exp1",
+                        userId: "user2",
+                    },
+                ],
+            );
 
             assert.deepStrictEqual(variations[0], {
                 projectId: projects[0]._id,
@@ -85,18 +107,20 @@ describe("Experiment Controller", () => {
 
             seedrandom().mockRandomValues([0.05, 0.11]);
 
-            let variations = await experimentController.getVarationForUsers([
-                {
-                    projectId: projects[0]._id,
-                    experimentName: "exp1",
-                    userId: "user1",
-                },
-                {
-                    projectId: projects[0]._id,
-                    experimentName: "exp2",
-                    userId: "user1",
-                },
-            ]);
+            let variations = await experimentController.getVariationForMultipleUsers(
+                [
+                    {
+                        projectId: projects[0]._id,
+                        experimentName: "exp1",
+                        userId: "user1",
+                    },
+                    {
+                        projectId: projects[0]._id,
+                        experimentName: "exp2",
+                        userId: "user1",
+                    },
+                ],
+            );
 
             assert.deepStrictEqual(variations[0], {
                 projectId: projects[0]._id,
@@ -120,28 +144,30 @@ describe("Experiment Controller", () => {
 
             seedrandom().mockRandomValues([0.05, 0.1, 1, 0]);
 
-            let variations = await experimentController.getVarationForUsers([
-                {
-                    projectId: projects[0]._id,
-                    experimentName: "exp1",
-                    userId: "user1",
-                },
-                {
-                    projectId: projects[0]._id,
-                    experimentName: "exp2",
-                    userId: "user43",
-                },
-                {
-                    projectId: projects[1]._id,
-                    experimentName: "exp1",
-                    userId: "user1",
-                },
-                {
-                    projectId: projects[1]._id,
-                    experimentName: "exp1",
-                    userId: "user4",
-                },
-            ]);
+            let variations = await experimentController.getVariationForMultipleUsers(
+                [
+                    {
+                        projectId: projects[0]._id,
+                        experimentName: "exp1",
+                        userId: "user1",
+                    },
+                    {
+                        projectId: projects[0]._id,
+                        experimentName: "exp2",
+                        userId: "user43",
+                    },
+                    {
+                        projectId: projects[1]._id,
+                        experimentName: "exp1",
+                        userId: "user1",
+                    },
+                    {
+                        projectId: projects[1]._id,
+                        experimentName: "exp1",
+                        userId: "user4",
+                    },
+                ],
+            );
 
             assert.deepStrictEqual(variations[0], {
                 projectId: projects[0]._id,
@@ -179,7 +205,7 @@ describe("Experiment Controller", () => {
                 ownerId,
             );
             try {
-                await experimentController.getVarationForUsers([
+                await experimentController.getVariationForMultipleUsers([
                     {
                         projectId: projects[0]._id,
                         experimentName: "exp1",
@@ -191,6 +217,22 @@ describe("Experiment Controller", () => {
                         userId: "user1",
                     },
                 ]);
+                assert.fail();
+            } catch (e) {
+                assert.equal(e.message, "Invalid Experiment");
+            }
+        });
+
+        it("for single user when wrong project id and experiment id is sent", async () => {
+            const projects = await projectController.getProjectsByOwner(
+                ownerId,
+            );
+            try {
+                await experimentController.getVariationForSingleUser(
+                    projects[0]._id,
+                    "invalidexp",
+                    "user1",
+                );
                 assert.fail();
             } catch (e) {
                 assert.equal(e.message, "Invalid Experiment");

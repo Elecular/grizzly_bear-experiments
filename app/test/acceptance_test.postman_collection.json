@@ -1,6 +1,6 @@
 {
     "info": {
-        "_postman_id": "ed1c0f9e-c956-4af5-987f-df64150beb86",
+        "_postman_id": "28e3dbbc-2272-425e-9b65-294b128b7835",
         "name": "acceptance_test",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
@@ -820,9 +820,10 @@
                                     "    pm.response.to.have.status(200);",
                                     "});",
                                     "",
-                                    "pm.test(\"Response has experiment\", function() {",
-                                    "    pm.expect(pm.response.json().length).to.equal(1);",
-                                    "});"
+                                    "pm.test(\"Body has _id\", function() {",
+                                    "    pm.expect(pm.response.json()).to.have.property('_id');",
+                                    "});",
+                                    ""
                                 ],
                                 "type": "text/javascript"
                             }
@@ -858,6 +859,64 @@
                                 "{{sampleProjectId}}",
                                 "name",
                                 "exp1"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get  variation with given projectI, Name and user id",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "a7b22320-ab53-4493-b868-a356fc851b36",
+                                "exec": [
+                                    "pm.test(\"Status code is 200\", function () {",
+                                    "    pm.response.to.have.status(200);",
+                                    "});",
+                                    "",
+                                    "pm.test(\"Body has _id\", function() {",
+                                    "    pm.expect(pm.response.json()).to.have.property('variationName');",
+                                    "});",
+                                    ""
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    },
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "ownerid",
+                                "type": "text",
+                                "value": "testOwner"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "localhost/experiment/projectId/{{sampleProjectId}}/name/exp1/variation/user1",
+                            "host": ["localhost"],
+                            "path": [
+                                "experiment",
+                                "projectId",
+                                "{{sampleProjectId}}",
+                                "name",
+                                "exp1",
+                                "variation",
+                                "user1"
                             ]
                         }
                     },

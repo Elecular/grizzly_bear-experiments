@@ -64,4 +64,25 @@ router.get("/projectId/:projectId/name/:name", async function (req, res, next) {
     }
 });
 
+/**
+ * Gets the variation for given project, experiment and user
+ */
+router.get(
+    "/projectId/:projectId/name/:name/variation/:userId",
+    async function (req, res, next) {
+        try {
+            res.status(200);
+            res.json(
+                await experimentController.getVariationForSingleUser(
+                    req.params.projectId,
+                    req.params.name,
+                    req.params.userId,
+                ),
+            );
+        } catch (err) {
+            next(err);
+        }
+    },
+);
+
 module.exports = router;

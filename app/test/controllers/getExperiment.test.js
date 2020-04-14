@@ -46,6 +46,22 @@ describe("Experiment Controller", () => {
             assert.equal(experiments[1]._id.experimentName, "exp2");
         });
 
+        it("When given project id and experiment name is given", async () => {
+            const projects = await projectController.getProjectsByOwner(
+                ownerId,
+            );
+            await experimentController.addExperiment(
+                ownerId,
+                mockExperiment(projects[0]._id, "exp1"),
+            );
+
+            const experiment = await experimentController.getExperimentByName(
+                projects[0]._id,
+                "exp1",
+            );
+            assert.equal(experiment._id.experimentName, "exp1");
+        });
+
         it("When no experiments are created", async () => {
             await projectController.addProject(ownerId, "testProject2");
             const projects = await projectController.getProjectsByOwner(
@@ -56,6 +72,12 @@ describe("Experiment Controller", () => {
                 projects[1]._id,
             );
             assert.equal(experiments.length, 0);
+
+            const experiment = await experimentController.getExperimentByName(
+                projects[1]._id,
+                "exp1",
+            );
+            assert.equal(experiment, null);
         });
     });
 

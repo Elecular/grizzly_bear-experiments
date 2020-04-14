@@ -29,7 +29,9 @@ router.get("/timerange/:startTime/:endTime", async function (req, res, next) {
 router.get("/variations", async function (req, res, next) {
     try {
         res.status(200);
-        res.json(await experimentController.getVarationForUsers(req.body));
+        res.json(
+            await experimentController.getVariationForMultipleUsers(req.body),
+        );
     } catch (err) {
         next(err);
     }

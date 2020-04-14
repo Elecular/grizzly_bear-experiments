@@ -76,25 +76,42 @@ module.exports.getExperimentsByProjectId = async (projectId) => {
  * @async
  * @param {string} projectId
  * @param {string} experimentName
- * @returns {Promise<Array<Experiment>>} list of experiments
+ * @returns {Promise<Experiment>}
  */
 module.exports.getExperimentByName = async (projectId, experimentName) => {
     const db = await mongo.connect();
 
     try {
-        return await db
-            .collection("experiments")
-            .find({
-                _id: {
-                    projectId: ObjectID(projectId),
-                    experimentName,
-                },
-            })
-            .toArray();
+        return await db.collection("experiments").findOne({
+            _id: {
+                projectId: ObjectID(projectId),
+                experimentName,
+            },
+        });
     } catch (err) {
         logger.error(err);
         throw new createError(500);
     }
+};
+
+/**
+ *
+ * @async
+ * @param {String} projectId
+ * @param {String} experimentName
+ * @param {String} userId
+ * @returns {Promise<Variation>}
+ */
+module.exports.getVariationForSingleUser = async (
+    projectId,
+    experimentName,
+    userId,
+) => {
+    const experiment = await this.getExperimentByName(
+        projectId,
+        experimentName,
+    );
+    return getVariation(experiment, userId, true);
 };
 
 /**
@@ -145,7 +162,9 @@ module.exports.getRunningExperimentsInTimeRange = async (
     variation: String
 }>>}
  */
-module.exports.getVarationForUsers = async (experimentToUserMapping) => {
+module.exports.getVariationForMultipleUsers = async (
+    experimentToUserMapping,
+) => {
     const db = await mongo.connect();
 
     //Calculating all ids needed for searching experiments
@@ -181,7 +200,7 @@ module.exports.getVarationForUsers = async (experimentToUserMapping) => {
         projectId: experimentToUser.projectId,
         experimentName: experimentToUser.experimentName,
         userId: experimentToUser.userId,
-        variation: getVariationForUser(
+        variation: getVariation(
             experiments[
                 experimentToUser.projectId + experimentToUser.experimentName
             ],
@@ -232,9 +251,10 @@ module.exports.validateOwner = async (ownerId, projectId) => {
  *
  * @param {Experiment} experiment
  * @param {String} userId
- * @returns {String}
+ * @param {boolean} fullScope If set to true, it will return all details about variation. If set to false, it will only return the name
+ * @returns {String|Variation}
  */
-const getVariationForUser = (experiment, userId) => {
+const getVariation = (experiment, userId, fullScope = false) => {
     if (!experiment) throw createError(400, "Invalid Experiment");
     const value = seedrandom(experiment._id.experimentName + userId).quick();
     const variations = experiment.variations.sort((x, y) =>
@@ -244,7 +264,7 @@ const getVariationForUser = (experiment, userId) => {
     for (const variation of variations) {
         currentValue += variation.normalizedTrafficAmount;
         if (value <= currentValue) {
-            return variation.variationName;
+            return fullScope ? variation : variation.variationName;
         }
     }
 
