@@ -80,7 +80,6 @@ for (const mockExperimentData of mockExperimentsData) {
             }
         })
         .catch((err) => {
-            console.log(err);
             if (err.response.status === 409) {
                 addedProjects++;
                 if (addedProjects === mockExperimentsData.length) {
