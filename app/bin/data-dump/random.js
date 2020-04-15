@@ -8,7 +8,7 @@
  * experiments-timerange: comma seperated list of time range in unix milliseconds
  *
  * Example usage:
-PORT=80 node bin/data-dump/random.js \
+node bin/data-dump/random.js \
     --data '[{
         "projectId": "5e865ed82a2aeb6436f498dc",
         "experimentName": "exp1",
@@ -22,7 +22,7 @@ const argv = require("yargs").argv;
 
 //Parsing Args
 const owner = "owner";
-const port = process.env.PORT || 3000;
+const port = 80;
 const mockExperimentsData = JSON.parse(argv.data);
 
 //Returns an experiment object based on given params
@@ -80,6 +80,7 @@ for (const mockExperimentData of mockExperimentsData) {
             }
         })
         .catch((err) => {
+            console.log(err);
             if (err.response.status === 409) {
                 addedProjects++;
                 if (addedProjects === mockExperimentsData.length) {
