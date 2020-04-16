@@ -99,8 +99,8 @@ const addExperiments = () => {
             data: mockExperiment(
                 mockExperimentData.projectId,
                 mockExperimentData.experimentName,
-                mockExperimentData.startTime,
-                mockExperimentData.endTime,
+                Number(mockExperimentData.startTime),
+                Number(mockExperimentData.endTime),
             ),
             headers: {
                 ownerid: owner,
