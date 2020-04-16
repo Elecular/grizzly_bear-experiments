@@ -1,6 +1,5 @@
 const mongo = require("../db/mongodb");
 const ObjectID = require("mongodb").ObjectID;
-const Timestamp = require("mongodb").Timestamp;
 const logger = require("log4js").getLogger();
 const createError = require("http-errors");
 const seedrandom = require("seedrandom");
@@ -29,12 +28,8 @@ module.exports.addExperiment = async (ownerId, experiment) => {
                 projectId: ObjectID(projectId),
             },
             projectId: ObjectID(projectId),
-            startTime: Timestamp.fromNumber(
-                experiment.startTime ? experiment.startTime : Date.now(),
-            ),
-            endTime: experiment.endTime
-                ? Timestamp.fromNumber(experiment.endTime)
-                : null,
+            startTime: experiment.startTime ? experiment.startTime : Date.now(),
+            endTime: experiment.endTime ? experiment.endTime : null,
         });
 
         return response.ops[0];
@@ -118,8 +113,8 @@ module.exports.getVariationForSingleUser = async (
  * Gets all experiments that were running during the given time range
  *
  * @async
- * @param {Timestamp} startTime Unix timestamp in miliseconds
- * @param {Timestamp} endTime Unix timestamp in milliseconds
+ * @param {numer} startTime Unix timestamp in miliseconds
+ * @param {number} endTime Unix timestamp in milliseconds
  * @returns {Promise<Array<Experiment>>} list of experiments
  */
 module.exports.getRunningExperimentsInTimeRange = async (
@@ -133,10 +128,10 @@ module.exports.getRunningExperimentsInTimeRange = async (
             .find({
                 $or: [
                     { endTime: null },
-                    { endTime: { $gte: Timestamp.fromNumber(startTime) } },
+                    { endTime: { $gte: Number(startTime) } },
                 ],
                 startTime: {
-                    $lte: Timestamp.fromNumber(endTime),
+                    $lte: Number(endTime),
                 },
             })
             .toArray();

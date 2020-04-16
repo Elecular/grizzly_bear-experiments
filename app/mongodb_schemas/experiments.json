@@ -21,11 +21,11 @@
             "description": "This experiment is part of a project"
         },
         "startTime": {
-            "bsonType": "timestamp",
+            "bsonType": "number",
             "description": "Unix timestamp of when the experiment should start"
         },
         "endTime": {
-            "bsonType": ["timestamp", "null"],
+            "bsonType": ["number", "null"],
             "description": "Unix timestamp of when the experiment should end"
         },
         "variations": {
