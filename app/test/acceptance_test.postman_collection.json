@@ -1,6 +1,6 @@
 {
     "info": {
-        "_postman_id": "1057c3b1-77b5-4708-ae51-72eea0ad9f1d",
+        "_postman_id": "4cc02018-eb0c-4e97-b3d6-03ac222eb856",
         "name": "acceptance_test",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
@@ -676,11 +676,8 @@
                             }
                         }
                     ],
-                    "protocolProfileBehavior": {
-                        "disableBodyPruning": true
-                    },
                     "request": {
-                        "method": "GET",
+                        "method": "POST",
                         "header": [
                             {
                                 "key": "ownerid",

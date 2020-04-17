@@ -26,7 +26,7 @@ router.get("/timerange/:startTime/:endTime", async function (req, res, next) {
 /**
  * Gets all variations of given combination of projectId, experimentId and userId
  */
-router.get("/variations", async function (req, res, next) {
+router.post("/variations", async function (req, res, next) {
     try {
         res.status(200);
         res.json(
