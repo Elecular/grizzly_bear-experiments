@@ -29,7 +29,11 @@ publicApp.set("port", 80);
 const privateApp = express();
 
 privateApp.use(logger("dev"));
-privateApp.use(express.json());
+privateApp.use(
+    express.json({
+        limit: "20000MB",
+    }),
+);
 privateApp.use("/experiment/", privateExperimentRouter);
 
 privateApp.set("port", 8080);
