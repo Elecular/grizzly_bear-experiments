@@ -22,7 +22,9 @@
                                     "",
                                     "pm.test(\"Body has id\", function() {",
                                     "    pm.expect(pm.response.json()).to.have.property('_id');",
-                                    "});"
+                                    "});",
+                                    "",
+                                    "pm.environment.set(\"sampleProjectId\", pm.response.json()[\"_id\"]);"
                                 ],
                                 "type": "text/javascript"
                             }
@@ -50,6 +52,118 @@
                             "raw": "localhost/project",
                             "host": ["localhost"],
                             "path": ["project"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Validate Owner",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "a7b22320-ab53-4493-b868-a356fc851b36",
+                                "exec": [
+                                    "pm.test(\"Status code is 200\", function () {",
+                                    "    pm.response.to.have.status(200);",
+                                    "});",
+                                    "",
+                                    "pm.test(\"isOwner is set to true\", function() {",
+                                    "    pm.expect(pm.response.json().isOwner).to.eql(true);",
+                                    "",
+                                    "});"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    },
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "ownerid",
+                                "type": "text",
+                                "value": "testOwner"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "localhost:8080/project/{{sampleProjectId}}/validateOwner/testOwner",
+                            "host": ["localhost"],
+                            "port": "8080",
+                            "path": [
+                                "project",
+                                "{{sampleProjectId}}",
+                                "validateOwner",
+                                "testOwner"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Validate Invalid Owner",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "a7b22320-ab53-4493-b868-a356fc851b36",
+                                "exec": [
+                                    "pm.test(\"Status code is 200\", function () {",
+                                    "    pm.response.to.have.status(200);",
+                                    "});",
+                                    "",
+                                    "pm.test(\"isOwner is set to false\", function() {",
+                                    "    pm.expect(pm.response.json().isOwner).to.eql(false);",
+                                    "",
+                                    "});"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    },
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "ownerid",
+                                "type": "text",
+                                "value": "testOwner"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "localhost:8080/project/{{sampleProjectId}}/validateOwner/invalidOwner",
+                            "host": ["localhost"],
+                            "port": "8080",
+                            "path": [
+                                "project",
+                                "{{sampleProjectId}}",
+                                "validateOwner",
+                                "invalidOwner"
+                            ]
                         }
                     },
                     "response": []
@@ -379,108 +493,6 @@
                             "raw": "localhost/project",
                             "host": ["localhost"],
                             "path": ["project"]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Validate Owner",
-                    "event": [
-                        {
-                            "listen": "test",
-                            "script": {
-                                "id": "a7b22320-ab53-4493-b868-a356fc851b36",
-                                "exec": [
-                                    "pm.test(\"Status code is 200\", function () {",
-                                    "    pm.response.to.have.status(200);",
-                                    "});",
-                                    "",
-                                    "pm.test(\"Body has id\", function() {",
-                                    "    pm.expect(pm.response.json().isOwner).to.eql(true);",
-                                    "",
-                                    "});"
-                                ],
-                                "type": "text/javascript"
-                            }
-                        }
-                    ],
-                    "protocolProfileBehavior": {
-                        "disableBodyPruning": true
-                    },
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "ownerid",
-                                "type": "text",
-                                "value": "testOwner"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n\t\"ownerId\": \"testOwner\",\n\t\"projectId\": \"{{sampleProjectId}}\"\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "localhost:8080/experiment/validateOwner",
-                            "host": ["localhost"],
-                            "port": "8080",
-                            "path": ["experiment", "validateOwner"]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Validate Invalid Owner",
-                    "event": [
-                        {
-                            "listen": "test",
-                            "script": {
-                                "id": "a7b22320-ab53-4493-b868-a356fc851b36",
-                                "exec": [
-                                    "pm.test(\"Status code is 200\", function () {",
-                                    "    pm.response.to.have.status(200);",
-                                    "});",
-                                    "",
-                                    "pm.test(\"Body has id\", function() {",
-                                    "    pm.expect(pm.response.json().isOwner).to.eql(false);",
-                                    "",
-                                    "});"
-                                ],
-                                "type": "text/javascript"
-                            }
-                        }
-                    ],
-                    "protocolProfileBehavior": {
-                        "disableBodyPruning": true
-                    },
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "ownerid",
-                                "type": "text",
-                                "value": "testOwner"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n\t\"ownerId\": \"invalidOwner\",\n\t\"projectId\": \"{{sampleProjectId}}\"\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "localhost:8080/experiment/validateOwner",
-                            "host": ["localhost"],
-                            "port": "8080",
-                            "path": ["experiment", "validateOwner"]
                         }
                     },
                     "response": []

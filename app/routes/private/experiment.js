@@ -37,20 +37,4 @@ router.post("/variations", async function (req, res, next) {
     }
 });
 
-/**
- * Checks if the given owner id is the actual owner of the given project
- */
-router.get("/validateOwner", async (req, res, next) => {
-    try {
-        await experimentController.validateOwner(
-            req.body.ownerId,
-            req.body.projectId,
-        );
-        res.json({ isOwner: true });
-    } catch (err) {
-        if (err.statusCode === 401) res.json({ isOwner: false });
-        else next(err);
-    }
-});
-
 module.exports = router;

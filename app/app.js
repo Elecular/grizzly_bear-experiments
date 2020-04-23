@@ -6,6 +6,7 @@ const publicIndexRouter = require("./routes/public/index");
 const publicProjectRouter = require("./routes/public/project");
 const publicExperimentRouter = require("./routes/public/experiment");
 const privateExperimentRouter = require("./routes/private/experiment");
+const privateProjectRouter = require("./routes/private/project");
 
 /* * * * * * * PUBLIC APP * * * * * * */
 
@@ -31,6 +32,7 @@ const privateApp = express();
 privateApp.use(logger("dev"));
 privateApp.use(express.json());
 privateApp.use("/experiment/", privateExperimentRouter);
+privateApp.use("/project/", privateProjectRouter);
 
 privateApp.set("port", 8080);
 

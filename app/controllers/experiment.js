@@ -4,6 +4,8 @@ const logger = require("log4js").getLogger();
 const createError = require("http-errors");
 const seedrandom = require("seedrandom");
 const md5 = require("md5");
+const projectController = require("./project");
+
 /**
  * Adds a new experiment to the database
  *
@@ -16,7 +18,7 @@ module.exports.addExperiment = async (ownerId, experiment) => {
     const db = await mongo.connect();
     const { projectId } = experiment._id;
 
-    await this.validateOwner(ownerId, projectId);
+    await projectController.validateOwner(ownerId, projectId);
     validateStartAndEndTime(experiment);
     validateVariations(experiment.variations);
 
@@ -202,39 +204,6 @@ module.exports.getVariationForMultipleUsers = async (
             experimentToUser.userId,
         ),
     }));
-};
-
-/**
- * Checks if the given owner owns this project. Throws error if it is not owner
- *
- * @async
- * @param {string} ownerId
- * @param {string} projectId
- */
-module.exports.validateOwner = async (ownerId, projectId) => {
-    if (!projectId || !ObjectID.isValid(projectId)) {
-        throw new createError(400, "Invalid projectId");
-    }
-
-    const db = await mongo.connect();
-    let project = null;
-
-    try {
-        project = await db.collection("projects").findOne({
-            _id: ObjectID(projectId),
-            ownerId,
-        });
-    } catch (err) {
-        logger.error(err);
-        throw new createError(500);
-    }
-
-    if (project === null) {
-        throw new createError(
-            401,
-            "Not Authorized to create experiment under given project",
-        );
-    }
 };
 
 /*

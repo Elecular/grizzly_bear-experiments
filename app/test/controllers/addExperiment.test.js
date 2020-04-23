@@ -20,19 +20,17 @@ afterAll(async () => {
 });
 
 describe("Experiment Controller", () => {
-    it("cannot add an experiment when unauthorized", async () => {
+    it("cannot add an experiment if unauthorized", async () => {
         const projects = await projectController.getProjectsByOwner(ownerId);
 
         try {
             await experimentController.addExperiment(
-                "invalid owner",
+                "invalid user id",
                 mockExperiment(projects[0]._id.toString()),
             );
+            assert.fail();
         } catch (err) {
-            assert.equal(
-                err.message,
-                "Not Authorized to create experiment under given project",
-            );
+            assert.equal(err.message, "Not Authorized");
         }
     });
 
@@ -94,23 +92,6 @@ describe("Experiment Controller", () => {
         assert.equal(addedExperiment._id.projectId, projects[0]._id.toString());
         assert.equal(addedExperiment.startTime, startTime);
         assert.equal(addedExperiment.endTime, endTime);
-    });
-
-    it("cannot add an experiment if unauthorized", async () => {
-        const projects = await projectController.getProjectsByOwner(ownerId);
-
-        try {
-            await experimentController.addExperiment(
-                "invalid user id",
-                mockExperiment(projects[0]._id.toString()),
-            );
-            assert.fail();
-        } catch (err) {
-            assert.equal(
-                err.message,
-                "Not Authorized to create experiment under given project",
-            );
-        }
     });
 
     it("cannot add an experiment with start time before current time", async () => {

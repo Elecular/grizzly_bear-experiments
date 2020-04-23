@@ -4,6 +4,8 @@
 
 const express = require("express");
 const experimentController = require("../../controllers/experiment");
+const projectController = require("../../controllers/project");
+
 const router = express.Router();
 
 /**
@@ -29,7 +31,7 @@ router.post("/", async function (req, res, next) {
 router.get("/projectId/:projectId", async function (req, res, next) {
     try {
         res.status(200);
-        await experimentController.validateOwner(
+        await projectController.validateOwner(
             req.headers.ownerid,
             req.params.projectId,
         );
@@ -49,7 +51,7 @@ router.get("/projectId/:projectId", async function (req, res, next) {
 router.get("/projectId/:projectId/name/:name", async function (req, res, next) {
     try {
         res.status(200);
-        await experimentController.validateOwner(
+        await projectController.validateOwner(
             req.headers.ownerid,
             req.params.projectId,
         );

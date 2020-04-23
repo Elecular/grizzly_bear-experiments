@@ -53,3 +53,33 @@ module.exports.getProjectsByOwner = async (ownerId) => {
         throw new createError(500);
     }
 };
+
+/**
+ * Checks if the given owner owns this project. Throws error if it is not owner
+ *
+ * @async
+ * @param {string} ownerId
+ * @param {string} projectId
+ */
+module.exports.validateOwner = async (ownerId, projectId) => {
+    if (!projectId || !ObjectID.isValid(projectId)) {
+        throw new createError(400, "Invalid projectId");
+    }
+
+    const db = await mongo.connect();
+    let project = null;
+
+    try {
+        project = await db.collection("projects").findOne({
+            _id: ObjectID(projectId),
+            ownerId,
+        });
+    } catch (err) {
+        logger.error(err);
+        throw new createError(500);
+    }
+
+    if (project === null) {
+        throw new createError(401, "Not Authorized");
+    }
+};
