@@ -9,7 +9,7 @@ const router = express.Router();
 /**
  * Creates a new project under the user
  */
-router.post("/", async function (req, res, next) {
+router.post("/", async (req, res, next) => {
     try {
         res.status(201);
         res.json(
@@ -27,7 +27,7 @@ router.post("/", async function (req, res, next) {
 /**
  * Gets all the projects that is owned by the user
  */
-router.get("/", async function (req, res, next) {
+router.get("/", async (req, res, next) => {
     try {
         res.json(
             await projectController.getProjectsByOwner(req.headers.ownerid),
