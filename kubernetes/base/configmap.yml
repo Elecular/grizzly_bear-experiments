@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: experiments-config-map
+data:
+  AUTH_SIGN_KEY_URI: https://grizzly-bear.eu.auth0.com/.well-known/jwks.json
+  AUTH_AUDIENCE: http://www.grizzlybear-experiments.com
+  AUTH_DOMAIN: https://grizzly-bear.eu.auth0.com/

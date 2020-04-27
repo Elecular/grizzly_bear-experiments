@@ -17,6 +17,9 @@ services:
         environment:
             MONGODB_URL: mongodb://username:password@database:27017
             MONGODB_DATABASE: experiments
+            AUTH_SIGN_KEY_URI: https://grizzly-bear.eu.auth0.com/.well-known/jwks.json
+            AUTH_AUDIENCE: http://www.grizzlybear-experiments.com
+            AUTH_DOMAIN: https://grizzly-bear.eu.auth0.com/
     db:
         image: mongo
         environment:
