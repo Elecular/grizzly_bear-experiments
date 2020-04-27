@@ -1,5 +1,6 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 const logger = require("morgan");
 const log4js = require("log4js").getLogger();
 const publicIndexRouter = require("./routes/public/index");
@@ -7,12 +8,12 @@ const publicProjectRouter = require("./routes/public/project");
 const publicExperimentRouter = require("./routes/public/experiment");
 const privateExperimentRouter = require("./routes/private/experiment");
 const privateProjectRouter = require("./routes/private/project");
-
 /* * * * * * * PUBLIC APP * * * * * * */
 
 //Endpoints in the public app can be accessed by the world
 const publicApp = express();
 
+publicApp.use(cors());
 publicApp.use(logger("dev"));
 publicApp.use(express.json());
 publicApp.use(express.urlencoded({ extended: false }));
