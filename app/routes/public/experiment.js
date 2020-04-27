@@ -5,20 +5,17 @@
 const express = require("express");
 const experimentController = require("../../controllers/experiment");
 const projectController = require("../../controllers/project");
-
 const router = express.Router();
+const checkJwt = require("../../middleware/checkJwt").checkJwt;
 
 /**
  * Creates a new experiment under the given projectid
  */
-router.post("/", async function (req, res, next) {
+router.post("/", checkJwt, async function (req, res, next) {
     try {
         res.status(201);
         res.json(
-            await experimentController.addExperiment(
-                req.headers.ownerid,
-                req.body,
-            ),
+            await experimentController.addExperiment(req.user.sub, req.body),
         );
     } catch (err) {
         next(err);
@@ -28,11 +25,11 @@ router.post("/", async function (req, res, next) {
 /**
  * Gets experiment with given project id
  */
-router.get("/projectId/:projectId", async function (req, res, next) {
+router.get("/projectId/:projectId", checkJwt, async function (req, res, next) {
     try {
         res.status(200);
         await projectController.validateOwner(
-            req.headers.ownerid,
+            req.user.sub,
             req.params.projectId,
         );
         res.json(
@@ -48,11 +45,15 @@ router.get("/projectId/:projectId", async function (req, res, next) {
 /**
  * Gets experiment by given project id and name
  */
-router.get("/projectId/:projectId/name/:name", async function (req, res, next) {
+router.get("/projectId/:projectId/name/:name", checkJwt, async function (
+    req,
+    res,
+    next,
+) {
     try {
         res.status(200);
         await projectController.validateOwner(
-            req.headers.ownerid,
+            req.user.sub,
             req.params.projectId,
         );
         res.json(

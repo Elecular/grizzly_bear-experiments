@@ -9,6 +9,42 @@
             "name": "Projects API",
             "item": [
                 {
+                    "name": "Get Access Token For Test Client",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "7c3c5a9b-d0f1-4daf-a7c8-2cbbf86f16a0",
+                                "exec": [
+                                    "pm.environment.set(\"access_token\", pm.response.json()[\"access_token\"]);"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"client_id\":\"xo509wTObnqcYKiOgLCJoLcHqSpFKCjL\",\"client_secret\":\"O9WUmL1WtKRJ35TByGcrcoau0tNE9m5Yd1SC4x4V9VzQoRX4c1XUBhO6BBPYmc5B\",\"audience\":\"http://www.grizzlybear-experiments.com\",\"grant_type\":\"client_credentials\"}"
+                        },
+                        "url": {
+                            "raw": "https://grizzly-bear.eu.auth0.com/oauth/token",
+                            "protocol": "https",
+                            "host": ["grizzly-bear", "eu", "auth0", "com"],
+                            "path": ["oauth", "token"]
+                        }
+                    },
+                    "response": []
+                },
+                {
                     "name": "Create Project",
                     "event": [
                         {
@@ -34,8 +70,8 @@
                         "method": "POST",
                         "header": [
                             {
-                                "key": "ownerid",
-                                "value": "testOwner",
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
                                 "type": "text"
                             }
                         ],
@@ -86,7 +122,8 @@
                             {
                                 "key": "ownerid",
                                 "type": "text",
-                                "value": "testOwner"
+                                "value": "xo509wTObnqcYKiOgLCJoLcHqSpFKCjL@clients",
+                                "disabled": true
                             }
                         ],
                         "body": {
@@ -99,14 +136,14 @@
                             }
                         },
                         "url": {
-                            "raw": "localhost:8080/project/{{sampleProjectId}}/validateOwner/testOwner",
+                            "raw": "localhost:8080/project/{{sampleProjectId}}/validateOwner/xo509wTObnqcYKiOgLCJoLcHqSpFKCjL@clients",
                             "host": ["localhost"],
                             "port": "8080",
                             "path": [
                                 "project",
                                 "{{sampleProjectId}}",
                                 "validateOwner",
-                                "testOwner"
+                                "xo509wTObnqcYKiOgLCJoLcHqSpFKCjL@clients"
                             ]
                         }
                     },
@@ -192,9 +229,9 @@
                         "method": "POST",
                         "header": [
                             {
-                                "key": "ownerid",
+                                "key": "Authorization",
                                 "type": "text",
-                                "value": "testOwner"
+                                "value": "Bearer {{access_token}}"
                             }
                         ],
                         "body": {
@@ -234,9 +271,9 @@
                         "method": "POST",
                         "header": [
                             {
-                                "key": "ownerid",
+                                "key": "Authorization",
                                 "type": "text",
-                                "value": "testOwner"
+                                "value": "Bearer {{access_token}}"
                             }
                         ],
                         "body": {
@@ -276,9 +313,9 @@
                         "method": "POST",
                         "header": [
                             {
-                                "key": "ownerid",
+                                "key": "Authorization",
                                 "type": "text",
-                                "value": "testOwner"
+                                "value": "Bearer {{access_token}}"
                             }
                         ],
                         "body": {
@@ -322,60 +359,14 @@
                         "method": "POST",
                         "header": [
                             {
-                                "key": "ownerid",
-                                "value": "testOwner",
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
                                 "type": "text"
                             }
                         ],
                         "body": {
                             "mode": "raw",
                             "raw": "{\n\t\"projectName\": \"testProject\"\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "localhost/project",
-                            "host": ["localhost"],
-                            "path": ["project"]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Create Project Under Another User",
-                    "event": [
-                        {
-                            "listen": "test",
-                            "script": {
-                                "id": "a7b22320-ab53-4493-b868-a356fc851b36",
-                                "exec": [
-                                    "pm.test(\"Status code is 201\", function () {",
-                                    "    pm.response.to.have.status(201);",
-                                    "});",
-                                    "",
-                                    "pm.test(\"Body has id\", function() {",
-                                    "    pm.expect(pm.response.json()).to.have.property('_id');",
-                                    "});"
-                                ],
-                                "type": "text/javascript"
-                            }
-                        }
-                    ],
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "ownerid",
-                                "type": "text",
-                                "value": "testOwner2"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n\t\"projectName\": \"testProject3\"\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -421,9 +412,9 @@
                         "method": "GET",
                         "header": [
                             {
-                                "key": "ownerid",
+                                "key": "Authorization",
                                 "type": "text",
-                                "value": "testOwner"
+                                "value": "Bearer {{access_token}}"
                             }
                         ],
                         "body": {
@@ -475,8 +466,8 @@
                         "method": "POST",
                         "header": [
                             {
-                                "key": "ownerid",
-                                "value": "testOwner",
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
                                 "type": "text"
                             }
                         ],
@@ -521,8 +512,8 @@
                         "method": "POST",
                         "header": [
                             {
-                                "key": "ownerid",
-                                "value": "testOwner",
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
                                 "type": "text"
                             }
                         ],
@@ -567,9 +558,9 @@
                         "method": "POST",
                         "header": [
                             {
-                                "key": "ownerid",
+                                "key": "Authorization",
                                 "type": "text",
-                                "value": "testOwner"
+                                "value": "Bearer {{access_token}}"
                             }
                         ],
                         "body": {
@@ -609,9 +600,9 @@
                         "method": "POST",
                         "header": [
                             {
-                                "key": "ownerid",
+                                "key": "Authorization",
                                 "type": "text",
-                                "value": "testOwner"
+                                "value": "Bearer {{access_token}}"
                             }
                         ],
                         "body": {
@@ -653,7 +644,8 @@
                             {
                                 "key": "ownerid",
                                 "type": "text",
-                                "value": "invalidOwner"
+                                "value": "invalidOwner",
+                                "disabled": true
                             }
                         ],
                         "body": {
@@ -693,9 +685,9 @@
                         "method": "POST",
                         "header": [
                             {
-                                "key": "ownerid",
+                                "key": "Authorization",
                                 "type": "text",
-                                "value": "testOwner"
+                                "value": "Bearer {{access_token}}"
                             }
                         ],
                         "body": {
@@ -740,13 +732,7 @@
                     },
                     "request": {
                         "method": "GET",
-                        "header": [
-                            {
-                                "key": "ownerid",
-                                "type": "text",
-                                "value": "testOwner"
-                            }
-                        ],
+                        "header": [],
                         "body": {
                             "mode": "raw",
                             "raw": "",
@@ -792,13 +778,7 @@
                     ],
                     "request": {
                         "method": "POST",
-                        "header": [
-                            {
-                                "key": "ownerid",
-                                "type": "text",
-                                "value": "testOwner"
-                            }
-                        ],
+                        "header": [],
                         "body": {
                             "mode": "raw",
                             "raw": "[{\n\t\"projectId\": \"{{sampleProjectId}}\",\n\t\"experimentName\": \"exp1\",\n\t\"userId\": \"24c9e15e52afc47c225b757e7bee1f9d\"\n}, {\n\t\"projectId\": \"{{sampleProjectId}}\",\n\t\"experimentName\": \"exp2\",\n\t\"userId\": \"24c9e15e52afc47c225b757e7bee1f9d\"\n}, {\n\t\"projectId\": \"{{sampleProjectId}}\",\n\t\"experimentName\": \"exp2\",\n\t\"userId\": \"f0b3b7623d3bedf898459673d778319e\"\n}]",
@@ -844,9 +824,9 @@
                         "method": "GET",
                         "header": [
                             {
-                                "key": "ownerid",
+                                "key": "Authorization",
                                 "type": "text",
-                                "value": "testOwner"
+                                "value": "Bearer {{access_token}}"
                             }
                         ],
                         "body": {
@@ -891,13 +871,7 @@
                     },
                     "request": {
                         "method": "GET",
-                        "header": [
-                            {
-                                "key": "ownerid",
-                                "type": "text",
-                                "value": "test"
-                            }
-                        ],
+                        "header": [],
                         "body": {
                             "mode": "raw",
                             "raw": "",
@@ -947,9 +921,9 @@
                         "method": "GET",
                         "header": [
                             {
-                                "key": "ownerid",
+                                "key": "Authorization",
                                 "type": "text",
-                                "value": "testOwner"
+                                "value": "Bearer {{access_token}}"
                             }
                         ],
                         "body": {
@@ -1001,13 +975,7 @@
                     },
                     "request": {
                         "method": "GET",
-                        "header": [
-                            {
-                                "key": "ownerid",
-                                "type": "text",
-                                "value": "testOwner"
-                            }
-                        ],
+                        "header": [],
                         "body": {
                             "mode": "raw",
                             "raw": "",

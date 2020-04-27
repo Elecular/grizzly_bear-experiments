@@ -5,16 +5,17 @@
 const express = require("express");
 const projectController = require("../../controllers/project");
 const router = express.Router();
+const checkJwt = require("../../middleware/checkJwt").checkJwt;
 
 /**
  * Creates a new project under the user
  */
-router.post("/", async (req, res, next) => {
+router.post("/", checkJwt, async (req, res, next) => {
     try {
         res.status(201);
         res.json(
             await projectController.addProject(
-                req.headers.ownerid,
+                req.user.sub,
                 req.body.projectName,
                 req.body.projectId,
             ),
@@ -27,11 +28,9 @@ router.post("/", async (req, res, next) => {
 /**
  * Gets all the projects that is owned by the user
  */
-router.get("/", async (req, res, next) => {
+router.get("/", checkJwt, async (req, res, next) => {
     try {
-        res.json(
-            await projectController.getProjectsByOwner(req.headers.ownerid),
-        );
+        res.json(await projectController.getProjectsByOwner(req.user.sub));
         res.status(200);
     } catch (err) {
         next(err);
