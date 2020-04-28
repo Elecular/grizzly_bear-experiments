@@ -4,6 +4,7 @@ resources:
   - deployment.yml
   - public_service.yml
   - private_service.yml
+  - configmap.yml
 configMapGenerator:
   - name: env
     literals:

@@ -32,3 +32,18 @@ spec:
                 secretKeyRef:
                   name: experiments-db-secret
                   key: MONGODB_DATABASE
+            - name: AUTH_SIGN_KEY_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: experiments-config-map
+                  key: AUTH_SIGN_KEY_URI
+            - name: AUTH_AUDIENCE
+              valueFrom:
+                  configMapKeyRef:
+                    name: experiments-config-map
+                    key: AUTH_AUDIENCE
+            - name: AUTH_DOMAIN
+              valueFrom:
+                  configMapKeyRef:
+                    name: experiments-config-map
+                    key: AUTH_DOMAIN

@@ -5,6 +5,12 @@ const signKey = process.env.AUTH_SIGN_KEY_URI;
 const audiance = process.env.AUTH_AUDIENCE;
 const issuer = process.env.AUTH_DOMAIN;
 
+if (!signKey || !audiance || !issuer) {
+    throw new Error(
+        "AUTH_SIGN_KEY_URI, AUTH_AUDIENCE and AUTH_DOMAIN environment variables are not found",
+    );
+}
+
 // Authentication middleware. When used, the
 // Access Token must exist and be verified against
 // the Auth0 JSON Web Key Set
