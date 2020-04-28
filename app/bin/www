@@ -18,21 +18,27 @@ const publicServer = http.createServer(app.public);
 const privateServer = http.createServer(app.private);
 
 db.connect().then(() => {
-
-    //Listening on public port
-    publicServer.listen(app.public.get('port'));
-    publicServer.on('error', onError);
-    publicServer.on('listening', () => onListening(publicServer));
-    
-    //Listening on private port
-    privateServer.listen(app.private.get('port'));
-    privateServer.on('error', onError);
-    privateServer.on('listening', () => onListening(privateServer));
-
     //Used for dumping random data (Usually for testing purposes)
     if (argv.randomDataDump)
-        require("./data-dump/random");
+        require("../data-dump/random")().then(() => {
+            startService();
+        });
+    else {
+        startService();
+    }
 })
+
+const startService = () => {
+     //Listening on public port
+     publicServer.listen(app.public.get('port'));
+     publicServer.on('error', onError);
+     publicServer.on('listening', () => onListening(publicServer));
+     
+     //Listening on private port
+     privateServer.listen(app.private.get('port'));
+     privateServer.on('error', onError);
+     privateServer.on('listening', () => onListening(privateServer));
+}
 
 /**
  * Normalize a port into a number, string, or false.

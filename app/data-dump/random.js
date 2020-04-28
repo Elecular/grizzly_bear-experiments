@@ -17,12 +17,12 @@ node bin/data-dump/random.js \
     }]'
  */
 
-const axios = require("axios");
 const argv = require("yargs").argv;
+const projectController = require("../controllers/project");
+const experimentController = require("../controllers/experiment");
 
 //Parsing Args
 const owner = "owner";
-const port = 80;
 const mockExperimentsData = JSON.parse(argv.data);
 
 //Returns an experiment object based on given params
@@ -59,57 +59,33 @@ const mockExperiment = (projectId, experimentName, startTime, endTime) => ({
     ],
 });
 
-let addedProjects = 0;
-
-for (const mockExperimentData of mockExperimentsData) {
-    axios({
-        method: "post",
-        url: `http://localhost:${port}/project`,
-        data: {
-            projectName: "name",
-            projectId: mockExperimentData.projectId,
-        },
-        headers: {
-            ownerid: owner,
-        },
-    })
-        .then(() => {
-            addedProjects++;
-            if (addedProjects === mockExperimentsData.length) {
-                addExperiments();
-            }
-        })
-        .catch((err) => {
-            if (err.response.status === 409) {
-                addedProjects++;
-                if (addedProjects === mockExperimentsData.length) {
-                    addExperiments();
-                }
-            } else {
-                console.log("Error occured while creating projects");
-            }
-        });
-}
-
-const addExperiments = () => {
+module.exports = async () => {
+    console.log("Adding Projects");
     for (const mockExperimentData of mockExperimentsData) {
-        axios({
-            method: "post",
-            url: `http://localhost:${port}/experiment`,
-            data: mockExperiment(
+        try {
+            await projectController.addProject(
+                owner,
+                "name",
                 mockExperimentData.projectId,
-                mockExperimentData.experimentName,
-                Number(mockExperimentData.startTime),
-                Number(mockExperimentData.endTime),
-            ),
-            headers: {
-                ownerid: owner,
-            },
-        })
-            .then(() => {})
-            .catch((err) => {
-                if (err.response.status === 409) return;
-                console.log(err);
-            });
+            );
+        } catch (err) {
+            console.log(`${err.statusCode}: ${err.message}`);
+        }
+    }
+
+    console.log("Adding Experiments");
+    for (const mockExperimentData of mockExperimentsData) {
+        try {
+            await experimentController.addExperiment(
+                mockExperiment(
+                    mockExperimentData.projectId,
+                    mockExperimentData.experimentName,
+                    Number(mockExperimentData.startTime),
+                    Number(mockExperimentData.endTime),
+                ),
+            );
+        } catch (err) {
+            console.log(`${err.statusCode}: ${err.message}`);
+        }
     }
 };

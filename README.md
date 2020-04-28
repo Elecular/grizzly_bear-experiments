@@ -75,7 +75,7 @@ To deploy the image with some mock data, you must start the service with the fol
 
 ```
 npm start -- \
---randomData \
+--randomDataDump \
 --data '[{
         "projectId": "5e865ed82a2aeb6436f498dc",
         "experimentName": "exp1",
