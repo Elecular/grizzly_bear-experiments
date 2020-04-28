@@ -167,7 +167,6 @@ router.get(
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
-
         try {
             res.status(200);
             res.json(

@@ -1,6 +1,6 @@
 {
     "info": {
-        "_postman_id": "4cc02018-eb0c-4e97-b3d6-03ac222eb856",
+        "_postman_id": "8ee2ef5d-449a-4f72-b0a5-e07da7c5472c",
         "name": "acceptance_test",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
@@ -586,7 +586,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n\t\"_id\": {\n\t\t\"projectId\": \"{{sampleProjectId}}\",\n\t\t\"experimentName\": \"exp1\"\n\t},\n\t\"startTime\": 1685473303000,\n\t\"variations\": [{\n\t\t\t\"variationName\": \"variation1\",\n\t\t\t\"normalizedTrafficAmount\": 0.1,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}]\n\t\t}, {\n\t\t\t\"variationName\": \"variation2\",\n\t\t\t\"normalizedTrafficAmount\": 0.9,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}]\n\t}]\n}",
+                            "raw": "{\n\t\"_id\": {\n\t\t\"projectId\": \"{{sampleProjectId}}\",\n\t\t\"experimentName\": \"exp1\"\n\t},\n\t\"startTime\": 1685473303000,\n\t\"variations\": [{\n\t\t\t\"variationName\": \"variation1\",\n\t\t\t\"normalizedTrafficAmount\": 0.1,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}],\n\t\t\t\"controlGroup\": true\n\t\t}, {\n\t\t\t\"variationName\": \"variation2\",\n\t\t\t\"normalizedTrafficAmount\": 0.9,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}],\n\t\t\t\"controlGroup\": false\n\t}]\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -636,7 +636,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n\t\"_id\": {\n\t\t\"projectId\": \"{{sampleProjectId}}\",\n\t\t\"experimentName\": \"exp2\"\n\t},\n\t\"startTime\": 1685474304000,\n\t\"endTime\": 1685474305000,\n\t\"variations\": [{\n\t\t\t\"variationName\": \"variation1\",\n\t\t\t\"normalizedTrafficAmount\": 0.1,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}]\n\t\t}, {\n\t\t\t\"variationName\": \"variation2\",\n\t\t\t\"normalizedTrafficAmount\": 0.9,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}]\n\t}]\n}",
+                            "raw": "{\n\t\"_id\": {\n\t\t\"projectId\": \"{{sampleProjectId}}\",\n\t\t\"experimentName\": \"exp2\"\n\t},\n\t\"startTime\": 1685474304000,\n\t\"endTime\": 1685474305000,\n\t\"variations\": [{\n\t\t\t\"variationName\": \"variation1\",\n\t\t\t\"normalizedTrafficAmount\": 0.1,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}],\n\t\t\t\"controlGroup\": true\n\t\t}, {\n\t\t\t\"variationName\": \"variation2\",\n\t\t\t\"normalizedTrafficAmount\": 0.9,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}],\n\t\t\t\"controlGroup\": false\n\t}]\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -682,7 +682,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n\t\"_id\": {\n\t\t\"projectId\": \"{{sampleProjectId}}\",\n\t\t\"experimentName\": \"exp1\"\n\t},\n\t\"startTime\": 1685473303000,\n\t\"variations\": [{\n\t\t\t\"variationName\": \"variation1\",\n\t\t\t\"normalizedTrafficAmount\": 0.1,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}]\n\t\t}, {\n\t\t\t\"variationName\": \"variation2\",\n\t\t\t\"normalizedTrafficAmount\": 0.9,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}]\n\t}]\n}",
+                            "raw": "{\n\t\"_id\": {\n\t\t\"projectId\": \"{{sampleProjectId}}\",\n\t\t\"experimentName\": \"exp1\"\n\t},\n\t\"startTime\": 1685473303000,\n\t\"variations\": [{\n\t\t\t\"variationName\": \"variation1\",\n\t\t\t\"normalizedTrafficAmount\": 0.1,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}],\n\t\t\t\"controlGroup\": true\n\t\t}, {\n\t\t\t\"variationName\": \"variation2\",\n\t\t\t\"normalizedTrafficAmount\": 0.9,\n\t\t\t\"variables\": [{\n\t\t\t\t\"variableName\": \"var1\",\n\t\t\t\t\"variableType\": \"String\",\n\t\t\t\t\"variableValue\": \"test\"\n\t\t\t}],\n\t\t\t\"controlGroup\": false\n\t}]\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"

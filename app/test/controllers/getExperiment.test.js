@@ -350,6 +350,7 @@ const mockExperiment = (projectId, expName, startTime, endTime) => {
                         variableValue: "test",
                     },
                 ],
+                controlGroup: true,
             },
             {
                 variationName: "variation2",
@@ -366,6 +367,7 @@ const mockExperiment = (projectId, expName, startTime, endTime) => {
                         variableValue: "test",
                     },
                 ],
+                controlGroup: false,
             },
         ],
         ...(startTime && { startTime }),

@@ -20,9 +20,20 @@ afterAll(async () => {
 });
 
 describe("Experiment Controller", () => {
+    it("can add an experiment with only start time", async () => {
+        const projects = await projectController.getProjectsByOwner(ownerId);
+        const startTime = new Date().getTime() + 10000;
+        const addedExperiment = await experimentController.addExperiment(
+            mockExperiment(projects[0]._id.toString(), startTime),
+        );
+
+        assert.equal(addedExperiment._id.projectId, projects[0]._id.toString());
+        assert.equal(addedExperiment.startTime, startTime);
+        assert.equal(addedExperiment.endTime, null);
+    });
+
     it("can add an experiment without start/end time", async () => {
         const projects = await projectController.getProjectsByOwner(ownerId);
-
         const addedExperiment = await experimentController.addExperiment(
             mockExperiment(projects[0]._id.toString()),
         );
@@ -31,19 +42,6 @@ describe("Experiment Controller", () => {
         assert.ok(
             Math.abs(addedExperiment.startTime - new Date().getTime()) < 10000,
         );
-        assert.equal(addedExperiment.endTime, null);
-    });
-
-    it("can add an experiment with only start time", async () => {
-        const projects = await projectController.getProjectsByOwner(ownerId);
-
-        const startTime = new Date().getTime() + 10000;
-        const addedExperiment = await experimentController.addExperiment(
-            mockExperiment(projects[0]._id.toString(), startTime),
-        );
-
-        assert.equal(addedExperiment._id.projectId, projects[0]._id.toString());
-        assert.equal(addedExperiment.startTime, startTime);
         assert.equal(addedExperiment.endTime, null);
     });
 
@@ -284,6 +282,62 @@ describe("Experiment Controller", () => {
         }
     });
 
+    it("cannot add an experiment with no control group", async () => {
+        const projects = await projectController.getProjectsByOwner(ownerId);
+
+        try {
+            await experimentController.addExperiment(
+                mockExperiment(
+                    projects[0]._id.toString(),
+                    undefined,
+                    undefined,
+                    [
+                        {
+                            variationName: "variation1",
+                            normalizedTrafficAmount: 0.1,
+                            variables: [
+                                {
+                                    variableName: "var2",
+                                    variableType: "String",
+                                    variableValue: "test",
+                                },
+                                {
+                                    variableName: "var1",
+                                    variableType: "String",
+                                    variableValue: "test",
+                                },
+                            ],
+                            controlGroup: false,
+                        },
+                        {
+                            variationName: "variation2",
+                            normalizedTrafficAmount: 0.9,
+                            variables: [
+                                {
+                                    variableName: "var1",
+                                    variableType: "String",
+                                    variableValue: "test",
+                                },
+                                {
+                                    variableName: "var2",
+                                    variableType: "String",
+                                    variableValue: "test",
+                                },
+                            ],
+                            controlGroup: false,
+                        },
+                    ],
+                ),
+            );
+            assert.fail();
+        } catch (err) {
+            assert.equal(
+                err.message,
+                "There must be exactly one control group",
+            );
+        }
+    });
+
     it("cannot add an experiment with different amount of variables", async () => {
         const projects = await projectController.getProjectsByOwner(ownerId);
 
@@ -385,6 +439,7 @@ const mockExperiment = (projectId, startTime, endTime, variations) => {
                             variableValue: "test",
                         },
                     ],
+                    controlGroup: true,
                 },
                 {
                     variationName: "variation2",
@@ -401,6 +456,7 @@ const mockExperiment = (projectId, startTime, endTime, variations) => {
                             variableValue: "test",
                         },
                     ],
+                    controlGroup: false,
                 },
             ],
         }),

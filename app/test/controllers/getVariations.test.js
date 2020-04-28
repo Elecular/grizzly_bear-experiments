@@ -55,6 +55,65 @@ describe("Experiment Controller", () => {
             assert.equal(variation.variationName, "variation1");
             assert.equal(variation.normalizedTrafficAmount, 0.1);
             assert.equal(variation.variables.length, 2);
+            assert.ok(variation.notice === undefined);
+        });
+
+        it("for a single user when user is before experiment", async () => {
+            const projects = await projectController.getProjectsByOwner(
+                ownerId,
+            );
+            await experimentController.addExperiment(
+                mockExperiment(projects[0]._id, "exp20", 79839129600000),
+            );
+
+            seedrandom().mockRandomValues([0.05, 0.11]);
+
+            let variation = await experimentController.getVariationForSingleUser(
+                projects[0]._id,
+                "exp20",
+                "user1",
+            );
+            assert.equal(variation.variationName, "variation2");
+            assert.equal(
+                variation.notice,
+                "Experiment is NOT running at the moment. Hence, returning control group",
+            );
+        });
+
+        it("for a single user when user is after experiment finished", () => {
+            return new Promise((done) => {
+                projectController
+                    .getProjectsByOwner(ownerId)
+                    .then((projects) => {
+                        experimentController
+                            .addExperiment(
+                                mockExperiment(
+                                    projects[0]._id,
+                                    "exp20",
+                                    Date.now() + 500,
+                                    Date.now() + 800,
+                                ),
+                            )
+                            .then(() => {
+                                setTimeout(async () => {
+                                    let variation = await experimentController.getVariationForSingleUser(
+                                        projects[0]._id,
+                                        "exp20",
+                                        "user1",
+                                    );
+                                    assert.equal(
+                                        variation.variationName,
+                                        "variation2",
+                                    );
+                                    assert.equal(
+                                        variation.notice,
+                                        "Experiment is NOT running at the moment. Hence, returning control group",
+                                    );
+                                    done();
+                                }, 2000);
+                            });
+                    });
+            });
         });
 
         it("When two different users are within same experiment", async () => {
@@ -280,6 +339,7 @@ const mockExperiment = (projectId, expName, startTime, endTime) => {
                         variableValue: "test",
                     },
                 ],
+                controlGroup: false,
             },
             {
                 variationName: "variation2",
@@ -296,6 +356,7 @@ const mockExperiment = (projectId, expName, startTime, endTime) => {
                         variableValue: "test",
                     },
                 ],
+                controlGroup: true,
             },
         ],
         ...(startTime && { startTime }),

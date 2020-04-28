@@ -12,7 +12,8 @@
  @typedef {{
     variationName: String,
     normalizedTrafficAmount: number,
-    variables: Array<Variable>
+    variables: Array<Variable>,
+    controlGroup: boolean
  }} Variation
  */
 

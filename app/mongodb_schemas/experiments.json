@@ -33,7 +33,11 @@
             "minItems": 2,
             "items": {
                 "bsonType": "object",
-                "required": ["variationName", "normalizedTrafficAmount"],
+                "required": [
+                    "variationName",
+                    "normalizedTrafficAmount",
+                    "controlGroup"
+                ],
                 "description": "Experiments have variations. Variations are different versions of a product.",
                 "properties": {
                     "variationName": {
@@ -70,6 +74,10 @@
                                 }
                             }
                         }
+                    },
+                    "controlGroup": {
+                        "bsonType": "bool",
+                        "description": "Is this variation the control group"
                     }
                 }
             }

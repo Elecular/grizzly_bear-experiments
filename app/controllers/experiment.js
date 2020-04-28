@@ -77,7 +77,8 @@ module.exports.findExperiment = async (
 };
 
 /**
- *
+ * Gets variation for given user.
+ * If Experiment is not running during current time, it will return the cotrol group
  * @async
  * @param {String} projectId
  * @param {String} experimentName
@@ -89,8 +90,19 @@ module.exports.getVariationForSingleUser = async (
     experimentName,
     userId,
 ) => {
-    const experiment = await this.findExperiment(projectId, experimentName);
-    return getVariation(experiment[0], md5(userId), true);
+    const experiments = await this.findExperiment(projectId, experimentName);
+    const experiment = experiments[0];
+    if (experiment == undefined) {
+        throw new createError(400, "Invalid Experiment");
+    }
+    if (!isExperimentRunningDuringTimestamp(experiment, Date.now())) {
+        return {
+            ...getControlGroup(experiment),
+            notice:
+                "Experiment is NOT running at the moment. Hence, returning control group",
+        };
+    }
+    return getVariation(experiment, md5(userId), true);
 };
 
 /**
@@ -225,6 +237,22 @@ const getVariation = (experiment, userId, fullScope = false) => {
 };
 
 /**
+ *
+ * @param {Experiment} experiment
+ */
+const getControlGroup = (experiment) =>
+    experiment.variations.find((variation) => variation.controlGroup);
+
+/**
+ *
+ * @param {Experiment} experiment
+ * @param {number} timestamp
+ */
+const isExperimentRunningDuringTimestamp = (experiment, timestamp) =>
+    timestamp >= experiment.startTime &&
+    (!experiment.endTime || timestamp <= experiment.endTime);
+
+/**
  * Does validation on start and end times. Throws error if times are not avlid
  *
  * @param {Experiment} experiment
@@ -262,6 +290,7 @@ const validateVariations = (variations) => {
     validateVariationsHaveUniqueNames(variations);
     validateVariationsTrafficAddsUpTo1(variations);
     validateVariationsHaveSameVariables(variations);
+    validateVariationsHaveExactlyOneControlGroup(variations);
 };
 
 /**
@@ -297,6 +326,17 @@ const validateVariationsTrafficAddsUpTo1 = (variations) => {
             400,
             "Traffic of all variations must add up to 100%",
         );
+    }
+};
+
+/**
+ * Checks if there is exactly one control group
+ *
+ * @param {Array<Variation>} variations
+ */
+const validateVariationsHaveExactlyOneControlGroup = (variations) => {
+    if (variations.filter((variation) => variation.controlGroup).length !== 1) {
+        throw new createError(400, "There must be exactly one control group");
     }
 };
 
