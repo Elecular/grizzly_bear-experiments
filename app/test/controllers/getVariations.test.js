@@ -20,16 +20,9 @@ beforeEach(async () => {
         ._id;
     let projectId2 = (await projectController.addProject(ownerId, "project2"))
         ._id;
+    await experimentController.addExperiment(mockExperiment(projectId, "exp1"));
+    await experimentController.addExperiment(mockExperiment(projectId, "exp2"));
     await experimentController.addExperiment(
-        ownerId,
-        mockExperiment(projectId, "exp1"),
-    );
-    await experimentController.addExperiment(
-        ownerId,
-        mockExperiment(projectId, "exp2"),
-    );
-    await experimentController.addExperiment(
-        ownerId,
         mockExperiment(projectId2, "exp1"),
     );
 });

@@ -45,6 +45,42 @@
                     "response": []
                 },
                 {
+                    "name": "Get Access Token For Test Client 2",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "7c3c5a9b-d0f1-4daf-a7c8-2cbbf86f16a0",
+                                "exec": [
+                                    "pm.environment.set(\"access_token_2\", pm.response.json()[\"access_token\"]);"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "type": "text",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"client_id\":\"EYHbAnyR8eou9NmnjwEtRWSWM3ZcmMe3\",\"client_secret\":\"3CMEeO77nQQlzwe2VB0Zk9x82rjCkTxV_55_-ReXWyu7sKzqFUaRwxnNlqbFIFgd\",\"audience\":\"http://www.grizzlybear-experiments.com\",\"grant_type\":\"client_credentials\"}"
+                        },
+                        "url": {
+                            "raw": "https://grizzly-bear.eu.auth0.com/oauth/token",
+                            "protocol": "https",
+                            "host": ["grizzly-bear", "eu", "auth0", "com"],
+                            "path": ["oauth", "token"]
+                        }
+                    },
+                    "response": []
+                },
+                {
                     "name": "Create Project",
                     "event": [
                         {
@@ -85,15 +121,103 @@
                             }
                         },
                         "url": {
-                            "raw": "localhost/project",
+                            "raw": "localhost/projects",
                             "host": ["localhost"],
-                            "path": ["project"]
+                            "path": ["projects"]
                         }
                     },
                     "response": []
                 },
                 {
-                    "name": "Validate Owner",
+                    "name": "Create Project with another user",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "a7b22320-ab53-4493-b868-a356fc851b36",
+                                "exec": [
+                                    "pm.test(\"Status code is 201\", function () {",
+                                    "    pm.response.to.have.status(201);",
+                                    "});",
+                                    "",
+                                    "pm.test(\"Body has id\", function() {",
+                                    "    pm.expect(pm.response.json()).to.have.property('_id');",
+                                    "});"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "type": "text",
+                                "value": "Bearer {{access_token_2}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n\t\"projectName\": \"testProject\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "localhost/projects",
+                            "host": ["localhost"],
+                            "path": ["projects"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Project without project name",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "a7b22320-ab53-4493-b868-a356fc851b36",
+                                "exec": [
+                                    "pm.test(\"Status code is 400\", function () {",
+                                    "    pm.response.to.have.status(400);",
+                                    "});"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "type": "text",
+                                "value": "Bearer {{access_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "localhost/projects",
+                            "host": ["localhost"],
+                            "path": ["projects"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Private API: Get all projects under given ownerId",
                     "event": [
                         {
                             "listen": "test",
@@ -104,8 +228,8 @@
                                     "    pm.response.to.have.status(200);",
                                     "});",
                                     "",
-                                    "pm.test(\"isOwner is set to true\", function() {",
-                                    "    pm.expect(pm.response.json().isOwner).to.eql(true);",
+                                    "pm.test(\"Gets correct project\", function() {",
+                                    "    pm.expect(pm.response.json()[0]._id).to.eql(pm.environment.get(\"sampleProjectId\"));",
                                     "",
                                     "});"
                                 ],
@@ -136,70 +260,13 @@
                             }
                         },
                         "url": {
-                            "raw": "localhost:8080/project/{{sampleProjectId}}/validateOwner/xo509wTObnqcYKiOgLCJoLcHqSpFKCjL@clients",
+                            "raw": "localhost:8080/owners/xo509wTObnqcYKiOgLCJoLcHqSpFKCjL@clients/projects",
                             "host": ["localhost"],
                             "port": "8080",
                             "path": [
-                                "project",
-                                "{{sampleProjectId}}",
-                                "validateOwner",
-                                "xo509wTObnqcYKiOgLCJoLcHqSpFKCjL@clients"
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Validate Invalid Owner",
-                    "event": [
-                        {
-                            "listen": "test",
-                            "script": {
-                                "id": "a7b22320-ab53-4493-b868-a356fc851b36",
-                                "exec": [
-                                    "pm.test(\"Status code is 200\", function () {",
-                                    "    pm.response.to.have.status(200);",
-                                    "});",
-                                    "",
-                                    "pm.test(\"isOwner is set to false\", function() {",
-                                    "    pm.expect(pm.response.json().isOwner).to.eql(false);",
-                                    "",
-                                    "});"
-                                ],
-                                "type": "text/javascript"
-                            }
-                        }
-                    ],
-                    "protocolProfileBehavior": {
-                        "disableBodyPruning": true
-                    },
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "ownerid",
-                                "type": "text",
-                                "value": "testOwner"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "localhost:8080/project/{{sampleProjectId}}/validateOwner/invalidOwner",
-                            "host": ["localhost"],
-                            "port": "8080",
-                            "path": [
-                                "project",
-                                "{{sampleProjectId}}",
-                                "validateOwner",
-                                "invalidOwner"
+                                "owners",
+                                "xo509wTObnqcYKiOgLCJoLcHqSpFKCjL@clients",
+                                "projects"
                             ]
                         }
                     },
@@ -244,9 +311,9 @@
                             }
                         },
                         "url": {
-                            "raw": "localhost/project",
+                            "raw": "localhost/projects",
                             "host": ["localhost"],
-                            "path": ["project"]
+                            "path": ["projects"]
                         }
                     },
                     "response": []
@@ -286,9 +353,9 @@
                             }
                         },
                         "url": {
-                            "raw": "localhost/project",
+                            "raw": "localhost/projects",
                             "host": ["localhost"],
-                            "path": ["project"]
+                            "path": ["projects"]
                         }
                     },
                     "response": []
@@ -328,9 +395,9 @@
                             }
                         },
                         "url": {
-                            "raw": "localhost/project",
+                            "raw": "localhost/projects",
                             "host": ["localhost"],
-                            "path": ["project"]
+                            "path": ["projects"]
                         }
                     },
                     "response": []
@@ -374,9 +441,9 @@
                             }
                         },
                         "url": {
-                            "raw": "localhost/project",
+                            "raw": "localhost/projects",
                             "host": ["localhost"],
-                            "path": ["project"]
+                            "path": ["projects"]
                         }
                     },
                     "response": []
@@ -395,9 +462,9 @@
                                     "",
                                     "pm.test(\"Has two projects\", function () {",
                                     "    pm.expect(pm.response.json().length).to.equal(3)",
-                                    "    pm.expect(pm.response.json()[0].ownerId).to.equal('testOwner')",
-                                    "    pm.expect(pm.response.json()[1].ownerId).to.equal('testOwner')",
-                                    "    pm.expect(pm.response.json()[2].ownerId).to.equal('testOwner')",
+                                    "    pm.expect(pm.response.json()[0].ownerId).to.equal('xo509wTObnqcYKiOgLCJoLcHqSpFKCjL@clients')",
+                                    "    pm.expect(pm.response.json()[1].ownerId).to.equal('xo509wTObnqcYKiOgLCJoLcHqSpFKCjL@clients')",
+                                    "    pm.expect(pm.response.json()[2].ownerId).to.equal('xo509wTObnqcYKiOgLCJoLcHqSpFKCjL@clients')",
                                     "});",
                                     ""
                                 ],
@@ -427,9 +494,9 @@
                             }
                         },
                         "url": {
-                            "raw": "localhost/project",
+                            "raw": "localhost/projects",
                             "host": ["localhost"],
-                            "path": ["project"]
+                            "path": ["projects"]
                         }
                     },
                     "response": []
@@ -481,9 +548,9 @@
                             }
                         },
                         "url": {
-                            "raw": "localhost/project",
+                            "raw": "localhost/projects",
                             "host": ["localhost"],
-                            "path": ["project"]
+                            "path": ["projects"]
                         }
                     },
                     "response": []
@@ -527,9 +594,13 @@
                             }
                         },
                         "url": {
-                            "raw": "localhost/experiment",
+                            "raw": "localhost/projects/{{sampleProjectId}}/experiments",
                             "host": ["localhost"],
-                            "path": ["experiment"]
+                            "path": [
+                                "projects",
+                                "{{sampleProjectId}}",
+                                "experiments"
+                            ]
                         }
                     },
                     "response": []
@@ -573,9 +644,13 @@
                             }
                         },
                         "url": {
-                            "raw": "localhost/experiment",
+                            "raw": "localhost/projects/{{sampleProjectId}}/experiments",
                             "host": ["localhost"],
-                            "path": ["experiment"]
+                            "path": [
+                                "projects",
+                                "{{sampleProjectId}}",
+                                "experiments"
+                            ]
                         }
                     },
                     "response": []
@@ -615,9 +690,13 @@
                             }
                         },
                         "url": {
-                            "raw": "localhost/experiment",
+                            "raw": "localhost/projects/{{sampleProjectId}}/experiments",
                             "host": ["localhost"],
-                            "path": ["experiment"]
+                            "path": [
+                                "projects",
+                                "{{sampleProjectId}}",
+                                "experiments"
+                            ]
                         }
                     },
                     "response": []
@@ -630,8 +709,8 @@
                             "script": {
                                 "id": "a7b22320-ab53-4493-b868-a356fc851b36",
                                 "exec": [
-                                    "pm.test(\"Status code is 400\", function () {",
-                                    "    pm.response.to.have.status(401);",
+                                    "pm.test(\"Status code is 403\", function () {",
+                                    "    pm.response.to.have.status(403);",
                                     "});"
                                 ],
                                 "type": "text/javascript"
@@ -642,10 +721,9 @@
                         "method": "POST",
                         "header": [
                             {
-                                "key": "ownerid",
-                                "type": "text",
-                                "value": "invalidOwner",
-                                "disabled": true
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token_2}}",
+                                "type": "text"
                             }
                         ],
                         "body": {
@@ -658,9 +736,13 @@
                             }
                         },
                         "url": {
-                            "raw": "localhost/experiment",
+                            "raw": "localhost/projects/{{sampleProjectId}}/experiments",
                             "host": ["localhost"],
-                            "path": ["experiment"]
+                            "path": [
+                                "projects",
+                                "{{sampleProjectId}}",
+                                "experiments"
+                            ]
                         }
                     },
                     "response": []
@@ -700,9 +782,13 @@
                             }
                         },
                         "url": {
-                            "raw": "localhost/experiment",
+                            "raw": "localhost/projects/{{sampleProjectId}}/experiments",
                             "host": ["localhost"],
-                            "path": ["experiment"]
+                            "path": [
+                                "projects",
+                                "{{sampleProjectId}}",
+                                "experiments"
+                            ]
                         }
                     },
                     "response": []
@@ -743,14 +829,19 @@
                             }
                         },
                         "url": {
-                            "raw": "localhost:8080/experiment/timerange/1685473303000/1685473306000",
+                            "raw": "localhost:8080/bulk/experiments/?startTime=1685473303000&endTime=1685473306000",
                             "host": ["localhost"],
                             "port": "8080",
-                            "path": [
-                                "experiment",
-                                "timerange",
-                                "1685473303000",
-                                "1685473306000"
+                            "path": ["bulk", "experiments", ""],
+                            "query": [
+                                {
+                                    "key": "startTime",
+                                    "value": "1685473303000"
+                                },
+                                {
+                                    "key": "endTime",
+                                    "value": "1685473306000"
+                                }
                             ]
                         }
                     },
@@ -789,16 +880,16 @@
                             }
                         },
                         "url": {
-                            "raw": "localhost:8080/experiment/variations",
+                            "raw": "localhost:8080/bulk/variations",
                             "host": ["localhost"],
                             "port": "8080",
-                            "path": ["experiment", "variations"]
+                            "path": ["bulk", "variations"]
                         }
                     },
                     "response": []
                 },
                 {
-                    "name": "Get  experiment with given projectId",
+                    "name": "Get  experiments with given projectId",
                     "event": [
                         {
                             "listen": "test",
@@ -839,12 +930,12 @@
                             }
                         },
                         "url": {
-                            "raw": "localhost/experiment/projectId/{{sampleProjectId}}",
+                            "raw": "localhost/projects/{{sampleProjectId}}/experiments",
                             "host": ["localhost"],
                             "path": [
-                                "experiment",
-                                "projectId",
-                                "{{sampleProjectId}}"
+                                "projects",
+                                "{{sampleProjectId}}",
+                                "experiments"
                             ]
                         }
                     },
@@ -858,8 +949,8 @@
                             "script": {
                                 "id": "a7b22320-ab53-4493-b868-a356fc851b36",
                                 "exec": [
-                                    "pm.test(\"Status code is 401\", function () {",
-                                    "    pm.response.to.have.status(401);",
+                                    "pm.test(\"Status code is 403\", function () {",
+                                    "    pm.response.to.have.status(403);",
                                     "});"
                                 ],
                                 "type": "text/javascript"
@@ -871,7 +962,13 @@
                     },
                     "request": {
                         "method": "GET",
-                        "header": [],
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token_2}}",
+                                "type": "text"
+                            }
+                        ],
                         "body": {
                             "mode": "raw",
                             "raw": "",
@@ -882,12 +979,12 @@
                             }
                         },
                         "url": {
-                            "raw": "localhost/experiment/projectId/{{sampleProjectId}}",
+                            "raw": "localhost/projects/{{sampleProjectId}}/experiments",
                             "host": ["localhost"],
                             "path": [
-                                "experiment",
-                                "projectId",
-                                "{{sampleProjectId}}"
+                                "projects",
+                                "{{sampleProjectId}}",
+                                "experiments"
                             ]
                         }
                     },
@@ -906,7 +1003,7 @@
                                     "});",
                                     "",
                                     "pm.test(\"Body has _id\", function() {",
-                                    "    pm.expect(pm.response.json()).to.have.property('_id');",
+                                    "    pm.expect(pm.response.json()[0]).to.have.property('_id');",
                                     "});",
                                     ""
                                 ],
@@ -936,13 +1033,12 @@
                             }
                         },
                         "url": {
-                            "raw": "localhost/experiment/projectId/{{sampleProjectId}}/name/exp1",
+                            "raw": "localhost/projects/{{sampleProjectId}}/experiments/exp1",
                             "host": ["localhost"],
                             "path": [
-                                "experiment",
-                                "projectId",
+                                "projects",
                                 "{{sampleProjectId}}",
-                                "name",
+                                "experiments",
                                 "exp1"
                             ]
                         }
@@ -950,7 +1046,7 @@
                     "response": []
                 },
                 {
-                    "name": "Get  variation with given projectI, Name and user id",
+                    "name": "Get  variation with given project, Name and user id",
                     "event": [
                         {
                             "listen": "test",
@@ -986,68 +1082,20 @@
                             }
                         },
                         "url": {
-                            "raw": "localhost/experiment/projectId/{{sampleProjectId}}/name/exp1/variation/user1",
+                            "raw": "localhost/projects/{{sampleProjectId}}/experiments/exp1/variations?userId=test",
                             "host": ["localhost"],
                             "path": [
-                                "experiment",
-                                "projectId",
+                                "projects",
                                 "{{sampleProjectId}}",
-                                "name",
+                                "experiments",
                                 "exp1",
-                                "variation",
-                                "user1"
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Get  experiment with invalid permissions",
-                    "event": [
-                        {
-                            "listen": "test",
-                            "script": {
-                                "id": "a7b22320-ab53-4493-b868-a356fc851b36",
-                                "exec": [
-                                    "pm.test(\"Status code is 401\", function () {",
-                                    "    pm.response.to.have.status(401);",
-                                    "});"
-                                ],
-                                "type": "text/javascript"
-                            }
-                        }
-                    ],
-                    "protocolProfileBehavior": {
-                        "disableBodyPruning": true
-                    },
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "ownerid",
-                                "type": "text",
-                                "value": "testOwn",
-                                "disabled": true
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
+                                "variations"
+                            ],
+                            "query": [
+                                {
+                                    "key": "userId",
+                                    "value": "test"
                                 }
-                            }
-                        },
-                        "url": {
-                            "raw": "localhost/experiment/projectId/{{sampleProjectId}}/name/exp1",
-                            "host": ["localhost"],
-                            "path": [
-                                "experiment",
-                                "projectId",
-                                "{{sampleProjectId}}",
-                                "name",
-                                "exp1"
                             ]
                         }
                     },

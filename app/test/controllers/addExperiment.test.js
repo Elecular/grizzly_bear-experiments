@@ -20,25 +20,10 @@ afterAll(async () => {
 });
 
 describe("Experiment Controller", () => {
-    it("cannot add an experiment if unauthorized", async () => {
-        const projects = await projectController.getProjectsByOwner(ownerId);
-
-        try {
-            await experimentController.addExperiment(
-                "invalid user id",
-                mockExperiment(projects[0]._id.toString()),
-            );
-            assert.fail();
-        } catch (err) {
-            assert.equal(err.message, "Not Authorized");
-        }
-    });
-
     it("can add an experiment without start/end time", async () => {
         const projects = await projectController.getProjectsByOwner(ownerId);
 
         const addedExperiment = await experimentController.addExperiment(
-            ownerId,
             mockExperiment(projects[0]._id.toString()),
         );
 
@@ -54,7 +39,6 @@ describe("Experiment Controller", () => {
 
         const startTime = new Date().getTime() + 10000;
         const addedExperiment = await experimentController.addExperiment(
-            ownerId,
             mockExperiment(projects[0]._id.toString(), startTime),
         );
 
@@ -68,7 +52,6 @@ describe("Experiment Controller", () => {
 
         const endTime = new Date().getTime() + 30000;
         const addedExperiment = await experimentController.addExperiment(
-            ownerId,
             mockExperiment(projects[0]._id.toString(), undefined, endTime),
         );
 
@@ -85,7 +68,6 @@ describe("Experiment Controller", () => {
         const startTime = new Date().getTime() + 10000;
         const endTime = new Date().getTime() + 30000;
         const addedExperiment = await experimentController.addExperiment(
-            ownerId,
             mockExperiment(projects[0]._id.toString(), startTime, endTime),
         );
 
@@ -100,7 +82,6 @@ describe("Experiment Controller", () => {
         try {
             const startTime = new Date().getTime() - 10000;
             await experimentController.addExperiment(
-                ownerId,
                 mockExperiment(projects[0]._id.toString(), startTime),
             );
             assert.fail();
@@ -119,7 +100,6 @@ describe("Experiment Controller", () => {
             const startTime = new Date().getTime() + 20000;
             const endTime = new Date().getTime() + 10000;
             await experimentController.addExperiment(
-                ownerId,
                 mockExperiment(projects[0]._id.toString(), startTime, endTime),
             );
             assert.fail();
@@ -137,7 +117,6 @@ describe("Experiment Controller", () => {
         try {
             const endTime = new Date().getTime() - 10000;
             await experimentController.addExperiment(
-                ownerId,
                 mockExperiment(projects[0]._id.toString(), undefined, endTime),
             );
             assert.fail();
@@ -154,7 +133,6 @@ describe("Experiment Controller", () => {
 
         try {
             await experimentController.addExperiment(
-                ownerId,
                 mockExperiment(
                     projects[0]._id.toString(),
                     undefined,
@@ -177,7 +155,6 @@ describe("Experiment Controller", () => {
 
         try {
             await experimentController.addExperiment(
-                ownerId,
                 mockExperiment(
                     projects[0]._id.toString(),
                     undefined,
@@ -203,7 +180,6 @@ describe("Experiment Controller", () => {
 
         try {
             await experimentController.addExperiment(
-                ownerId,
                 mockExperiment(
                     projects[0]._id.toString(),
                     undefined,
@@ -229,7 +205,6 @@ describe("Experiment Controller", () => {
 
         try {
             await experimentController.addExperiment(
-                ownerId,
                 mockExperiment(
                     projects[0]._id.toString(),
                     undefined,
@@ -260,7 +235,6 @@ describe("Experiment Controller", () => {
 
         try {
             await experimentController.addExperiment(
-                ownerId,
                 mockExperiment(
                     projects[0]._id.toString(),
                     undefined,
@@ -315,7 +289,6 @@ describe("Experiment Controller", () => {
 
         try {
             await experimentController.addExperiment(
-                ownerId,
                 mockExperiment(
                     projects[0]._id.toString(),
                     undefined,
@@ -364,7 +337,6 @@ describe("Experiment Controller", () => {
         const projects = await projectController.getProjectsByOwner(ownerId);
         try {
             await experimentController.addExperiment(
-                ownerId,
                 mockExperiment(
                     projects[0]._id.toString(),
                     undefined,

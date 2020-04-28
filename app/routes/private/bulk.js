@@ -9,13 +9,13 @@ const router = express.Router();
 /**
  * Gets all running experiments with given date
  */
-router.get("/timerange/:startTime/:endTime", async function (req, res, next) {
+router.get("/experiments", async function (req, res, next) {
     try {
         res.status(200);
         res.json(
             await experimentController.getRunningExperimentsInTimeRange(
-                req.params.startTime,
-                req.params.endTime,
+                req.query.startTime,
+                req.query.endTime,
             ),
         );
     } catch (err) {

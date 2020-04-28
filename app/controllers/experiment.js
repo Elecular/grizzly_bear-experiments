@@ -4,21 +4,18 @@ const logger = require("log4js").getLogger();
 const createError = require("http-errors");
 const seedrandom = require("seedrandom");
 const md5 = require("md5");
-const projectController = require("./project");
 
 /**
  * Adds a new experiment to the database
  *
  * @async
- * @param {String} ownerId
  * @param {Experiment} experiment
  * @returns {Promise<Experiment>}
  */
-module.exports.addExperiment = async (ownerId, experiment) => {
+module.exports.addExperiment = async (experiment) => {
     const db = await mongo.connect();
     const { projectId } = experiment._id;
 
-    await projectController.validateOwner(ownerId, projectId);
     validateStartAndEndTime(experiment);
     validateVariations(experiment.variations);
 
@@ -45,46 +42,34 @@ module.exports.addExperiment = async (ownerId, experiment) => {
 };
 
 /**
- * Gets all experiments under given project id.
+ * Finds experiment with given parameters
  *
  * @async
  * @param {string} projectId
+ * @param {string} [experimentName=undefined]
  * @returns {Promise<Array<Experiment>>} list of experiments
  */
-module.exports.getExperimentsByProjectId = async (projectId) => {
+module.exports.findExperiment = async (
+    projectId,
+    experimentName = undefined,
+) => {
     const db = await mongo.connect();
 
-    try {
-        return await db
-            .collection("experiments")
-            .find({
-                projectId: ObjectID(projectId),
-            })
-            .toArray();
-    } catch (err) {
-        logger.error(err);
-        throw new createError(500);
-    }
-};
+    if (!projectId || !ObjectID.isValid(projectId))
+        throw createError(400, "Invalid Project Id");
 
-/**
- * Gets experiment by project and name
- *
- * @async
- * @param {string} projectId
- * @param {string} experimentName
- * @returns {Promise<Experiment>}
- */
-module.exports.getExperimentByName = async (projectId, experimentName) => {
-    const db = await mongo.connect();
-
+    const searchQuery = experimentName
+        ? {
+              _id: {
+                  projectId: ObjectID(projectId),
+                  experimentName,
+              },
+          }
+        : {
+              projectId: ObjectID(projectId),
+          };
     try {
-        return await db.collection("experiments").findOne({
-            _id: {
-                projectId: ObjectID(projectId),
-                experimentName,
-            },
-        });
+        return await db.collection("experiments").find(searchQuery).toArray();
     } catch (err) {
         logger.error(err);
         throw new createError(500);
@@ -104,11 +89,8 @@ module.exports.getVariationForSingleUser = async (
     experimentName,
     userId,
 ) => {
-    const experiment = await this.getExperimentByName(
-        projectId,
-        experimentName,
-    );
-    return getVariation(experiment, md5(userId), true);
+    const experiment = await this.findExperiment(projectId, experimentName);
+    return getVariation(experiment[0], md5(userId), true);
 };
 
 /**

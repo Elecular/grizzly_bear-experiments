@@ -5,9 +5,11 @@ const logger = require("morgan");
 const log4js = require("log4js").getLogger();
 const publicIndexRouter = require("./routes/public/index");
 const publicProjectRouter = require("./routes/public/project");
-const publicExperimentRouter = require("./routes/public/experiment");
-const privateExperimentRouter = require("./routes/private/experiment");
-const privateProjectRouter = require("./routes/private/project");
+const privateBulkRouter = require("./routes/private/bulk");
+const privateOwnerRouter = require("./routes/private/owner");
+
+const httpErrorHandler = require("./middleware/httpErrorHandler");
+
 /* * * * * * * PUBLIC APP * * * * * * */
 
 //Endpoints in the public app can be accessed by the world
@@ -20,9 +22,8 @@ publicApp.use(express.urlencoded({ extended: false }));
 publicApp.use(cookieParser());
 
 publicApp.use("/", publicIndexRouter);
-publicApp.use("/project/", publicProjectRouter);
-publicApp.use("/experiment/", publicExperimentRouter);
-
+publicApp.use("/projects/", publicProjectRouter);
+publicApp.use(httpErrorHandler);
 publicApp.set("port", 80);
 
 /* * * * * * * PRIVATE APP * * * * * * */
@@ -32,9 +33,10 @@ const privateApp = express();
 
 privateApp.use(logger("dev"));
 privateApp.use(express.json());
-privateApp.use("/experiment/", privateExperimentRouter);
-privateApp.use("/project/", privateProjectRouter);
+privateApp.use("/bulk/", privateBulkRouter);
+privateApp.use("/owners/", privateOwnerRouter);
 
+privateApp.use(httpErrorHandler);
 privateApp.set("port", 8080);
 
 log4js.level = process.env.LOG_LEVEL || "debug";

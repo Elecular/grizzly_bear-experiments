@@ -80,6 +80,6 @@ module.exports.validateOwner = async (ownerId, projectId) => {
     }
 
     if (project === null) {
-        throw new createError(401, "Not Authorized");
+        throw new createError(403, "Forbidden");
     }
 };
