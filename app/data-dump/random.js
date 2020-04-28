@@ -9,6 +9,7 @@
  *
  * Example usage:
 node bin/data-dump/random.js \
+    --ownerId testOwner
     --data '[{
         "projectId": "5e865ed82a2aeb6436f498dc",
         "experimentName": "exp1",
@@ -22,7 +23,7 @@ const projectController = require("../controllers/project");
 const experimentController = require("../controllers/experiment");
 
 //Parsing Args
-const owner = "owner";
+const owner = argv.ownerId || "owner";
 const mockExperimentsData = JSON.parse(argv.data);
 
 //Returns an experiment object based on given params
