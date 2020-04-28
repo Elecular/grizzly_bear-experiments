@@ -45,6 +45,7 @@ const mockExperiment = (projectId, experimentName, startTime, endTime) => ({
                     variableValue: "test",
                 },
             ],
+            controlGroup: true,
         },
         {
             variationName: "variation2",
@@ -56,6 +57,7 @@ const mockExperiment = (projectId, experimentName, startTime, endTime) => ({
                     variableValue: "test",
                 },
             ],
+            controlGroup: false,
         },
     ],
 });
@@ -82,7 +84,9 @@ module.exports = async () => {
                     mockExperimentData.projectId,
                     mockExperimentData.experimentName,
                     Number(mockExperimentData.startTime),
-                    Number(mockExperimentData.endTime),
+                    mockExperimentData.endTime
+                        ? Number(mockExperimentData.endTime)
+                        : undefined,
                 ),
             );
         } catch (err) {
