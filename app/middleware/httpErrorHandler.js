@@ -3,7 +3,7 @@ const { HttpError } = require("http-errors");
 const httpErrorHandler = (err, req, res, next) => {
     console.log(err);
     if (!(err instanceof HttpError) || !err.status || !err.message) {
-        next();
+        next(err);
         return;
     }
     res.status(err.status).send(err.message);
