@@ -3,6 +3,8 @@ kind: Kustomization
 
 resources:
   - ../../base
+patches:
+  - port.yml
 images:
   - name: XXXX
     newName: experiments
