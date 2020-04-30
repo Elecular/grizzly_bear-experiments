@@ -4,6 +4,7 @@ const logger = require("log4js").getLogger();
 const createError = require("http-errors");
 const seedrandom = require("seedrandom");
 const md5 = require("md5");
+const Decimal = require("decimal.js");
 
 /**
  * Adds a new experiment to the database
@@ -216,14 +217,20 @@ const getVariation = (experiment, userId, fullScope = false) => {
     if (!experiment) throw createError(400, "Invalid Experiment");
     if (!userId.match(/^[a-f0-9]{32}$/))
         throw createError(500, "userId must be md5 hahsed");
-    const value = seedrandom(experiment._id.experimentName + userId).quick();
+
+    const value = new Decimal(
+        seedrandom(experiment._id.experimentName + userId).quick(),
+    );
     const variations = experiment.variations.sort((x, y) =>
         x.variationName >= y.variationName ? 1 : -1,
     );
-    let currentValue = 0;
+
+    let currentValue = new Decimal(0);
     for (const variation of variations) {
-        currentValue += variation.normalizedTrafficAmount;
-        if (value <= currentValue) {
+        currentValue = currentValue.plus(
+            new Decimal(variation.normalizedTrafficAmount),
+        );
+        if (value.lessThanOrEqualTo(currentValue)) {
             return fullScope ? variation : variation.variationName;
         }
     }
@@ -316,11 +323,14 @@ const validateVariationsHaveUniqueNames = (variations) => {
  */
 const validateVariationsTrafficAddsUpTo1 = (variations) => {
     if (
-        variations.reduce(
-            (v1, v2) =>
-                (v1.normalizedTrafficAmount || 0) +
-                (v2.normalizedTrafficAmount || 0),
-        ) != 1
+        !variations
+            .reduce((v1, v2) =>
+                Decimal.add(
+                    v1.normalizedTrafficAmount || 0,
+                    v2.normalizedTrafficAmount || 0,
+                ),
+            )
+            .equals(1)
     ) {
         throw new createError(
             400,

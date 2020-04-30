@@ -325,23 +325,6 @@ const mockExperiment = (projectId, expName, startTime, endTime) => {
         },
         variations: [
             {
-                variationName: "variation1",
-                normalizedTrafficAmount: 0.1,
-                variables: [
-                    {
-                        variableName: "var2",
-                        variableType: "String",
-                        variableValue: "test",
-                    },
-                    {
-                        variableName: "var1",
-                        variableType: "String",
-                        variableValue: "test",
-                    },
-                ],
-                controlGroup: false,
-            },
-            {
                 variationName: "variation2",
                 normalizedTrafficAmount: 0.9,
                 variables: [
@@ -357,6 +340,23 @@ const mockExperiment = (projectId, expName, startTime, endTime) => {
                     },
                 ],
                 controlGroup: true,
+            },
+            {
+                variationName: "variation1",
+                normalizedTrafficAmount: 0.1,
+                variables: [
+                    {
+                        variableName: "var2",
+                        variableType: "String",
+                        variableValue: "test",
+                    },
+                    {
+                        variableName: "var1",
+                        variableType: "String",
+                        variableValue: "test",
+                    },
+                ],
+                controlGroup: false,
             },
         ],
         ...(startTime && { startTime }),
