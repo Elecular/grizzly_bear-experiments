@@ -227,9 +227,7 @@ const getVariation = (experiment, userId, fullScope = false) => {
 
     let currentValue = new Decimal(0);
     for (const variation of variations) {
-        currentValue = currentValue.plus(
-            new Decimal(variation.normalizedTrafficAmount),
-        );
+        currentValue = currentValue.plus(variation.normalizedTrafficAmount);
         if (value.lessThanOrEqualTo(currentValue)) {
             return fullScope ? variation : variation.variationName;
         }
