@@ -159,10 +159,10 @@ describe("Experiment Controller", () => {
                     undefined,
                     [
                         {
-                            variationName: "variation1",
+                            variationName: "variation 1",
                         },
                         {
-                            variationName: "variation1",
+                            variationName: "variation 1",
                         },
                     ],
                 ),
@@ -224,6 +224,40 @@ describe("Experiment Controller", () => {
             assert.equal(
                 err.message,
                 "Traffic of all variations must add up to 100%",
+            );
+        }
+    });
+
+    it("cannot add an experiment with traffic less than 0", async () => {
+        const projects = await projectController.getProjectsByOwner(ownerId);
+
+        try {
+            await experimentController.addExperiment(
+                mockExperiment(
+                    projects[0]._id.toString(),
+                    undefined,
+                    undefined,
+                    [
+                        {
+                            variationName: "variation2",
+                            normalizedTrafficAmount: -0.5,
+                        },
+                        {
+                            variationName: "variation1",
+                            normalizedTrafficAmount: 0.5,
+                        },
+                        {
+                            variationName: "variation3",
+                            normalizedTrafficAmount: 0.5,
+                        },
+                    ],
+                ),
+            );
+            assert.fail();
+        } catch (err) {
+            assert.equal(
+                err.message,
+                "Traffic must be positive and cannot be more than 1",
             );
         }
     });

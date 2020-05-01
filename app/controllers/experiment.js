@@ -320,16 +320,23 @@ const validateVariationsHaveUniqueNames = (variations) => {
  * @param {Array<Variation>} variations
  */
 const validateVariationsTrafficAddsUpTo1 = (variations) => {
-    if (
-        !variations
-            .reduce((v1, v2) =>
-                Decimal.add(
-                    v1.normalizedTrafficAmount || 0,
-                    v2.normalizedTrafficAmount || 0,
-                ),
-            )
-            .equals(1)
-    ) {
+    let total = new Decimal(0);
+    for (const variation of variations) {
+        const traffic = variation.normalizedTrafficAmount;
+        if (isNaN(traffic))
+            throw new createError(400, "Traffic must be a decimal");
+
+        const parsedTraffic = new Decimal(variation.normalizedTrafficAmount);
+        if (parsedTraffic.lessThanOrEqualTo(0) || parsedTraffic.greaterThan(1))
+            throw new createError(
+                400,
+                "Traffic must be positive and cannot be more than 1",
+            );
+
+        total = total.plus(parsedTraffic);
+    }
+
+    if (!total.equals(1)) {
         throw new createError(
             400,
             "Traffic of all variations must add up to 100%",
