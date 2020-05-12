@@ -1244,54 +1244,6 @@
                         }
                     },
                     "response": []
-                },
-                {
-                    "name": "Stop  experiment that is already stopped",
-                    "event": [
-                        {
-                            "listen": "test",
-                            "script": {
-                                "id": "7bef229f-e87e-4b6e-86c5-4df47e5dbbd5",
-                                "exec": [
-                                    "pm.test(\"Status code is 201\", function () {",
-                                    "    pm.response.to.have.status(409);",
-                                    "});"
-                                ],
-                                "type": "text/javascript"
-                            }
-                        }
-                    ],
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "type": "text",
-                                "value": "Bearer {{access_token}}"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "localhost/projects/{{sampleProjectId}}/experiments/exp1/stop",
-                            "host": ["localhost"],
-                            "path": [
-                                "projects",
-                                "{{sampleProjectId}}",
-                                "experiments",
-                                "exp1",
-                                "stop"
-                            ]
-                        }
-                    },
-                    "response": []
                 }
             ],
             "protocolProfileBehavior": {}

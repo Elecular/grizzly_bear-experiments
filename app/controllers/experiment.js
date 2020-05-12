@@ -218,9 +218,12 @@ module.exports.stopExperiment = async (projectId, experimentName) => {
     if (!experiment) {
         throw new createError(404, "Experiment not found");
     }
-    const endTime = Date.now();
+    let endTime = Date.now();
     if (experiment.endTime && experiment.endTime <= endTime) {
         throw new createError(409, "Experiment has already ended");
+    }
+    if (experiment.startTime > endTime) {
+        endTime = experiment.startTime + 1;
     }
 
     try {
