@@ -201,6 +201,48 @@ module.exports.getVariationForMultipleUsers = async (
     }));
 };
 
+/**
+ * Stops the given experiment
+ *
+ * @async
+ * @param {String} projectId
+ * @param {String} experimentName
+ */
+module.exports.stopExperiment = async (projectId, experimentName) => {
+    const db = await mongo.connect();
+
+    if (!ObjectID.isValid(projectId) || !experimentName) {
+        throw new createError(400, "Invalid project id and/or experiment name");
+    }
+    const [experiment] = await this.findExperiment(projectId, experimentName);
+    if (!experiment) {
+        throw new createError(404, "Experiment not found");
+    }
+    const endTime = Date.now();
+    if (experiment.endTime && experiment.endTime <= endTime) {
+        throw new createError(409, "Experiment has already ended");
+    }
+
+    try {
+        await db.collection("experiments").updateOne(
+            {
+                _id: {
+                    projectId: ObjectID(projectId),
+                    experimentName,
+                },
+            },
+            {
+                $set: {
+                    endTime: endTime,
+                },
+            },
+        );
+    } catch (err) {
+        logger.error(err);
+        throw new createError(500, "Error occured while stopping experiment");
+    }
+};
+
 /*
  * * * * * * * * * * * * * * * * * * START UTILITY METHODS * * * * * * * * * * * * * * * * *
  */

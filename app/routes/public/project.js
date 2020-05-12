@@ -157,6 +157,32 @@ router.get("/:projectId/experiments/:experimentName", checkJwt, async function (
 });
 
 /**
+ * Stops the experiment
+ */
+router.post(
+    "/:projectId/experiments/:experimentName/stop",
+    checkJwt,
+    async function (req, res, next) {
+        try {
+            await projectController.validateOwner(
+                req.user.sub,
+                req.params.projectId,
+            );
+            await experimentController.stopExperiment(
+                req.params.projectId,
+                req.params.experimentName,
+            );
+            res.status(201);
+            res.json({
+                message: "Experiment is stopped",
+            });
+        } catch (err) {
+            next(err);
+        }
+    },
+);
+
+/**
  * Gets the variation for given project, experiment and user
  */
 router.get(

@@ -1100,6 +1100,198 @@
                         }
                     },
                     "response": []
+                },
+                {
+                    "name": "Stop  experiment with invalid credentials",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "6e9007d2-5406-4313-a4e8-5d26a29e3b3a",
+                                "exec": [
+                                    "pm.test(\"Status code is 403\", function () {",
+                                    "    pm.response.to.have.status(403);",
+                                    "});"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "type": "text",
+                                "value": "Bearer {{access_token_2}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "localhost/projects/{{sampleProjectId}}/experiments/exp1/stop",
+                            "host": ["localhost"],
+                            "path": [
+                                "projects",
+                                "{{sampleProjectId}}",
+                                "experiments",
+                                "exp1",
+                                "stop"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Stop  experiment that does not exist",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "893daf8e-1eec-4ab5-97f1-7428acd75864",
+                                "exec": [
+                                    "pm.test(\"Status code is 404\", function () {",
+                                    "    pm.response.to.have.status(404);",
+                                    "});"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "type": "text",
+                                "value": "Bearer {{access_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "localhost/projects/{{sampleProjectId}}/experiments/invalid_exp1/stop",
+                            "host": ["localhost"],
+                            "path": [
+                                "projects",
+                                "{{sampleProjectId}}",
+                                "experiments",
+                                "invalid_exp1",
+                                "stop"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Stop  experiment with given projectId and Name",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "43c2bd5c-eef4-4f7a-808b-8e44348da2e3",
+                                "exec": [
+                                    "pm.test(\"Status code is 201\", function () {",
+                                    "    pm.response.to.have.status(201);",
+                                    "});"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "type": "text",
+                                "value": "Bearer {{access_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "localhost/projects/{{sampleProjectId}}/experiments/exp1/stop",
+                            "host": ["localhost"],
+                            "path": [
+                                "projects",
+                                "{{sampleProjectId}}",
+                                "experiments",
+                                "exp1",
+                                "stop"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Stop  experiment that is already stopped",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "7bef229f-e87e-4b6e-86c5-4df47e5dbbd5",
+                                "exec": [
+                                    "pm.test(\"Status code is 201\", function () {",
+                                    "    pm.response.to.have.status(409);",
+                                    "});"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "type": "text",
+                                "value": "Bearer {{access_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "localhost/projects/{{sampleProjectId}}/experiments/exp1/stop",
+                            "host": ["localhost"],
+                            "path": [
+                                "projects",
+                                "{{sampleProjectId}}",
+                                "experiments",
+                                "exp1",
+                                "stop"
+                            ]
+                        }
+                    },
+                    "response": []
                 }
             ],
             "protocolProfileBehavior": {}
