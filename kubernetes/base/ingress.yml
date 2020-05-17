@@ -5,6 +5,7 @@ metadata:
   namespace: "default"
   annotations:
     networking.gke.io/managed-certificates: "elecular"
+    kubernetes.io/ingress.global-static-ip-name: experiments-api
 spec:
   backend:
     serviceName: "public-experiments"
