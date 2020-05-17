@@ -6,7 +6,6 @@ resources:
   - private_service.yml
   - configmap.yml
   - ingress.yml
-  - certificate.yml
 configMapGenerator:
   - name: env
     literals:

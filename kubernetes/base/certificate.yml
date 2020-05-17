@@ -1,7 +1,0 @@
-apiVersion: networking.gke.io/v1beta2
-kind: ManagedCertificate
-metadata:
-  name: experiments-api-certificate
-spec:
-  domains:
-    - experiments.api.elecular.com
