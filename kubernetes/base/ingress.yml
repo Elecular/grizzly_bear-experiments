@@ -1,7 +1,7 @@
 apiVersion: "extensions/v1beta1"
 kind: "Ingress"
 metadata:
-  name: "public-experiments"
+  name: "public-experiments-ingress"
   namespace: "default"
   annotations:
     networking.gke.io/managed-certificates: "elecular"
