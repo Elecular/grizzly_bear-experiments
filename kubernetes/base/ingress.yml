@@ -1,0 +1,11 @@
+apiVersion: "extensions/v1beta1"
+kind: "Ingress"
+metadata:
+  name: "public-experiments"
+  namespace: "default"
+  annotations:
+    networking.gke.io/managed-certificates: "elecular"
+spec:
+  backend:
+    serviceName: "public-experiments"
+    servicePort: 80
