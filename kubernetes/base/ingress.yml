@@ -9,6 +9,7 @@ metadata:
 spec:
   rules:
     http:
+      paths:
       - path: /api/experiments
         backend:
           serviceName: public-experiments
