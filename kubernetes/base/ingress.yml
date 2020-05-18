@@ -1,7 +1,7 @@
 apiVersion: "extensions/v1beta1"
 kind: "Ingress"
 metadata:
-  name: "ingress"
+  name: "app-ingress"
   namespace: "default"
   annotations:
     networking.gke.io/managed-certificates: "elecular-app"
@@ -10,11 +10,13 @@ spec:
   rules:
   - http:
       paths:
-      - path: "/api/experiments"
-        backend:
+      - backend:
           serviceName: "public-experiments"
           servicePort: 3000
-      - path: "/api/user-activity"
-        backend:
+    host: "experiments.api.elecular.com"
+  - http:
+      paths:
+      - backend:
           serviceName: "user-activity"
           servicePort: 3000
+    host: "user-activity.api.elecular.com"
