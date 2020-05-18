@@ -8,7 +8,7 @@ metadata:
     kubernetes.io/ingress.global-static-ip-name: elecular-app
 spec:
   rules:
-    http:
+    - http:
       paths:
       - path: /api/experiments
         backend:
