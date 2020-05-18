@@ -8,8 +8,9 @@ metadata:
 spec:
   ports:
     - protocol: "TCP"
-      port: 3000
+      port: 80
       targetPort: 80
   selector:
     app: "experiments"
-  type: NodePort
+  type: "LoadBalancer"
+  loadBalancerIP: ""
