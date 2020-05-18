@@ -20,3 +20,9 @@ spec:
           serviceName: "user-activity"
           servicePort: 3000
     host: "user-activity.api.elecular.com"
+  - http:
+      paths:
+      - backend:
+          serviceName: "dashboard"
+          servicePort: 3000
+    host: "app.elecular.com"
