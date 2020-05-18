@@ -1,20 +1,20 @@
-apiVersion: "networking.k8s.io/v1beta1"
+apiVersion: "extensions/v1beta1"
 kind: "Ingress"
 metadata:
   name: "ingress"
   namespace: "default"
   annotations:
-    networking.gke.io/managed-certificates: elecular-app
-    kubernetes.io/ingress.global-static-ip-name: elecular-app
+    networking.gke.io/managed-certificates: "elecular-app"
+    kubernetes.io/ingress.global-static-ip-name: "elecular-app"
 spec:
   rules:
-    - http:
+  - http:
       paths:
-      - path: /api/experiments
+      - path: "/api/experiments"
         backend:
-          serviceName: public-experiments
+          serviceName: "public-experiments"
           servicePort: 3000
-      - path: /api/user-activity
+      - path: "/api/user-activity"
         backend:
-          serviceName: user-activity
+          serviceName: "user-activity"
           servicePort: 3000
