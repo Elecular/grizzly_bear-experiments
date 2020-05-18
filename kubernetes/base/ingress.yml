@@ -1,13 +1,19 @@
 apiVersion: "extensions/v1beta1"
 kind: "Ingress"
 metadata:
-  name: "public-experiments-ingress"
+  name: "ingress"
   namespace: "default"
   annotations:
-    networking.gke.io/managed-certificates: experiments-api
-    kubernetes.io/ingress.global-static-ip-name: experiments-api
-    kubernetes.io/ingress.allow-http: "false"
+    networking.gke.io/managed-certificates: elecular-app
+    kubernetes.io/ingress.global-static-ip-name: elecular-app
 spec:
-  backend:
-    serviceName: "public-experiments"
-    servicePort: 80
+  rules:
+    http:
+      - path: /api/experiments
+        backend:
+          serviceName: public-experiments
+          servicePort: 3000
+      - path: /api/user-activity
+        backend:
+          serviceName: user-activity
+          servicePort: 3000

@@ -1,7 +1,9 @@
 apiVersion: networking.gke.io/v1beta2
 kind: ManagedCertificate
 metadata:
-  name: experiments-api
+  name: elecular-app
 spec:
   domains:
   - experiments.api.elecular.com
+  - user-activity.api.elecular.com
+  - app.elecular.com
