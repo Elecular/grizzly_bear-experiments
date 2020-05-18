@@ -6,6 +6,7 @@ metadata:
   annotations:
     networking.gke.io/managed-certificates: experiments-api
     kubernetes.io/ingress.global-static-ip-name: experiments-api
+    kubernetes.io/ingress.allow-http: "false"
 spec:
   backend:
     serviceName: "public-experiments"
