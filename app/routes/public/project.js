@@ -134,17 +134,13 @@ router.get("/:projectId/experiments", checkJwt, async function (
 /**
  * Gets experiment with given project id
  */
-router.get("/:projectId/experiments/:experimentName", checkJwt, async function (
+router.get("/:projectId/experiments/:experimentName", async function (
     req,
     res,
     next,
 ) {
     try {
         res.status(200);
-        await projectController.validateOwner(
-            req.user.sub,
-            req.params.projectId,
-        );
         res.json(
             await experimentController.findExperiment(
                 req.params.projectId,
