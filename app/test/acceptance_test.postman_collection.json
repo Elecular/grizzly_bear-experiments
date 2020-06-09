@@ -1278,15 +1278,9 @@
                             }
                         ],
                         "url": {
-                            "raw": "localhost/owner/user/termsOfUse/accept/status",
+                            "raw": "localhost/owner/termsOfUse/accept/status",
                             "host": ["localhost"],
-                            "path": [
-                                "owner",
-                                "user",
-                                "termsOfUse",
-                                "accept",
-                                "status"
-                            ]
+                            "path": ["owner", "termsOfUse", "accept", "status"]
                         }
                     },
                     "response": []
@@ -1318,9 +1312,9 @@
                             }
                         ],
                         "url": {
-                            "raw": "localhost/owner/user/termsOfUse/accept",
+                            "raw": "localhost/owner/termsOfUse/accept",
                             "host": ["localhost"],
-                            "path": ["owner", "user", "termsOfUse", "accept"]
+                            "path": ["owner", "termsOfUse", "accept"]
                         }
                     },
                     "response": []
@@ -1352,15 +1346,43 @@
                             }
                         ],
                         "url": {
-                            "raw": "localhost/owner/user/termsOfUse/accept/status",
+                            "raw": "localhost/owner/termsOfUse/accept/status",
                             "host": ["localhost"],
-                            "path": [
-                                "owner",
-                                "user",
-                                "termsOfUse",
-                                "accept",
-                                "status"
-                            ]
+                            "path": ["owner", "termsOfUse", "accept", "status"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Check if terms of service is not accepted",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "73ac92bd-51d1-4d7b-b41b-32e5dfe1c5ac",
+                                "exec": [
+                                    "pm.test(\"Your test name\", function () {",
+                                    "    var jsonData = pm.response.json();",
+                                    "    pm.expect(jsonData.accepted).to.eql(false);",
+                                    "});"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "type": "text",
+                                "value": "Bearer {{access_token_2}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "localhost/owner/termsOfUse/accept/status",
+                            "host": ["localhost"],
+                            "path": ["owner", "termsOfUse", "accept", "status"]
                         }
                     },
                     "response": []

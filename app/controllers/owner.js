@@ -19,7 +19,6 @@ module.exports.hasOwnerAcceptedTermsOfUse = async (ownerId) => {
         const response = await db.collection("termsOfUseActions").findOne({
             _id: ownerId,
         });
-        console.log(response);
         return {
             accepted: response !== null,
         };

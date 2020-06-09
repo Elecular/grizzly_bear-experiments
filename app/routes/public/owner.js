@@ -3,25 +3,21 @@ let router = express.Router();
 let owner = require("../../controllers/owner");
 const checkJwt = require("../../middleware/checkJwt").checkJwt;
 
-router.get("/:ownerId/termsOfUse/accept/status", checkJwt, async function (
+router.get("/termsOfUse/accept/status", checkJwt, async function (
     req,
     res,
     next,
 ) {
     try {
-        res.json(await owner.hasOwnerAcceptedTermsOfUse(req.params.ownerId));
+        res.json(await owner.hasOwnerAcceptedTermsOfUse(req.user.sub));
     } catch (err) {
         next(err);
     }
 });
 
-router.post("/:ownerId/termsOfUse/accept", checkJwt, async function (
-    req,
-    res,
-    next,
-) {
+router.post("/termsOfUse/accept", checkJwt, async function (req, res, next) {
     try {
-        res.json(await owner.acceptTermsOfCondition(req.params.ownerId));
+        res.json(await owner.acceptTermsOfCondition(req.user.sub));
     } catch (err) {
         next(err);
     }
