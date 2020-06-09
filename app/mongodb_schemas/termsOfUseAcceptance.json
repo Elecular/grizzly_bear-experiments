@@ -1,0 +1,15 @@
+{
+    "bsonType": "object",
+    "required": ["ownerId"],
+    "description": "Each record represents an accpetance of terms of use from the owner",
+    "properties": {
+        "_id": {
+            "bsonType": "string",
+            "description": "Id of the project owner"
+        },
+        "timestamp": {
+            "bsonType": "number",
+            "description": "Unixtimestamp of when the terms and conditiond were accepted"
+        }
+    }
+}

@@ -36,9 +36,9 @@
                             "raw": "{\"client_id\":\"xo509wTObnqcYKiOgLCJoLcHqSpFKCjL\",\"client_secret\":\"O9WUmL1WtKRJ35TByGcrcoau0tNE9m5Yd1SC4x4V9VzQoRX4c1XUBhO6BBPYmc5B\",\"audience\":\"http://www.grizzlybear-experiments.com\",\"grant_type\":\"client_credentials\"}"
                         },
                         "url": {
-                            "raw": "https://grizzly-bear.eu.auth0.com/oauth/token",
+                            "raw": "https://auth.elecular.com/oauth/token",
                             "protocol": "https",
-                            "host": ["grizzly-bear", "eu", "auth0", "com"],
+                            "host": ["auth", "elecular", "com"],
                             "path": ["oauth", "token"]
                         }
                     },
@@ -72,9 +72,9 @@
                             "raw": "{\"client_id\":\"EYHbAnyR8eou9NmnjwEtRWSWM3ZcmMe3\",\"client_secret\":\"3CMEeO77nQQlzwe2VB0Zk9x82rjCkTxV_55_-ReXWyu7sKzqFUaRwxnNlqbFIFgd\",\"audience\":\"http://www.grizzlybear-experiments.com\",\"grant_type\":\"client_credentials\"}"
                         },
                         "url": {
-                            "raw": "https://grizzly-bear.eu.auth0.com/oauth/token",
+                            "raw": "https://auth.elecular.com/oauth/token",
                             "protocol": "https",
-                            "host": ["grizzly-bear", "eu", "auth0", "com"],
+                            "host": ["auth", "elecular", "com"],
                             "path": ["oauth", "token"]
                         }
                     },
@@ -1240,6 +1240,126 @@
                                 "experiments",
                                 "exp1",
                                 "stop"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ],
+            "protocolProfileBehavior": {}
+        },
+        {
+            "name": "Owner API",
+            "item": [
+                {
+                    "name": "Check if terms of service is accepted",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "f65022f3-b936-4ecf-b573-0288f63976b0",
+                                "exec": [
+                                    "pm.test(\"Your test name\", function () {",
+                                    "    var jsonData = pm.response.json();",
+                                    "    pm.expect(jsonData.accepted).to.eql(false);",
+                                    "});"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "localhost/owner/user/termsOfUse/accept/status",
+                            "host": ["localhost"],
+                            "path": [
+                                "owner",
+                                "user",
+                                "termsOfUse",
+                                "accept",
+                                "status"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Accept terms of condition",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "2115b93b-3023-4179-91ea-8b7583400dd5",
+                                "exec": [
+                                    "pm.test(\"Your test name\", function () {",
+                                    "    var jsonData = pm.response.json();",
+                                    "    pm.expect(jsonData.accepted).to.eql(true);",
+                                    "});"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "type": "text",
+                                "value": "Bearer {{access_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "localhost/owner/user/termsOfUse/accept",
+                            "host": ["localhost"],
+                            "path": ["owner", "user", "termsOfUse", "accept"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Check if terms of service is accepted after accepting",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "54ae82d9-9350-4667-be6c-42e56f30f1a9",
+                                "exec": [
+                                    "pm.test(\"Your test name\", function () {",
+                                    "    var jsonData = pm.response.json();",
+                                    "    pm.expect(jsonData.accepted).to.eql(true);",
+                                    "});"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "type": "text",
+                                "value": "Bearer {{access_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "localhost/owner/user/termsOfUse/accept/status",
+                            "host": ["localhost"],
+                            "path": [
+                                "owner",
+                                "user",
+                                "termsOfUse",
+                                "accept",
+                                "status"
                             ]
                         }
                     },
