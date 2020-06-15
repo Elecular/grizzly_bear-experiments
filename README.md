@@ -169,7 +169,7 @@ experiments-db-secret:
 Example of setting up a k8s secret
 
 ```
-kubectl create secret generic experiments-db-secret --from-literal=MONGODB_URL=<mongodb_url>--from-literal=MONGODB_DATABASE=<mongodb_database>
+kubectl create secret generic experiments-db-secret --from-literal=MONGODB_URL=<mongodb_url> --from-literal=MONGODB_DATABASE=<mongodb_database>
 ```
 
 ---
