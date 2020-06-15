@@ -7,4 +7,5 @@ spec:
   - port: 3000
     $patch: delete
   - port: 6300
+    targetPort: 80
   type: "LoadBalancer"
