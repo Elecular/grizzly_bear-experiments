@@ -10,6 +10,7 @@
         "test:acceptance": "./bin/postman-test.sh"
     },
     "dependencies": {
+        "atob": "^2.1.2",
         "axios": "^0.19.2",
         "cookie-parser": "~1.4.4",
         "cors": "^2.8.5",

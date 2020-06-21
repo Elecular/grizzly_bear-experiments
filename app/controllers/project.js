@@ -83,3 +83,15 @@ module.exports.validateOwner = async (ownerId, projectId) => {
         throw new createError(403, "Forbidden");
     }
 };
+
+/**
+ * Gets list of all projects
+ *
+ * @param {string} ownerId
+ * @returns {Promise<Project>}
+ */
+module.exports.GetAllProjects = async () => {
+    const db = await mongo.connect();
+    const projects = await db.collection("projects").find({});
+    return await projects.toArray();
+};
