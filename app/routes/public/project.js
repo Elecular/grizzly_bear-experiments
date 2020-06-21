@@ -7,6 +7,7 @@ const projectController = require("../../controllers/project");
 const experimentController = require("../../controllers/experiment");
 const router = express.Router();
 const checkJwt = require("../../middleware/checkJwt").checkJwt;
+const checkPermissions = require("../../middleware/checkPermissions");
 const { check, validationResult, checkSchema } = require("express-validator");
 
 /**
@@ -44,8 +45,17 @@ router.post(
 /**
  * Gets all the projects that is owned by the user
  */
-router.get("/", checkJwt, async (req, res, next) => {
+router.get("/", checkJwt, checkPermissions, async (req, res, next) => {
     try {
+        if (req.query["all"] === "true") {
+            if (req.scopeClaims.includes("read:analytics")) {
+                res.json(await projectController.GetAllProjects());
+                res.status(200);
+            } else {
+                res.status(403).json({ message: "Forbidden" });
+            }
+            return;
+        }
         res.json(await projectController.getProjectsByOwner(req.user.sub));
         res.status(200);
     } catch (err) {
