@@ -673,7 +673,7 @@
                             {
                                 "key": "Authorization",
                                 "type": "text",
-                                "value": "Bearer {{access_token_analytics}}"
+                                "value": "Bearer {{admin_access_token}}"
                             }
                         ],
                         "body": {
