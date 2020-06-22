@@ -81,14 +81,14 @@
                     "response": []
                 },
                 {
-                    "name": "Get Access Token For Analytics App",
+                    "name": "Get Access Token For Admin App",
                     "event": [
                         {
                             "listen": "test",
                             "script": {
                                 "id": "5fb35dfc-b280-4452-9885-65c1583ff3a2",
                                 "exec": [
-                                    "pm.environment.set(\"access_token_analytics\", pm.response.json()[\"access_token\"]);"
+                                    "pm.environment.set(\"admin_access_token\", pm.response.json()[\"access_token\"]);"
                                 ],
                                 "type": "text/javascript"
                             }
@@ -566,7 +566,7 @@
                             {
                                 "key": "Authorization",
                                 "type": "text",
-                                "value": "Bearer {{access_token_analytics}}"
+                                "value": "Bearer {{admin_access_token}}"
                             }
                         ],
                         "body": {
