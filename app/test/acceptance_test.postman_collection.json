@@ -655,9 +655,8 @@
                                     "    pm.response.to.have.status(200);",
                                     "});",
                                     "",
-                                    "pm.test(\"Your test name\", function () {",
-                                    "    var jsonData = pm.response.json();",
-                                    "    pm.expect(jsonData.scope).to.eql(\"read:analytics\");",
+                                    "pm.test(\"Body has scope\", function () {",
+                                    "    pm.expect(pm.response.text()).to.include(\"read:all:projects\");",
                                     "});"
                                 ],
                                 "type": "text/javascript"

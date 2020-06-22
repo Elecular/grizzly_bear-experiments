@@ -1,7 +1,7 @@
 let express = require("express");
 let router = express.Router();
 let owner = require("../../controllers/owner");
-const checkPermissions = require("../../middleware/checkPermissions");
+const { checkPermissions } = require("../../middleware/checkPermissions");
 const checkJwt = require("../../middleware/checkJwt").checkJwt;
 
 router.get("/termsOfUse/accept/status", checkJwt, async function (
