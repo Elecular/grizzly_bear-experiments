@@ -7,7 +7,10 @@ const projectController = require("../../controllers/project");
 const experimentController = require("../../controllers/experiment");
 const router = express.Router();
 const checkJwt = require("../../middleware/checkJwt").checkJwt;
-const checkPermissions = require("../../middleware/checkPermissions");
+const {
+    checkPermissions,
+    Permissions,
+} = require("../../middleware/checkPermissions");
 const { check, validationResult, checkSchema } = require("express-validator");
 
 /**
@@ -48,7 +51,7 @@ router.post(
 router.get("/", checkJwt, checkPermissions, async (req, res, next) => {
     try {
         if (req.query["all"] === "true") {
-            if (req.scopeClaims.includes("read:analytics")) {
+            if (req.hasPermission(Permissions.READ_ALL_PROJECTS)) {
                 res.json(await projectController.GetAllProjects());
                 res.status(200);
             } else {
