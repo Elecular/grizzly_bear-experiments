@@ -44,9 +44,9 @@ The Dockerfile is located at the root folder. This can be used to deploy a conta
 
 1. MONGODB_URL : URL of the mongodb database
 2. MONGODB_DATABASE : A Database name.
-3. AUTH_SIGN_KEY_URI: https://grizzly-bear.eu.auth0.com/.well-known/jwks.json
+3. AUTH_SIGN_KEY_URI: https://grizzly-bear-dev.eu.auth0.com/.well-known/jwks.json
 4. AUTH_AUDIENCE: http://www.grizzlybear-experiments.com
-5. AUTH_DOMAIN: https://grizzly-bear.eu.auth0.com/
+5. AUTH_DOMAIN: https://grizzly-bear-dev.eu.auth0.com/
 
 Here is an example docker-compose file that is deploying this docker image on port 80:
 
@@ -67,9 +67,9 @@ services:
         environment:
             MONGODB_URL: mongodb://username:password@database:27017
             MONGODB_DATABASE: experiments
-            AUTH_SIGN_KEY_URI: https://grizzly-bear.eu.auth0.com/.well-known/jwks.json
+            AUTH_SIGN_KEY_URI: https://grizzly-bear-dev.eu.auth0.com/.well-known/jwks.json
             AUTH_AUDIENCE: http://www.grizzlybear-experiments.com
-            AUTH_DOMAIN: https://grizzly-bear.eu.auth0.com/
+            AUTH_DOMAIN: https://grizzly-bear-dev.eu.auth0.com/
     db:
         image: mongo
         environment:
