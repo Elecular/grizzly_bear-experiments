@@ -6,6 +6,7 @@ const log4js = require("log4js").getLogger();
 const publicIndexRouter = require("./routes/public/index");
 const publicProjectRouter = require("./routes/public/project");
 const publicOwnerRouter = require("./routes/public/owner");
+const publicAdminRouter = require("./routes/public/admin");
 const privateBulkRouter = require("./routes/private/bulk");
 const privateOwnerRouter = require("./routes/private/owner");
 
@@ -25,6 +26,7 @@ publicApp.use(cookieParser());
 publicApp.use("/", publicIndexRouter);
 publicApp.use("/projects/", publicProjectRouter);
 publicApp.use("/owner/", publicOwnerRouter);
+publicApp.use("/admin/", publicAdminRouter);
 publicApp.use(httpErrorHandler);
 publicApp.set("port", 80);
 

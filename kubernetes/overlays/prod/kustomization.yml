@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ../../base
   - certificate.yml
+  - configmap.yml
 
 configMapGenerator:
   - name: env
