@@ -17,5 +17,6 @@ module.exports.checkPermissions = (req, res, next) => {
 };
 
 module.exports.Permissions = {
-    READ_ALL_PROJECTS: "read:all:projects",
+    READ_ALL_PROJECTS: "admin.read:projects",
+    READ_ALL_OWNERS: "admin.read:owners",
 };

@@ -1,6 +1,14 @@
 const mongo = require("../db/mongodb");
 const logger = require("log4js").getLogger();
 const createError = require("http-errors");
+const ManagementClient = require("auth0").ManagementClient;
+
+const auth0 = new ManagementClient({
+    domain: process.env.AUTH_MANAGEMENT_DOMAIN,
+    clientId: process.env.AUTH_CLIENT_ID,
+    clientSecret: process.env.AUTH_CLIENT_SECRET,
+    scope: "read:users",
+});
 
 /**
  * Checks if the owner accepted terms of condition
@@ -56,6 +64,14 @@ module.exports.acceptTermsOfCondition = async (ownerId) => {
             };
         }
         logger.error(err);
+        throw new createError(500);
+    }
+};
+
+module.exports.getAllOwners = async () => {
+    try {
+        return await auth0.getUsers();
+    } catch (err) {
         throw new createError(500);
     }
 };
