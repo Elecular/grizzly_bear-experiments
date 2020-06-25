@@ -20,6 +20,9 @@ services:
             AUTH_SIGN_KEY_URI: https://grizzly-bear-dev.eu.auth0.com/.well-known/jwks.json
             AUTH_AUDIENCE: http://www.grizzlybear-experiments.com
             AUTH_DOMAIN: https://grizzly-bear-dev.eu.auth0.com/
+            AUTH_MANAGEMENT_DOMAIN: grizzly-bear-dev.eu.auth0.com
+            AUTH_CLIENT_ID: UuHkAbIEWh5aj7tu5SYukvdDqG3tiIC3 # This is dev client. So there is no harm
+            AUTH_CLIENT_SECRET: d9mAmmMaacUPrbmPvCydGGBjaeVEBsT94JXAvnmRPnAi58FEKCPrqofbn_b-X2P0 # This is dev secret. So there is no harm
     db:
         image: mongo
         environment:

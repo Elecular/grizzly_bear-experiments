@@ -166,10 +166,18 @@ experiments-db-secret:
   MONGODB_DATABASE: <database name>
 ```
 
+```
+experiments-auth-management-api-secret:
+  AUTH_MANAGEMENT_DOMAIN: <domain of auth0 tentant>
+  AUTH_CLIENT_ID: <client id>
+  AUTH_CLIENT_SECRET: <client secret>
+```
+
 Example of setting up a k8s secret
 
 ```
 kubectl create secret generic experiments-db-secret --from-literal=MONGODB_URL=<mongodb_url> --from-literal=MONGODB_DATABASE=<mongodb_database>
+kubectl create secret generic experiments-auth-management-api-secret --from-literal=AUTH_MANAGEMENT_DOMAIN=<domain> --from-literal=AUTH_CLIENT_ID=<client-id> --from-literal=AUTH_CLIENT_SECRET=<client-secret>
 ```
 
 ---

@@ -550,7 +550,7 @@
                                     "});",
                                     "",
                                     "pm.test(\"Body has projects\", function() {",
-                                    "    pm.expect(pm.response.json().length).to.be.above(0)",
+                                    "    pm.expect(pm.response.json().length).to.equal(4)",
                                     "});"
                                 ],
                                 "type": "text/javascript"
@@ -644,7 +644,7 @@
                                     "});",
                                     "",
                                     "pm.test(\"Body has scope\", function () {",
-                                    "    pm.expect(pm.response.text()).to.include(\"read:all:projects\");",
+                                    "    pm.expect(pm.response.text()).to.include(\"admin.read:projects\");",
                                     "});"
                                 ],
                                 "type": "text/javascript"
@@ -676,6 +676,100 @@
                             "raw": "localhost/owner/scope",
                             "host": ["localhost"],
                             "path": ["owner", "scope"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get All Owners As Admin",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "66bca99f-7f31-4565-8996-86c0a1b33e11",
+                                "exec": [
+                                    "pm.test(\"Status code is 200\", function () {",
+                                    "    pm.response.to.have.status(200);",
+                                    "});",
+                                    "",
+                                    "pm.test(\"Body has projects\", function() {",
+                                    "    pm.expect(pm.response.json().length).to.be.above(0)",
+                                    "});"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    },
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "type": "text",
+                                "value": "Bearer {{admin_access_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "localhost/admin/owners",
+                            "host": ["localhost"],
+                            "path": ["admin", "owners"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get All Owners As Admin Without Permission",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "c7449d42-6320-4fd0-bcff-642fc68f59ba",
+                                "exec": [
+                                    "pm.test(\"Status code is 403\", function () {",
+                                    "    pm.response.to.have.status(403);",
+                                    "});"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    },
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "type": "text",
+                                "value": "Bearer {{access_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "localhost/admin/owners",
+                            "host": ["localhost"],
+                            "path": ["admin", "owners"]
                         }
                     },
                     "response": []

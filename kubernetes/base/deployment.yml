@@ -21,6 +21,7 @@ spec:
           ports:
             - containerPort: 80
             - containerPort: 8080
+          # Database Configuration
           env:
             - name: MONGODB_URL
               valueFrom:
@@ -32,6 +33,7 @@ spec:
                 secretKeyRef:
                   name: experiments-db-secret
                   key: MONGODB_DATABASE
+            # Auth0 Configuration
             - name: AUTH_SIGN_KEY_URI
               valueFrom:
                 configMapKeyRef:
@@ -47,3 +49,19 @@ spec:
                   configMapKeyRef:
                     name: experiments-config-map
                     key: AUTH_DOMAIN
+            # Auth0 Management API Configuration
+            - name: AUTH_MANAGEMENT_DOMAIN
+              valueFrom:
+                  secretKeyRef:
+                    name: experiments-auth-management-api-secret
+                    key: AUTH_MANAGEMENT_DOMAIN
+            - name: AUTH_CLIENT_ID
+              valueFrom:
+                  secretKeyRef:
+                    name: experiments-auth-management-api-secret
+                    key: AUTH_CLIENT_ID
+            - name: AUTH_CLIENT_SECRET
+              valueFrom:
+                  secretKeyRef:
+                    name: experiments-auth-management-api-secret
+                    key: AUTH_CLIENT_SECRET
