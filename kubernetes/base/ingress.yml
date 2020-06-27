@@ -26,3 +26,9 @@ spec:
           serviceName: "dashboard"
           servicePort: 3000
     host: "app.elecular.com"
+  - http:
+      paths:
+      - backend:
+          serviceName: "admin-dashboard"
+          servicePort: 3000
+    host: "admin.elecular.com"

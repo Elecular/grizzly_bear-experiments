@@ -7,3 +7,4 @@ spec:
   - experiments.api.elecular.com
   - user-activity.api.elecular.com
   - app.elecular.com
+  - admin.elecular.com
