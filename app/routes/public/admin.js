@@ -3,33 +3,55 @@ let router = express.Router();
 const projectController = require("../../controllers/project");
 const ownerController = require("../../controllers/owner");
 const checkJwt = require("../../middleware/checkJwt").checkJwt;
-const {
-    checkPermissions,
-    Permissions,
-} = require("../../middleware/checkPermissions");
+const { parsePermissions } = require("../../middleware/parsePermissions");
+const { adminAccessOnly } = require("../../middleware/adminAccessOnly");
 
 /**
  * Gets all the projects made in Elecular
  */
-router.get("/projects", checkJwt, checkPermissions, async function (req, res) {
-    if (req.hasPermission(Permissions.READ_ALL_PROJECTS)) {
+router.get(
+    "/projects",
+    checkJwt,
+    parsePermissions,
+    adminAccessOnly,
+    async function (req, res) {
         res.json(await projectController.GetAllProjects());
         res.status(200);
-    } else {
-        res.status(403).json({ message: "Forbidden" });
-    }
-});
+    },
+);
+
+/**
+ * Gets detail about given project
+ */
+router.get(
+    "/project/:projectId",
+    checkJwt,
+    parsePermissions,
+    adminAccessOnly,
+    async function (req, res, next) {
+        try {
+            res.json(
+                await projectController.GetProject(req.params["projectId"]),
+            );
+            res.status(200);
+        } catch (err) {
+            next(err);
+        }
+    },
+);
 
 /**
  * Get details about all users
  */
-router.get("/owners", checkJwt, checkPermissions, async function (req, res) {
-    if (req.hasPermission(Permissions.READ_ALL_OWNERS)) {
+router.get(
+    "/owners",
+    checkJwt,
+    parsePermissions,
+    adminAccessOnly,
+    async function (req, res) {
         res.json(await ownerController.getAllOwners());
         res.status(200);
-    } else {
-        res.status(403).json({ message: "Forbidden" });
-    }
-});
+    },
+);
 
 module.exports = router;
