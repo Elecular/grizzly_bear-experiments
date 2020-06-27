@@ -88,7 +88,6 @@ module.exports.getAllOwners = async () => {
  * @returns {Promise<Project>}
  */
 module.exports.getOwner = async (ownerId) => {
-    console.log(ownerId);
     try {
         return await auth0.getUser({ id: ownerId });
     } catch (err) {
