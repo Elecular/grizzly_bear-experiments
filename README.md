@@ -4,6 +4,25 @@
 
 ---
 
+### Responsibilites
+
+[Public Rest API Documentation](https://documenter.getpostman.com/view/11861808/T17AjB9Z?version=latest
+)
+
+This service is responsible for
+
+* Serving REST API for managing experiments
+* Serving REST API for bucketing users into experiment variations
+* Serving REST API to validate Authentication Tokens
+* Serving REST API to admin users to manage all projects created in Elecular
+
+This service is not responsible for serving the results of experiments. This is done by the User-Activity API. 
+
+The service has two different APIs
+
+* Public API: This api is open to www and can be used by anyone. Endpoints in this API usually need to be protected
++ Private API: This api cannot be accessed from the public. It is only used internally by other services. 
+
 ### How To Develop
 
 You can run the following command to start the service in development mode. The service will automatically pickup any changes!

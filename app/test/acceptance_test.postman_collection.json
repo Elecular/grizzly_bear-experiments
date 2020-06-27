@@ -632,55 +632,6 @@
                     "response": []
                 },
                 {
-                    "name": "Get Permissions of access token",
-                    "event": [
-                        {
-                            "listen": "test",
-                            "script": {
-                                "id": "25d879a9-0760-4a08-b13c-c5cb3a750ec6",
-                                "exec": [
-                                    "pm.test(\"Status code is 200\", function () {",
-                                    "    pm.response.to.have.status(200);",
-                                    "});",
-                                    "",
-                                    "pm.test(\"Body has scope\", function () {",
-                                    "    pm.expect(pm.response.text()).to.include(\"admin.read:projects\");",
-                                    "});"
-                                ],
-                                "type": "text/javascript"
-                            }
-                        }
-                    ],
-                    "protocolProfileBehavior": {
-                        "disableBodyPruning": true
-                    },
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "type": "text",
-                                "value": "Bearer {{admin_access_token}}"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "localhost/owner/scope",
-                            "host": ["localhost"],
-                            "path": ["owner", "scope"]
-                        }
-                    },
-                    "response": []
-                },
-                {
                     "name": "Get All Owners As Admin",
                     "event": [
                         {
@@ -1705,6 +1656,55 @@
                             "raw": "localhost/owner/termsOfUse/accept/status",
                             "host": ["localhost"],
                             "path": ["owner", "termsOfUse", "accept", "status"]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Permissions of access token",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "id": "25d879a9-0760-4a08-b13c-c5cb3a750ec6",
+                                "exec": [
+                                    "pm.test(\"Status code is 200\", function () {",
+                                    "    pm.response.to.have.status(200);",
+                                    "});",
+                                    "",
+                                    "pm.test(\"Body has scope\", function () {",
+                                    "    pm.expect(pm.response.text()).to.include(\"admin.read:projects\");",
+                                    "});"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    },
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "type": "text",
+                                "value": "Bearer {{admin_access_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "localhost/owner/scope",
+                            "host": ["localhost"],
+                            "path": ["owner", "scope"]
                         }
                     },
                     "response": []

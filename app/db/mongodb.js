@@ -46,6 +46,19 @@ module.exports.disconnect = async () => {
     db = null;
 };
 
+module.exports.isConnected = async () => {
+    const database = await this.connect();
+    if (!database) return false;
+
+    try {
+        await database.collections();
+        return true;
+    } catch (err) {
+        logger.error(err);
+        return false;
+    }
+};
+
 /**
  * Creates all the collections on Mongodb
  *
