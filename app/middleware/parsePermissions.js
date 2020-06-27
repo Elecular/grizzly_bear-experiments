@@ -1,10 +1,10 @@
 var atob = require("atob");
 
 /*
- * Checks the permissions of the bearer token
- * WARNING: DOES NOT VALIDATE THE TOKEN. Use checkJwt for validating token
+ * parses the permissions of the bearer token
+ * Only add after checkJwt in the middleware chain
  */
-module.exports.checkPermissions = (req, res, next) => {
+module.exports.parsePermissions = (req, res, next) => {
     let token = req.headers["authorization"];
     if (token === undefined || token === null) {
         next();
@@ -17,6 +17,10 @@ module.exports.checkPermissions = (req, res, next) => {
 };
 
 module.exports.Permissions = {
-    READ_ALL_PROJECTS: "admin.read:projects",
-    READ_ALL_OWNERS: "admin.read:owners",
+    ADMIN: {
+        READ: {
+            PROJECTS: "admin.read:projects",
+            OWNERS: "admin.read:owners",
+        },
+    },
 };

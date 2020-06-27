@@ -2,7 +2,7 @@ const mongo = require("../db/mongodb");
 const ObjectID = require("mongodb").ObjectID;
 const logger = require("log4js").getLogger();
 const createError = require("http-errors");
-
+const ownerController = require("./owner");
 /**
  * Adds a new project to the database
  *
@@ -87,11 +87,35 @@ module.exports.validateOwner = async (ownerId, projectId) => {
 /**
  * Gets list of all projects
  *
- * @param {string} ownerId
  * @returns {Promise<Project>}
  */
 module.exports.GetAllProjects = async () => {
     const db = await mongo.connect();
     const projects = await db.collection("projects").find({});
     return await projects.toArray();
+};
+
+/**
+ * Gets details about given project
+ *
+ * @param {string} projectId
+ * @returns {Promise<Project>}
+ */
+module.exports.GetProject = async (projectId) => {
+    const db = await mongo.connect();
+    const project = await db.collection("projects").findOne({
+        _id: ObjectID(projectId),
+    });
+
+    if (project == null) {
+        throw new createError(404, "Project Not Found");
+    }
+
+    try {
+        project.owner = await ownerController.getOwner(project.ownerId);
+    } catch (err) {
+        logger.warn("Could not find owner from id: " + project.ownerId);
+    }
+
+    return project;
 };

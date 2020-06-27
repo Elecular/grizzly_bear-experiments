@@ -68,10 +68,29 @@ module.exports.acceptTermsOfCondition = async (ownerId) => {
     }
 };
 
+/**
+ * Gets all owners in elecular
+ *
+ * @returns {Promise<Project>}
+ */
 module.exports.getAllOwners = async () => {
     try {
         return await auth0.getUsers();
     } catch (err) {
         throw new createError(500);
+    }
+};
+
+/**
+ * Gets owner with given id
+ *
+ * @param {string} ownerId
+ * @returns {Promise<Project>}
+ */
+module.exports.getOwner = async (ownerId) => {
+    try {
+        return await auth0.getUser({ id: ownerId });
+    } catch (err) {
+        throw new createError(404);
     }
 };
